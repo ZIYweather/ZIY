@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>ZIY Series — 全球气象智慧平台</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Inter', sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.42857;
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* 液态玻璃导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(40px) saturate(200%);
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+        }
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 140%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, 
+                rgba(255,255,255,0.3) 0%,
+                rgba(255,200,200,0.12) 25%,
+                rgba(200,200,255,0.12) 50%,
+                rgba(200,255,200,0.08) 75%,
+                transparent 100%);
+            filter: blur(20px);
+            mix-blend-mode: overlay;
+            pointer-events: none;
+            animation: prismShift 12s infinite alternate ease-in-out;
+        }
+        @keyframes prismShift {
+            0% { transform: translateX(-10%) rotate(0deg); opacity: 0.5; }
+            100% { transform: translateX(10%) rotate(2deg); opacity: 0.9; }
+        }
+        .navbar::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.7) 20%,
+                rgba(255,255,255,0.9) 50%,
+                rgba(255,255,255,0.7) 80%,
+                rgba(255,255,255,0) 100%);
+            pointer-events: none;
+        }
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+        .logo {
+            font-weight: 600;
+            font-size: 1.4rem;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #1d1d1f 0%, #434349 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .nav-icons {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            position: relative;
+        }
+        .nav-icons i {
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #1d1d1f;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .nav-icons i:hover {
+            color: #0066cc;
+            transform: scale(1.05);
+        }
+        .user-avatar-wrapper {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        #userAvatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #0071e3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: white;
+            object-fit: cover;
+        }
+        .user-menu {
+            position: absolute;
+            top: 48px;
+            right: 0;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(30px);
+            border-radius: 20px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02);
+            padding: 12px 0;
+            min-width: 180px;
+            z-index: 150;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.96) translateY(-8px);
+            transition: opacity 0.3s cubic-bezier(0.25,0.1,0.2,1), transform 0.3s, visibility 0.3s;
+        }
+        .user-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+        }
+        .user-menu a {
+            display: block;
+            padding: 12px 20px;
+            color: #1d1d1f;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .user-menu a:hover { background: rgba(0,0,0,0.05); }
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 320px;
+            height: 100%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(40px);
+            z-index: 200;
+            padding: 80px 28px 40px;
+            transition: right 0.4s cubic-bezier(0.2,0.9,0.4,1.1);
+            box-shadow: -8px 0 30px rgba(0,0,0,0.1);
+        }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu a {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: 500;
+            padding: 16px 0;
+            color: #1d1d1f;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .close-menu { position: absolute; top: 24px; right: 24px; font-size: 1.6rem; cursor: pointer; }
+        .menu-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(4px);
+            z-index: 199;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .menu-overlay.active { opacity: 1; visibility: visible; }
+        main { padding-top: 70px; }
+
+        /* 模块卡片 */
+        .module {
+            padding: 70px 0 80px;
+            margin-bottom: 40px;
+            border-radius: 48px;
+            backdrop-filter: blur(4px);
+            text-align: center;
+            scroll-margin-top: 80px;
+        }
+        .module-dark { background: rgba(0,0,0,0.85); color: #fff; }
+        .module-light { background: rgba(255,255,255,0.9); color: #1d1d1f; }
+        .module-dark .module-title, .module-dark .module-sub, .module-dark .data-source { color: #fff; }
+        .module-dark .module-sub { color: #e0e0e6; }
+        /* 动画速度稍微慢点，更丝滑 */
+        .animate-group {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity 1.4s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 1.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .animate-group.animated { opacity: 1; transform: translateY(0); }
+        .module-title { font-size: 2.6rem; font-weight: 600; margin-bottom: 12px; }
+        .module-sub { font-size: 1.2rem; font-weight: 400; max-width: 600px; margin: 0 auto 16px; }
+        .data-source { font-size: 0.75rem; margin-bottom: 28px; opacity: 0.7; }
+        .btn-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+        .btn-primary, .btn-secondary {
+            padding: 10px 24px;
+            border-radius: 980px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.25,0.1,0.2,1);
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary { background-color: #0071e3; color: white; box-shadow: 0 2px 8px rgba(0,113,227,0.2); }
+        .btn-primary:hover { transform: scale(1.02); background-color: #0077ed; }
+        .btn-secondary { background-color: rgba(232,232,237,0.8); color: #1d1d1f; }
+        .btn-secondary:hover { background-color: rgba(214,214,220,0.9); transform: scale(1.02); }
+        .module-visual {
+            border-radius: 36px;
+            overflow: hidden;
+            margin: 28px 0 36px;
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.12);
+            transition: transform 0.4s cubic-bezier(0.2,0.9,0.4,1.1);
+        }
+        .module-visual:hover { transform: scale(1.01); }
+        .typhoon-satellite { padding: 1.8rem; background: linear-gradient(145deg, #021d2f, #00121f); }
+        .satellite-badge { font-size: 0.75rem; margin-bottom: 12px; }
+        .typhoon-title-visual { font-size: 1.6rem; font-weight: 600; }
+        .typhoon-meta { font-size: 1rem; margin-bottom: 16px; }
+        .typhoon-stats { display: inline-flex; gap: 20px; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); padding: 6px 20px; border-radius: 48px; font-size: 0.85rem; }
+        .env-pre { font-family: 'SF Mono', monospace; font-size: 0.7rem; background: rgba(0,0,0,0.4); padding: 16px; border-radius: 28px; text-align: left; white-space: pre-wrap; }
+        .interactive-map { height: 300px; background: radial-gradient(#0a2f44, #04131f); position: relative; cursor: grab; }
+        .map-placeholder { width: 100%; height: 100%; background-size: cover; background-position: center; background-image: url('https://images.pexels.com/photos/1252890/pexels-photo-1252890.jpeg'); }
+        .zoom-hint { position: absolute; bottom: 12px; right: 16px; background: rgba(0,0,0,0.55); backdrop-filter: blur(8px); padding: 4px 10px; border-radius: 30px; font-size: 10px; color: white; }
+        .chart-container { background: rgba(255,255,255,0.9); padding: 16px; border-radius: 32px; }
+        canvas#ensembleChart { width: 100%; height: auto; }
+        .chart-legend { display: flex; justify-content: center; gap: 16px; margin-top: 10px; font-size: 0.65rem; }
+        .history-grid-canvas { background: #fef9e8; padding: 16px; text-align: center; }
+        canvas#historyGridCanvas { max-width: 100%; height: auto; border-radius: 28px; }
+
+        /* 社区卡片 */
+        .community-preview {
+            background: rgba(251,251,253,0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 48px;
+            padding: 40px 32px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        .community-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 24px; }
+        .community-title { font-size: 1.8rem; font-weight: 600; }
+        .community-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin: 28px 0; text-align: left; }
+        .article-card {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 20px;
+            transition: all 0.35s cubic-bezier(0.2,0.9,0.4,1.1);
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .article-card:hover { transform: translateY(-5px); box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15); background: white; }
+        .article-meta { font-size: 0.7rem; color: #86868b; display: flex; gap: 10px; margin-bottom: 8px; }
+        .article-title { font-weight: 600; font-size: 1.2rem; margin: 8px 0; }
+        .article-content { font-size: 0.75rem; color: #3a3a3e; line-height: 1.4; max-height: 90px; overflow: hidden; }
+        .media-preview { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+        .media-preview img, .media-preview video { max-width: 70px; border-radius: 14px; }
+        .comment-badge { margin-top: 12px; font-size: 0.7rem; color: #6e6e73; cursor: pointer; }
+
+        /* 页脚 */
+        .footer {
+            background: rgba(245,245,247,0.8);
+            backdrop-filter: blur(30px);
+            margin-top: 60px;
+            padding: 36px 0 28px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+        }
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+        .footer-col { flex: 1; min-width: 120px; }
+        .footer-col h4 { font-weight: 600; margin-bottom: 10px; font-size: 0.75rem; }
+        .footer-col a { display: block; color: #6e6e73; text-decoration: none; margin-bottom: 6px; font-size: 0.7rem; cursor: pointer; }
+        .copyright { border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px; font-size: 0.65rem; text-align: center; }
+        .lang-switch {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            display: flex;
+            gap: 12px;
+            font-size: 0.7rem;
+        }
+        .lang-switch span {
+            cursor: pointer;
+            color: #6e6e73;
+            transition: color 0.2s;
+        }
+        .lang-switch span.active {
+            color: #0071e3;
+            font-weight: 600;
+        }
+
+        /* 模态框通用 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.35s cubic-bezier(0.2,0.9,0.4,1.1);
+        }
+        .modal.show { display: flex; opacity: 1; }
+        .modal-card {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(40px);
+            border-radius: 44px;
+            padding: 32px;
+            max-width: 90%;
+            width: 540px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.2);
+            transform: scale(0.96);
+            transition: transform 0.4s cubic-bezier(0.2,0.9,0.4,1.1);
+            text-align: center;
+        }
+        .modal.show .modal-card { transform: scale(1); }
+
+        /* ========= 苹果顶级风格：个人主页 & 发布文章 ========= */
+        .profile-card, .publish-card {
+            text-align: left;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(40px);
+        }
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+        .profile-avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 16px;
+            background: #e8e8ed;
+            border: 3px solid white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .profile-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .profile-email {
+            font-size: 0.8rem;
+            color: #6e6e73;
+        }
+        .profile-section {
+            margin: 24px 0;
+        }
+        .profile-section-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6e6e73;
+            margin-bottom: 12px;
+        }
+        .profile-bg-preview {
+            width: 100%;
+            height: 140px;
+            border-radius: 28px;
+            background-size: cover;
+            background-position: center;
+            background-color: #e8e8ed;
+            margin-bottom: 16px;
+        }
+        .bind-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .bind-btn {
+            background: rgba(0,0,0,0.05);
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .bind-btn i { margin-right: 6px; }
+        .bind-btn:hover { background: rgba(0,0,0,0.1); }
+
+        .publish-card input, .publish-card textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.9);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .publish-card input:focus, .publish-card textarea:focus {
+            outline: none;
+            border-color: #0071e3;
+            box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+        }
+        .media-upload-area {
+            background: rgba(0,0,0,0.02);
+            border-radius: 24px;
+            padding: 16px;
+            margin: 16px 0;
+            border: 1px dashed rgba(0,0,0,0.1);
+        }
+
+        /* 其他组件 */
+        .search-input { width: 100%; padding: 12px 16px; border-radius: 30px; border: 1px solid rgba(0,0,0,0.1); margin-bottom: 16px; }
+        .search-result { text-align: left; max-height: 300px; overflow-y: auto; }
+        .search-result-item { padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer; }
+        .action-sheet {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(30px);
+            border-radius: 28px 28px 0 0;
+            padding: 20px;
+            z-index: 1100;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.2,0.9,0.4,1.1);
+        }
+        .action-sheet.show { transform: translateY(0); }
+        .action-sheet .title { font-size: 1.1rem; font-weight: 600; text-align: center; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.1); margin-bottom: 12px; }
+        .action-sheet .option { padding: 14px; text-align: center; cursor: pointer; border-radius: 14px; }
+        .action-sheet .option:hover { background: rgba(0,0,0,0.05); }
+        .action-sheet .cancel { margin-top: 8px; color: #0071e3; font-weight: 600; }
+        .action-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(8px);
+            z-index: 1050;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s, visibility 0.25s;
+        }
+        .action-overlay.show { opacity: 1; visibility: visible; }
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: rgba(29,29,31,0.85);
+            backdrop-filter: blur(20px);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            z-index: 1200;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .toast-message.show { opacity: 1; transform: translateX(-50%) scale(1); }
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+            .module-title { font-size: 1.9rem; }
+            .module-sub { font-size: 1rem; }
+            .btn-primary, .btn-secondary { padding: 8px 18px; font-size: 0.85rem; }
+            .community-grid { grid-template-columns: 1fr; }
+            .typhoon-stats { flex-direction: column; gap: 6px; }
+            main { padding-top: 66px; }
+            .lang-switch { top: 12px; right: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="nav-inner">
+        <div class="logo">ZIY<span> Series</span></div>
+        <div class="nav-icons">
+            <i class="fas fa-search" id="searchIcon"></i>
+            <div id="userIconWrapper" style="position: relative;">
+                <div class="user-avatar-wrapper" id="userIconBtn">
+                    <i class="fas fa-user-circle" style="font-size: 1.3rem;"></i>
+                </div>
+                <div id="userMenu" class="user-menu">
+                    <a href="#" id="profileBtn" data-i18n="profile">个人主页</a>
+                    <a href="#" id="adminBtn" data-i18n="admin">后台管理</a>
+                    <a href="#" id="logoutBtn" data-i18n="logout">退出登录</a>
+                    <hr>
+                    <a href="#" id="deleteAccountBtn" style="color: #e34c4c;" data-i18n="delete">注销账号</a>
+                </div>
+            </div>
+            <i class="fas fa-bars" id="menuBtn"></i>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+    <i class="fas fa-times close-menu" id="closeMenuBtn"></i>
+    <a href="#" data-target="typhoon" data-i18n="typhoon">台风监测</a>
+    <a href="#" data-target="satellite" data-i18n="satellite">卫星云图</a>
+    <a href="#" data-target="model" data-i18n="model">数值预报</a>
+    <a href="#" data-target="env" data-i18n="env">环境场</a>
+    <a href="#" data-target="history" data-i18n="history">历史档案</a>
+    <a href="#" data-target="community" data-i18n="community">社区</a>
+    <a href="#" id="mobileProfileLink" data-i18n="profile">个人主页</a>
+    <a href="#" id="mobilePublishBtn" data-i18n="publish">发布文章</a>
+    <a href="#" id="mobileAdminBtn" data-i18n="admin">后台</a>
+    <a href="#" id="mobileAboutBtn" data-i18n="about">关于 ZIY</a>
+</div>
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<main>
+    <div class="container">
+        <div class="module module-dark" id="module-typhoon"><div class="animate-group"><h2 class="module-title" data-i18n="typhoon_title">全球台风监测</h2><p class="module-sub" data-i18n="typhoon_sub">实时追踪每个气旋的轨迹、强度与风场</p><div class="module-visual typhoon-satellite"><div class="satellite-badge"><i class="fas fa-satellite-dish"></i> HIMAWARI-9 · TRUE COLOR</div><div class="typhoon-title-visual">Typhoon SINLAKU (04W)</div><div class="typhoon-meta">2026/04/12 06:40Z</div><div class="typhoon-stats"><span>🌀 115 kt</span><span>📉 939 mb</span><span>🌊 Cat.4</span></div></div><div class="data-source">JMA · JTWC · CMA · Himawari-9</div><div class="btn-group"><a class="btn-primary js-open-agency" data-module="typhoon" data-i18n="learn_more">进一步了解</a><a class="btn-secondary js-view-now" data-module="typhoon" data-i18n="view_now">立即查看</a></div></div></div>
+        <div class="module module-dark" id="module-satellite"><div class="animate-group"><h2 class="module-title" data-i18n="satellite_title">卫星云图中心</h2><p class="module-sub" data-i18n="satellite_sub">多通道云图，实时覆盖全球</p><div class="module-visual interactive-map" id="satelliteMap"><div class="map-placeholder"></div><div class="zoom-hint">拖动缩放</div></div><div class="data-source">RAMMB · Himawari · NOAA GOES</div><div class="btn-group"><a class="btn-primary js-open-agency" data-module="satellite" data-i18n="learn_more">进一步了解</a><a class="btn-secondary js-view-now" data-module="satellite" data-i18n="view_now">立即查看</a></div></div></div>
+        <div class="module module-light" id="module-model"><div class="animate-group"><h2 class="module-title" data-i18n="model_title">专业数值预报</h2><p class="module-sub" data-i18n="model_sub">全球模式、集合预报、极端天气预警</p><div class="module-visual"><div class="chart-container"><canvas id="ensembleChart"></canvas><div class="chart-legend"><span><span class="legend-color" style="background:#0071e3;"></span> ECMWF</span><span><span class="legend-color" style="background:#ff9f0a;"></span> GFS</span><span><span class="legend-color" style="background:#64d2ff;"></span> JTWC</span><span><span class="legend-color" style="background:#30b0c0;"></span> CMA</span></div></div></div><div class="data-source">ECMWF · GFS · JMA · CMA</div><div class="btn-group"><a class="btn-primary js-open-agency" data-module="model" data-i18n="learn_more">进一步了解</a><a class="btn-secondary js-view-now" data-module="model" data-i18n="view_now">立即查看</a></div></div></div>
+        <div class="module module-dark" id="module-env"><div class="animate-group"><h2 class="module-title" data-i18n="env_title">环境场分析</h2><p class="module-sub" data-i18n="env_sub">风切变、海温、湿度，读懂台风关键</p><div class="module-visual env-data-card"><pre class="env-pre">WP042620SINLAKU 20261212 Apr12UTC\n15N2014N2013N3512N5011N9510N809N208N207N206N20QUA146ENE90SE80SW90NW95VMAX135\nInput for IR Winds 925.6 hPa\nR3440 R5055 R6030 R6440</pre></div><div class="data-source">NOAA NCEP · ECMWF再分析</div><div class="btn-group"><a class="btn-primary js-open-agency" data-module="env" data-i18n="learn_more">进一步了解</a><a class="btn-secondary js-view-now" data-module="env" data-i18n="view_now">立即查看</a></div></div></div>
+        <div class="module module-light" id="module-history"><div class="animate-group"><h2 class="module-title" data-i18n="history_title">历史强台风档案</h2><p class="module-sub" data-i18n="history_sub">还原每一场风暴的生命周期</p><div class="module-visual history-grid-canvas"><canvas id="historyGridCanvas"></canvas></div><div class="data-source">JTWC · JMA · CMA · NOAA</div><div class="btn-group"><a class="btn-primary js-open-agency" data-module="history" data-i18n="learn_more">进一步了解</a><a class="btn-secondary js-view-now" data-module="history" data-i18n="view_now">立即查看</a></div></div></div>
+        <div class="community-preview" id="module-community"><div class="animate-group"><div class="community-header"><div><h3 class="community-title" data-i18n="community_title">气象社区</h3><p class="data-source" style="margin-bottom:0;" data-i18n="community_sub">登录后发布文章，支持图片/视频</p></div><a href="#" class="btn-secondary" id="createPostBtn" style="padding:6px 18px;" data-i18n="publish">发布</a></div><div id="postsContainer" class="community-grid">加载中...</div><div style="text-align:center; margin-top:16px;"><a href="#" class="btn-primary" style="background:#e8e8ed; color:#1d1d1f;" id="moreCommunityBtn" data-i18n="browse_all">浏览全部 →</a></div></div></div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="lang-switch">
+            <span id="langZh" class="active">中文</span>
+            <span id="langEn">English</span>
+        </div>
+        <div class="footer-links animate-group">
+            <div class="footer-col"><h4 data-i18n="data">数据</h4><a data-i18n="typhoon">台风监测</a><a data-i18n="satellite">卫星云图</a></div>
+            <div class="footer-col"><h4 data-i18n="community">社区</h4><a id="footerPublish" data-i18n="publish">发布</a><a id="footerProfile" data-i18n="profile">个人主页</a></div>
+            <div class="footer-col"><h4 data-i18n="about">关于</h4><a id="aboutLink" data-i18n="about_ziy">关于 ZIY</a></div>
+        </div>
+        <div class="copyright" data-i18n="copyright">Copyright © ZIY Inc.</div>
+    </div>
+</footer>
+
+<!-- 机构选择 Action Sheet -->
+<div class="action-overlay" id="actionOverlay"></div>
+<div class="action-sheet" id="actionSheet"><div class="title" data-i18n="select_agency">选择数据源机构</div><div class="option" data-url="https://www.noaa.gov/">NOAA</div><div class="option" data-url="https://www.ecmwf.int/">ECMWF</div><div class="option" data-url="https://rammb.cira.colostate.edu/">RAMMB</div><div class="option" data-url="https://www.jma.go.jp/jma/indexe.html">JMA</div><div class="option" data-url="https://www.cma.gov.cn/en2014/">CMA</div><div class="option" data-url="https://www.metoc.navy.mil/jtwc/jtwc.html">JTWC</div><div class="option cancel" id="cancelActionSheet" data-i18n="cancel">取消</div></div>
+
+<!-- 搜索模态框 -->
+<div id="searchModal" class="modal"><div class="modal-card"><span class="close-modal" style="float:right; cursor:pointer;">&times;</span><h3 data-i18n="search">搜索</h3><input type="text" id="searchInput" class="search-input" placeholder="搜索文章..."><div id="searchResults" class="search-result">输入关键词开始搜索</div></div></div>
+
+<!-- 登录/注册模态框（含三项协议） -->
+<div id="authModal" class="modal"><div class="modal-card"><span class="close-modal" style="float:right; cursor:pointer;">&times;</span><div id="loginGreeting" style="font-size:0.9rem; color:#0071e3; margin-bottom:8px;">Storm at your fingertips.</div><h3 style="font-size:1.6rem;" data-i18n="welcome_back">欢迎回来</h3><p style="margin-bottom:20px;" data-i18n="login_prompt">登录 ZIY 气象社区</p><div class="login-tabs"><div class="login-tab active" data-tab="account" data-i18n="account_login">账号登录</div><div class="login-tab" data-tab="qrcode" data-i18n="qr_login">扫码登录</div></div><div class="login-panel active" id="accountPanel"><div class="input-group"><input type="text" id="loginUsername" placeholder="用户名 / 邮箱"></div><div class="input-group"><input type="password" id="loginPassword" placeholder="密码"></div><div class="captcha-wrapper" id="captchaSlider"><div class="captcha-slider"><span><i class="fas fa-shield-alt"></i> <span data-i18n="slide_verify">按住滑块验证</span></span><i class="fas fa-chevron-right"></i></div></div><div class="remember-group"><label><input type="checkbox" id="rememberMeCheckbox" checked> <span data-i18n="remember_me">记住我</span></label></div><button id="doLoginBtn" class="btn-primary" style="width:100%;" data-i18n="login">登录</button><div class="switch-auth"><a href="#" id="switchToRegister" data-i18n="register">注册</a> | <a href="#" id="forgotPasswordLink" data-i18n="forgot_password">找回账号</a></div></div><div class="login-panel" id="qrcodePanel"><div class="qr-placeholder"><i class="fab fa-qq"></i><i class="fab fa-weixin" style="margin-left:20px;"></i><p data-i18n="qr_desc">使用 QQ / 微信扫码</p><div style="background:#fff; width:120px; height:120px; margin:16px auto; border-radius:20px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-qrcode" style="font-size:60px;"></i></div><p style="font-size:0.7rem;" data-i18n="demo_mode">演示模式，请使用账号密码登录</p></div><div class="switch-auth"><a href="#" id="backToAccount" data-i18n="back_to_account">返回账号登录</a></div></div><div id="registerForm" style="display:none;"><input type="text" id="regUsername" placeholder="用户名"><input type="email" id="regEmail" placeholder="邮箱"><input type="password" id="regPassword" placeholder="密码 (8位以上含大小写数字特殊符号)"><input type="password" id="regConfirmPwd" placeholder="确认密码"><div id="regError" style="color:#e34c4c; font-size:0.7rem;"></div><div class="terms-group"><label><input type="checkbox" id="agreeTerms1"> <span data-i18n="agree_terms">我已阅读并同意</span> <a href="#" class="term-link" data-term="terms" data-i18n="terms_of_use">使用条款</a></label><label><input type="checkbox" id="agreeTerms2"> <span data-i18n="agree_privacy">我已阅读并同意</span> <a href="#" class="term-link" data-term="privacy" data-i18n="privacy_policy">隐私政策</a></label><label><input type="checkbox" id="agreeTerms3"> <span data-i18n="agree_legal">我已阅读并同意</span> <a href="#" class="term-link" data-term="legal" data-i18n="legal_info">法律信息</a></label><p style="font-size:0.7rem; color:#6e6e73; margin-top:8px;" data-i18n="third_party_notice">本平台会接入并访问第三方公开数据，用于气象服务，详见上述协议。</p></div><button id="doRegisterBtn" class="btn-primary" style="width:100%;" disabled data-i18n="register">注册</button><div class="switch-auth"><a href="#" id="switchToLogin" data-i18n="have_account">已有账号？去登录</a></div></div><div id="forgotForm" style="display:none;"><input type="text" id="forgotUsername" placeholder="用户名"><input type="email" id="forgotEmail" placeholder="注册邮箱"><button id="doForgotBtn" class="btn-primary" style="width:100%;" data-i18n="recover">发送找回信息</button><div id="forgotResult" style="margin-top:12px;"></div><div class="switch-auth"><a href="#" id="backToLogin" data-i18n="back_to_login">返回登录</a></div></div></div></div>
+
+<!-- 个人主页模态框（苹果顶级设计） -->
+<div id="profileModal" class="modal"><div class="modal-card profile-card"><span class="close-modal" style="float:right; cursor:pointer;">&times;</span><div class="profile-header"><div class="profile-avatar-large"><img id="avatarImg" style="width:100%; height:100%; object-fit:cover;"></div><div class="profile-name" id="profileName"></div><div class="profile-email" id="profileEmail"></div></div><div class="profile-section"><div class="profile-section-title" data-i18n="cover_photo">封面照片</div><div class="profile-bg-preview" id="profileBgPreview"></div><input type="file" id="bgUpload" accept="image/*,image/svg+xml" style="margin-bottom:12px;"></div><div class="profile-section"><div class="profile-section-title" data-i18n="avatar">头像</div><input type="file" id="avatarUpload" accept="image/*,image/svg+xml" style="margin-bottom:12px;"></div><div class="profile-section"><div class="profile-section-title" data-i18n="bio">个人简介</div><textarea id="profileBio" placeholder="写一点关于自己的介绍..." rows="2" style="width:100%; padding:12px; border-radius:20px; border:1px solid rgba(0,0,0,0.1);"></textarea></div><div class="profile-section"><div class="profile-section-title" data-i18n="linked_accounts">绑定账号</div><div class="bind-buttons"><div class="bind-btn" id="bindWechat"><i class="fab fa-weixin"></i> <span data-i18n="bind_wechat">绑定微信</span></div><div class="bind-btn" id="bindQQ"><i class="fab fa-qq"></i> <span data-i18n="bind_qq">绑定QQ</span></div></div></div><button id="saveProfileBtn" class="btn-primary" style="width:100%;" data-i18n="save_changes">保存修改</button></div></div>
+
+<!-- 关于 ZIY 模态框 -->
+<div id="aboutModal" class="modal"><div class="modal-card" style="max-width: 700px; text-align: left;"><span class="close-modal" style="float:right; cursor:pointer;">&times;</span><h2 id="aboutTitle" style="font-size: 1.8rem; margin-bottom: 16px;">关于 ZIY</h2><div id="aboutContent" class="about-content" style="line-height: 1.6; font-size: 0.9rem;"></div></div></div>
+
+<!-- 发布文章模态框（苹果顶级设计） -->
+<div id="publishModal" class="modal"><div class="modal-card publish-card" style="max-width: 600px;"><span class="close-modal" style="float:right; cursor:pointer;">&times;</span><h3 style="font-size: 1.6rem; margin-bottom: 8px;" data-i18n="new_post">新文章</h3><p style="color: #6e6e73; margin-bottom: 24px;" data-i18n="share_analysis">分享你的气象分析</p><input type="text" id="postTitle" placeholder="标题"><textarea id="postContent" placeholder="正文内容" rows="6"></textarea><div class="media-upload-area"><label><i class="fas fa-image"></i> <span data-i18n="insert_media">插入图片 / 视频</span></label><input type="file" id="mediaUpload" accept="image/*,video/*" multiple><div id="mediaPreview" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;"></div></div><button id="submitPostBtn" class="btn-primary" style="width:100%;" data-i18n="publish">发布</button></div></div>
+
+<div id="adminModal" class="modal"><div class="modal-card"><span class="close-modal">&times;</span><h3 data-i18n="admin_panel">后台管理</h3><div id="adminUserList" style="max-height:200px; overflow-y:auto;"></div><div id="adminPostList" style="max-height:250px; overflow-y:auto;"></div><button id="adminCloseBtn" class="btn-secondary" data-i18n="close">关闭</button></div></div>
+<div id="commentModal" class="modal"><div class="modal-card"><span class="close-modal">&times;</span><h3 data-i18n="comments">评论</h3><div id="commentList" style="max-height:250px; overflow-y:auto;"></div><textarea id="newComment" placeholder="写下你的评论..." rows="2" style="width:100%; padding:12px; border-radius:20px;"></textarea><button id="addCommentBtn" class="btn-primary" data-i18n="post_comment">发表评论</button></div></div>
+<div id="globalModal" class="modal"><div class="modal-card"><span class="close-modal">&times;</span><h3 id="modalTitle"></h3><div id="modalContent"></div><button id="modalConfirmBtn" class="btn-primary" data-i18n="close">关闭</button></div></div>
+<div id="toastMessage" class="toast-message"></div>
+
+<script>
+    // ---------- 加密、绘图函数 ----------
+    async function hashPassword(pwd) {
+        const enc = new TextEncoder();
+        const hash = await crypto.subtle.digest('SHA-256', enc.encode(pwd));
+        return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+    function drawHistoryGrid() {
+        const c = document.getElementById('historyGridCanvas');
+        if(!c) return;
+        const ctx = c.getContext('2d');
+        const w = c.clientWidth || 600, h = 350;
+        c.width = w; c.height = h;
+        ctx.fillStyle = '#fef9e8';
+        ctx.fillRect(0,0,w,h);
+        ctx.strokeStyle = '#b0a88a';
+        ctx.lineWidth = 1;
+        [140,150,160,170].forEach((lon,i)=>{ let x=60+(lon-140)*(w-120)/30; ctx.beginPath(); ctx.moveTo(x,30); ctx.lineTo(x,h-30); ctx.stroke(); });
+        [20,10,0,20].forEach((lat,i)=>{ let y=40+(h-80)*(i/3); ctx.beginPath(); ctx.moveTo(50,y); ctx.lineTo(w-50,y); ctx.stroke(); });
+        ctx.font='10px "SF Mono"'; ctx.fillStyle='#4a3b2c'; ctx.textAlign='center';
+        [140,150,160,170].forEach((lon,i)=>{ let x=60+(lon-140)*(w-120)/30; ctx.fillText(`${lon}°E`, x, h-15); });
+        ctx.fillText('20°N',45,40); ctx.fillText('10°N',45,40+(h-80)*0.33); ctx.fillText('0°',45,40+(h-80)*0.66); ctx.fillText('20°N',45,h-40);
+        ctx.fillText('20°N',w-45,40); ctx.fillText('10°N',w-45,40+(h-80)*0.33); ctx.fillText('0°',w-45,40+(h-80)*0.66); ctx.fillText('20°N',w-45,h-40);
+    }
+    function drawEnsembleChart() {
+        const c = document.getElementById('ensembleChart');
+        if(!c) return;
+        const ctx = c.getContext('2d');
+        const w = c.clientWidth, h = 280;
+        c.width = w; c.height = h;
+        const hours = Array.from({length:73},(_,i)=>i);
+        const ecmwf = hours.map(h=>{ if(h<12) return 80+h*2.5; if(h<36) return 110+(h-12)*1.2; if(h<60) return 135-(h-36)*1.8; return 90-(h-60)*1.2; });
+        const gfs = ecmwf.map((v,i)=>v+Math.sin(i*0.3)*5+(i<20?2:-3));
+        const jtwc = ecmwf.map((v,i)=>v+Math.cos(i*0.2)*4+(i<30?5:-2));
+        const cma = ecmwf.map((v,i)=>v+Math.sin(i*0.5)*3-2);
+        const maxV=160,minV=50;
+        const yScale=v=>h-30-((v-minV)/(maxV-minV))*(h-60);
+        const xStep=(w-60)/(hours.length-1);
+        ctx.clearRect(0,0,w,h);
+        ctx.font='10px "Inter"'; ctx.fillStyle='#6e6e73';
+        ctx.strokeStyle='#e8e8ed'; ctx.lineWidth=0.5;
+        for(let i=0;i<=4;i++){ let y=yScale(minV+i*(maxV-minV)/4); ctx.beginPath(); ctx.moveTo(30,y); ctx.lineTo(w-20,y); ctx.stroke(); ctx.fillText(`${Math.round(minV+i*(maxV-minV)/4)}`,5,y+3); }
+        ctx.beginPath(); ctx.moveTo(30,15); ctx.lineTo(30,h-20); ctx.lineTo(w-20,h-20); ctx.stroke();
+        const draw=(data,col)=>{ ctx.beginPath(); ctx.strokeStyle=col; ctx.lineWidth=2; for(let i=0;i<data.length;i++){ let x=30+i*xStep, y=yScale(data[i]); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); } ctx.stroke(); };
+        draw(ecmwf,'#0071e3'); draw(gfs,'#ff9f0a'); draw(jtwc,'#64d2ff'); draw(cma,'#30b0c0');
+        for(let i=0;i<=6;i++){ let hour=i*12; if(hour<=72){ let x=30+hour*xStep; ctx.fillText(`${hour}h`,x-5,h-8); } }
+    }
+    window.addEventListener('resize',()=>{ drawEnsembleChart(); drawHistoryGrid(); });
+    setTimeout(()=>{ drawEnsembleChart(); drawHistoryGrid(); },100);
+
+    // 动画观察
+    const groups = document.querySelectorAll('.animate-group');
+    const obs = new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('animated'); obs.unobserve(e.target); } }); }, { threshold:0.2 });
+    groups.forEach(g=>obs.observe(g));
+
+    // 用户系统
+    let users = JSON.parse(localStorage.getItem('ziy_users')||'[]');
+    let posts = JSON.parse(localStorage.getItem('ziy_posts')||'[]');
+    let currentUser = null;
+    let currentPostForComment = null;
+    let captchaPassed = false;
+    function saveUsers(){ localStorage.setItem('ziy_users',JSON.stringify(users)); }
+    function savePosts(){ localStorage.setItem('ziy_posts',JSON.stringify(posts)); }
+    function isValidPassword(pwd){ return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/.test(pwd); }
+    function escapeHtml(str){ return str.replace(/[&<>]/g, m=>m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+    function showToast(msg){ const t=document.getElementById('toastMessage'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+    function getUserProfile(un){ const p=localStorage.getItem(`profile_${un}`); return p?JSON.parse(p):{ avatar:'', bg:'', bio:'' }; }
+    function saveUserProfile(un,data){ localStorage.setItem(`profile_${un}`,JSON.stringify(data)); }
+
+    function renderPosts(){
+        const c=document.getElementById('postsContainer');
+        if(!c) return;
+        if(posts.length===0){ c.innerHTML='<div style="text-align:center; padding:40px;">暂无文章 ✨</div>'; return; }
+        c.innerHTML = posts.map(p=>{
+            let media='';
+            if(p.images?.length) media+=`<div class="media-preview">${p.images.slice(0,2).map(img=>`<img src="${img}">`).join('')}${p.images.length>2?`+${p.images.length-2}`:''}</div>`;
+            if(p.videos?.length) media+=`<div class="media-preview">${p.videos.slice(0,2).map(v=>`<video src="${v}" muted></video>`).join('')}${p.videos.length>2?`+${p.videos.length-2}`:''}</div>`;
+            const short = p.content.length>100?p.content.slice(0,100)+'...':p.content;
+            return `<div class="article-card" data-post-id="${p.id}"><div class="article-meta"><span><i class="fas fa-user"></i> ${escapeHtml(p.author)}</span><span>${new Date(p.createdAt).toLocaleDateString()}</span></div><div class="article-title">${escapeHtml(p.title)}</div><div class="article-content">${escapeHtml(short)}</div>${media}<div class="comment-badge" data-post-id="${p.id}"><i class="far fa-comment"></i> ${p.comments?.length||0}</div></div>`;
+        }).join('');
+        document.querySelectorAll('.article-card').forEach(card=>{
+            card.addEventListener('click',(e)=>{ if(e.target.classList.contains('comment-badge'))return; const pid=parseInt(card.dataset.postId); const p=posts.find(p=>p.id===pid); if(p) showPostDetail(p); });
+            const badge=card.querySelector('.comment-badge');
+            if(badge) badge.addEventListener('click',(e)=>{ e.stopPropagation(); openCommentModal(parseInt(card.dataset.postId)); });
+        });
+    }
+    function showPostDetail(post){
+        const modal=document.getElementById('globalModal');
+        document.getElementById('modalTitle').innerText='文章详情';
+        let media='';
+        if(post.images?.length) media+=`<div>${post.images.map(img=>`<img src="${img}" style="max-width:150px; border-radius:16px;">`).join('')}</div>`;
+        if(post.videos?.length) media+=`<div>${post.videos.map(v=>`<video src="${v}" controls style="max-width:100%;"></video>`).join('')}</div>`;
+        document.getElementById('modalContent').innerHTML=`<strong>${escapeHtml(post.title)}</strong><br><span>${new Date(post.createdAt).toLocaleString()} by ${escapeHtml(post.author)}</span><br><br>${escapeHtml(post.content)}${media}`;
+        modal.classList.add('show');
+    }
+    function openCommentModal(pid){
+        const p=posts.find(p=>p.id===pid);
+        if(!p) return;
+        currentPostForComment=p;
+        const div=document.getElementById('commentList');
+        div.innerHTML=(p.comments||[]).map(c=>`<div><b>${escapeHtml(c.author)}</b> <span style="font-size:12px;">${new Date(c.time).toLocaleString()}</span><br>${escapeHtml(c.text)}</div>`).join('')||'暂无评论';
+        document.getElementById('commentModal').classList.add('show');
+    }
+    document.getElementById('addCommentBtn')?.addEventListener('click',()=>{
+        if(!currentUser){ showToast('请先登录'); closeAllModals(); showAuthModal(); return; }
+        const text=document.getElementById('newComment').value.trim();
+        if(!text) return;
+        if(currentPostForComment){
+            if(!currentPostForComment.comments) currentPostForComment.comments=[];
+            currentPostForComment.comments.push({author:currentUser.username, text, time:Date.now()});
+            savePosts(); renderPosts(); document.getElementById('newComment').value=''; openCommentModal(currentPostForComment.id);
+        }
+    });
+    function closeAllModals(){ document.querySelectorAll('.modal').forEach(m=>m.classList.remove('show')); hideAgencyMenu(); }
+    function showAuthModal(){
+        const m=document.getElementById('authModal');
+        m.classList.add('show');
+        const g=document.getElementById('loginGreeting');
+        if(g){ g.style.opacity='1'; g.style.transform='translateY(0)'; setTimeout(()=>{ g.style.opacity='0'; g.style.transform='translateY(-8px)'; },2000); }
+    }
+    function updateUI(){
+        const wrap=document.getElementById('userIconBtn');
+        if(currentUser){
+            const p=getUserProfile(currentUser.username);
+            if(p.avatar) wrap.innerHTML=`<img id="userAvatar" src="${p.avatar}" style="width:32px; height:32px; border-radius:50%; object-fit:cover;">`;
+            else wrap.innerHTML=`<div id="userAvatar" style="background:#0071e3; color:white;">${currentUser.username.charAt(0).toUpperCase()}</div>`;
+            document.getElementById('profileName').innerText=currentUser.username;
+            document.getElementById('profileEmail').innerText=currentUser.email;
+        } else {
+            wrap.innerHTML='<i class="fas fa-user-circle" style="font-size: 1.3rem;"></i>';
+        }
+    }
+    function logout(){
+        if(!currentUser) return;
+        const name=currentUser.username;
+        currentUser=null; localStorage.removeItem('ziy_currentUser'); sessionStorage.removeItem('ziy_currentUser');
+        updateUI(); renderPosts();
+        showToast(`Leaving the storm behind. 风暴就此别过。 ${name}`);
+        closeAllModals(); document.getElementById('userMenu').classList.remove('active');
+    }
+    function deleteAccount(){
+        if(!currentUser) return;
+        const name=currentUser.username;
+        if(confirm(`永久注销账号“${name}”？所有文章将被删除。`)){
+            posts=posts.filter(p=>p.author!==name);
+            users=users.filter(u=>u.username!==name);
+            localStorage.removeItem(`profile_${name}`);
+            saveUsers(); savePosts();
+            currentUser=null; localStorage.removeItem('ziy_currentUser'); sessionStorage.removeItem('ziy_currentUser');
+            updateUI(); renderPosts();
+            showToast(`Leaving the storm behind. 账号“${name}”已注销。`);
+            closeAllModals(); document.getElementById('userMenu').classList.remove('active');
+        }
+    }
+    document.getElementById('captchaSlider')?.addEventListener('click',()=>{ captchaPassed=true; const div=document.getElementById('captchaSlider'); div.classList.add('captcha-verified'); div.querySelector('.captcha-slider span').innerHTML='<i class="fas fa-check-circle"></i> 验证通过'; showToast('验证成功'); });
+    
+    // 注册协议勾选逻辑
+    const chk1=document.getElementById('agreeTerms1'), chk2=document.getElementById('agreeTerms2'), chk3=document.getElementById('agreeTerms3'), regBtn=document.getElementById('doRegisterBtn');
+    function updateRegBtn(){ regBtn.disabled = !(chk1?.checked && chk2?.checked && chk3?.checked); }
+    if(chk1){ chk1.addEventListener('change',updateRegBtn); chk2.addEventListener('change',updateRegBtn); chk3.addEventListener('change',updateRegBtn); }
+    document.querySelectorAll('.term-link').forEach(link=>{
+        link.addEventListener('click',(e)=>{ e.preventDefault(); const term=link.getAttribute('data-term'); let content=''; if(term==='terms') content='使用条款：本平台提供的所有气象数据仅供参考，用户应自行判断风险...'; else if(term==='privacy') content='隐私政策：我们重视您的隐私，不会泄露个人信息...'; else content='法律信息：本平台遵守相关法律法规，数据来源公开...'; alert(content); });
+    });
+    
+    document.getElementById('doRegisterBtn')?.addEventListener('click',async()=>{
+        if(!chk1.checked || !chk2.checked || !chk3.checked){ showToast('请勾选全部协议'); return; }
+        const un=document.getElementById('regUsername').value.trim(), em=document.getElementById('regEmail').value.trim(), pwd=document.getElementById('regPassword').value, cf=document.getElementById('regConfirmPwd').value, err=document.getElementById('regError');
+        if(!un||!em){ err.innerText='请填写用户名和邮箱'; return; }
+        if(users.find(u=>u.username===un)){ err.innerText='用户名已存在'; return; }
+        if(!isValidPassword(pwd)){ err.innerText='密码需8位以上，含大小写数字特殊符号'; return; }
+        if(pwd!==cf){ err.innerText='两次密码不一致'; return; }
+        const hashed=await hashPassword(pwd);
+        users.push({username:un, email:em, password:hashed, createdAt:Date.now()});
+        saveUsers(); alert('注册成功，请登录'); document.getElementById('switchToLogin').click();
+    });
+    document.getElementById('doLoginBtn')?.addEventListener('click',async()=>{
+        if(!captchaPassed){ showToast('请完成验证'); return; }
+        const id=document.getElementById('loginUsername').value.trim(), pwd=document.getElementById('loginPassword').value;
+        const user=users.find(u=>u.username===id||u.email===id);
+        if(!user){ alert('用户不存在'); return; }
+        let valid=false;
+        if(user.password.length===64 && /^[a-f0-9]{64}$/.test(user.password)){
+            valid=(await hashPassword(pwd))===user.password;
+        } else {
+            if(user.password===pwd){ valid=true; user.password=await hashPassword(pwd); saveUsers(); }
+        }
+        if(valid){
+            currentUser=user;
+            const rem=document.getElementById('rememberMeCheckbox').checked;
+            if(rem) localStorage.setItem('ziy_currentUser',JSON.stringify(user));
+            else sessionStorage.setItem('ziy_currentUser',JSON.stringify(user));
+            updateUI(); closeAllModals(); renderPosts();
+            showToast(`Storm at your fingertips. 风暴触手可及。 欢迎回来，${user.username}`);
+        } else { alert('密码错误'); }
+    });
+    // 表单切换
+    const lt=document.querySelector('.login-tabs'), ap=document.getElementById('accountPanel'), qp=document.getElementById('qrcodePanel'), regDiv=document.getElementById('registerForm'), forgDiv=document.getElementById('forgotForm');
+    document.getElementById('switchToRegister')?.addEventListener('click',(e)=>{ e.preventDefault(); lt.style.display='none'; ap.style.display='none'; qp.style.display='none'; regDiv.style.display='block'; forgDiv.style.display='none'; });
+    document.getElementById('switchToLogin')?.addEventListener('click',(e)=>{ e.preventDefault(); lt.style.display='flex'; ap.style.display='block'; qp.style.display='none'; regDiv.style.display='none'; forgDiv.style.display='none'; ap.classList.add('active'); qp.classList.remove('active'); });
+    document.getElementById('forgotPasswordLink')?.addEventListener('click',(e)=>{ e.preventDefault(); lt.style.display='none'; ap.style.display='none'; qp.style.display='none'; regDiv.style.display='none'; forgDiv.style.display='block'; });
+    document.getElementById('backToLogin')?.addEventListener('click',(e)=>{ e.preventDefault(); lt.style.display='flex'; ap.style.display='block'; qp.style.display='none'; regDiv.style.display='none'; forgDiv.style.display='none'; ap.classList.add('active'); });
+    document.getElementById('backToAccount')?.addEventListener('click',(e)=>{ e.preventDefault(); document.querySelector('.login-tab[data-tab="account"]').click(); });
+    document.getElementById('doForgotBtn')?.addEventListener('click',()=>{
+        const un=document.getElementById('forgotUsername').value.trim(), em=document.getElementById('forgotEmail').value.trim();
+        const user=users.find(u=>u.username===un&&u.email===em);
+        const res=document.getElementById('forgotResult');
+        if(user){ res.innerHTML=`<span style="color:green;">✅ 用户名 ${user.username}，密码已加密（演示模式）</span>`; showToast('找回成功'); }
+        else res.innerHTML=`<span style="color:#e34c4c;">❌ 未找到</span>`;
+    });
+    // 发布文章
+    let selectedMedias=[];
+    document.getElementById('mediaUpload')?.addEventListener('change',function(e){
+        selectedMedias=[]; const prev=document.getElementById('mediaPreview'); prev.innerHTML='';
+        Array.from(e.target.files).forEach(f=>{
+            if(f.type.startsWith('image/')||f.type.startsWith('video/')){
+                const r=new FileReader();
+                r.onload=ev=>{
+                    const url=ev.target.result, type=f.type.startsWith('image/')?'image':'video';
+                    selectedMedias.push({type,data:url});
+                    const div=document.createElement('div'); div.style.position='relative'; div.style.display='inline-block'; div.style.margin='4px';
+                    const media=type==='image'?document.createElement('img'):document.createElement('video');
+                    media.src=url; media.style.width='70px'; media.style.borderRadius='12px'; if(type==='video') media.muted=true;
+                    div.appendChild(media);
+                    const rm=document.createElement('span'); rm.innerText='✕'; rm.style.position='absolute'; rm.style.top='-6px'; rm.style.right='-6px'; rm.style.background='rgba(0,0,0,0.6)'; rm.style.color='white'; rm.style.borderRadius='50%'; rm.style.width='18px'; rm.style.height='18px'; rm.style.fontSize='12px'; rm.style.cursor='pointer'; rm.onclick=()=>{ const idx=selectedMedias.findIndex(m=>m.data===url); if(idx!==-1) selectedMedias.splice(idx,1); div.remove(); };
+                    div.appendChild(rm); prev.appendChild(div);
+                };
+                r.readAsDataURL(f);
+            }
+        });
+    });
+    document.getElementById('submitPostBtn')?.addEventListener('click',()=>{
+        if(!currentUser){ showToast('请先登录'); closeAllModals(); showAuthModal(); return; }
+        const title=document.getElementById('postTitle').value.trim(), content=document.getElementById('postContent').value.trim();
+        if(!title||!content){ alert('请填写标题和正文'); return; }
+        const images=selectedMedias.filter(m=>m.type==='image').map(m=>m.data), videos=selectedMedias.filter(m=>m.type==='video').map(m=>m.data);
+        posts.unshift({id:Date.now(), title, content, author:currentUser.username, createdAt:Date.now(), images, videos, comments:[]});
+        savePosts(); renderPosts(); closeAllModals();
+        document.getElementById('postTitle').value=''; document.getElementById('postContent').value=''; selectedMedias=[]; document.getElementById('mediaPreview').innerHTML='';
+        alert('发布成功！');
+    });
+    // 个人主页
+    function showProfileModal(){
+        if(!currentUser){ showToast('请先登录'); showAuthModal(); return; }
+        const p=getUserProfile(currentUser.username);
+        document.getElementById('avatarImg').src=p.avatar||'';
+        document.getElementById('profileBgPreview').style.backgroundImage=p.bg?`url(${p.bg})`:'';
+        document.getElementById('profileBio').value=p.bio||'';
+        document.getElementById('profileModal').classList.add('show');
+    }
+    document.getElementById('avatarUpload')?.addEventListener('change',(e)=>{ const f=e.target.files[0]; if(f){ const r=new FileReader(); r.onload=ev=>{ document.getElementById('avatarImg').src=ev.target.result; }; r.readAsDataURL(f); } });
+    document.getElementById('bgUpload')?.addEventListener('change',(e)=>{ const f=e.target.files[0]; if(f){ const r=new FileReader(); r.onload=ev=>{ document.getElementById('profileBgPreview').style.backgroundImage=`url(${ev.target.result})`; }; r.readAsDataURL(f); } });
+    document.getElementById('saveProfileBtn')?.addEventListener('click',()=>{
+        if(!currentUser) return;
+        const avatar=document.getElementById('avatarImg').src;
+        const bg=document.getElementById('profileBgPreview').style.backgroundImage.slice(4,-1).replace(/"/g,'');
+        const bio=document.getElementById('profileBio').value;
+        saveUserProfile(currentUser.username,{avatar,bg,bio});
+        updateUI();
+        showToast('个人主页已更新');
+        document.getElementById('profileModal').classList.remove('show');
+    });
+    // 绑定微信/QQ演示
+    document.getElementById('bindWechat')?.addEventListener('click',()=>showToast('演示模式：微信绑定功能即将开放'));
+    document.getElementById('bindQQ')?.addEventListener('click',()=>showToast('演示模式：QQ绑定功能即将开放'));
+    // 后台管理
+    function showAdminPanel(){
+        if(!currentUser){ showToast('请先登录'); showAuthModal(); return; }
+        const ul=document.getElementById('adminUserList');
+        const pl=document.getElementById('adminPostList');
+        ul.innerHTML=users.map(u=>`<div>${escapeHtml(u.username)} (${escapeHtml(u.email)})</div>`).join('');
+        pl.innerHTML=posts.map(p=>`<div><strong>${escapeHtml(p.title)}</strong> by ${escapeHtml(p.author)} <button class="btn-secondary" style="padding:2px 10px;" data-post-id="${p.id}">删除</button></div>`).join('');
+        document.querySelectorAll('#adminPostList button').forEach(btn=>{
+            btn.addEventListener('click',()=>{
+                const pid=parseInt(btn.getAttribute('data-post-id'));
+                posts=posts.filter(p=>p.id!==pid);
+                savePosts(); renderPosts(); showAdminPanel();
+                showToast('已删除');
+            });
+        });
+        document.getElementById('adminModal').classList.add('show');
+    }
+    // 机构选择菜单
+    const actionSheet=document.getElementById('actionSheet'), actionOverlay=document.getElementById('actionOverlay');
+    function showAgencyMenu(){ actionSheet.classList.add('show'); actionOverlay.classList.add('show'); }
+    function hideAgencyMenu(){ actionSheet.classList.remove('show'); actionOverlay.classList.remove('show'); }
+    document.querySelectorAll('.js-open-agency').forEach(btn=>{ btn.addEventListener('click',(e)=>{ e.preventDefault(); showAgencyMenu(); }); });
+    document.querySelectorAll('.action-sheet .option').forEach(opt=>{ if(opt.id!=='cancelActionSheet') opt.addEventListener('click',()=>{ const url=opt.getAttribute('data-url'); if(url) window.open(url,'_blank'); hideAgencyMenu(); }); });
+    document.getElementById('cancelActionSheet')?.addEventListener('click',hideAgencyMenu);
+    actionOverlay?.addEventListener('click',hideAgencyMenu);
+    document.querySelectorAll('.js-view-now').forEach(btn=>{
+        btn.addEventListener('click',(e)=>{
+            e.preventDefault();
+            const module=btn.getAttribute('data-module');
+            const titles = { typhoon:'全球台风监测', satellite:'卫星云图中心', model:'专业数值预报', env:'环境场分析', history:'历史强台风档案' };
+            const details = { typhoon:'实时台风路径、强度预测、风场分析。数据源自 JMA/JTWC/CMA，更新频率6小时。', satellite:'多通道卫星云图，可见光、红外、水汽，覆盖全球。支持动画与图层叠加。', model:'ECMWF/GFS 集合预报，极端天气指数，概率预报图。', env:'垂直风切变、海温距平、湿度场，辅助台风强度研判。', history:'1945年至今西北太平洋台风最佳路径数据集，包含卫星影像与雷达资料。' };
+            const modal=document.getElementById('globalModal');
+            document.getElementById('modalTitle').innerText=titles[module];
+            document.getElementById('modalContent').innerHTML=details[module];
+            modal.classList.add('show');
+        });
+    });
+    // 搜索功能
+    const searchModal=document.getElementById('searchModal');
+    document.getElementById('searchIcon')?.addEventListener('click',()=>{ searchModal.classList.add('show'); document.getElementById('searchInput').value=''; document.getElementById('searchResults').innerHTML='输入关键词开始搜索'; });
+    document.getElementById('searchInput')?.addEventListener('input',function(e){
+        const kw=e.target.value.trim().toLowerCase();
+        if(kw.length===0){ document.getElementById('searchResults').innerHTML='输入关键词开始搜索'; return; }
+        const results=posts.filter(p=>p.title.toLowerCase().includes(kw)||p.content.toLowerCase().includes(kw));
+        if(results.length===0){ document.getElementById('searchResults').innerHTML='没有找到相关文章'; return; }
+        let html='';
+        results.forEach(p=>{ html+=`<div class="search-result-item" data-post-id="${p.id}"><strong>${escapeHtml(p.title)}</strong><br><span style="font-size:0.7rem;">${escapeHtml(p.author)} · ${new Date(p.createdAt).toLocaleDateString()}</span></div>`; });
+        document.getElementById('searchResults').innerHTML=html;
+        document.querySelectorAll('.search-result-item').forEach(item=>{
+            item.addEventListener('click',()=>{ const pid=parseInt(item.getAttribute('data-post-id')); const post=posts.find(p=>p.id===pid); if(post) showPostDetail(post); searchModal.classList.remove('show'); });
+        });
+    });
+    // 关于 ZIY 页面（中英文双语，根据当前语言显示）
+    const aboutModal=document.getElementById('aboutModal');
+    document.getElementById('aboutLink')?.addEventListener('click',(e)=>{ e.preventDefault(); showAbout(); });
+    document.getElementById('mobileAboutBtn')?.addEventListener('click',(e)=>{ e.preventDefault(); showAbout(); });
+    function showAbout(){
+        const isZh = document.getElementById('langZh').classList.contains('active');
+        const title = isZh ? '关于 ZIY' : 'About ZIY';
+        const content = isZh ? 
+            `<p style="margin-bottom:16px;">ZIY Inc 始于对天空的敬畏，更终于对生命的珍视。</p>
+            <p style="margin-bottom:16px;">我们深知，气象从来不仅仅是气压与风速的博弈，更是关乎每一个人安然生活的底线。在这个瞬息万变的自然法则下，我们始终坚持，技术应服务于人的从容。</p>
+            <p style="margin-bottom:16px;">作为一家专注于气象领域的专业机构，ZIY Inc 以极致的严谨，构建全球气象监测网络；更以细腻的人文视角，重构气象服务的温度。我们相信，精准的数据预警本应成为守护安全的第一道防线，而清晰的气象解读，更应消除未知的恐慌。无论你是身处旷野的探索者，还是奔波于都市的赶路人，我们都希望那份来自天空的讯息，能足够精准、足够清晰，让你在风雨来临前，从容收好晾晒的衣物；在暴雨倾盆前，提前抵达温暖的屋檐。</p>
+            <p style="margin-bottom:16px;">我们整合全球权威数据源，推演万千气象路径，只为让每一次预警都分秒不差，让每一份预报都成为生活的定心丸。简约，是为了不打扰生活的节奏；精准，是为了不辜负生命的信任。</p>
+            <p>ZIY Inc 坚信，观天知命，更要以天护命。我们愿用最冷静的专业数据，为你撑起一把最温暖的保护伞，让每一次天气的更迭，都成为生活从容的注脚。守护自然，更守护你。</p>`
+            :
+            `<p style="margin-bottom:16px;">ZIY Inc begins with awe for the sky, and ends with the value of human life.</p>
+            <p style="margin-bottom:16px;">We understand that meteorology is never just a game of pressure and wind speed. It is the bottom line that governs the safety and well-being of every individual. In this ever-changing natural world, we have always maintained that technology should serve human calmness and composure.</p>
+            <p style="margin-bottom:16px;">As a professional institution dedicated to meteorology, ZIY Inc builds a global weather monitoring network with utmost rigor. Yet, through a humanistic lens, we also reconstruct the temperature of meteorological services. We believe that precise data-driven early warnings should serve as the first line of defense for safety, and clear weather interpretations should dispel the fear of the unknown. Whether you are an explorer in the wilderness or a commuter rushing through the city, we hope that message from the sky is accurate and clear enough, allowing you to put away the laundry calmly before the rain comes, and to arrive at a warm shelter in advance before the downpour.</p>
+            <p style="margin-bottom:16px;">We integrate authoritative global sources and forecast countless weather paths, ensuring every warning is on the dot and every forecast becomes a reassurance for life. Simplicity is designed to not disturb the rhythm of life; precision is to honor the trust in life.</p>
+            <p>ZIY Inc firmly believes that observing the sky allows us to understand fate, and more importantly, to protect life with the sky. We are willing to use the coolest professional data to hold up the warmest umbrella for you, making every change of weather a footnote to your composure. Guard nature, and guard you.</p>`;
+        document.getElementById('aboutTitle').innerText = title;
+        document.getElementById('aboutContent').innerHTML = content;
+        aboutModal.classList.add('show');
+    }
+    // 中英文切换（完整覆盖所有文字，修复中文点不了的问题）
+    const langZhElem = document.getElementById('langZh');
+    const langEnElem = document.getElementById('langEn');
+    function setLanguage(lang){
+        if(lang === 'zh'){
+            langZhElem.classList.add('active');
+            langEnElem.classList.remove('active');
+        } else {
+            langZhElem.classList.remove('active');
+            langEnElem.classList.add('active');
+        }
+        // 获取所有带 data-i18n 属性的元素
+        const i18nMap = {
+            // 通用
+            profile: lang === 'zh' ? '个人主页' : 'Profile',
+            admin: lang === 'zh' ? '后台管理' : 'Admin',
+            logout: lang === 'zh' ? '退出登录' : 'Logout',
+            delete: lang === 'zh' ? '注销账号' : 'Delete Account',
+            typhoon: lang === 'zh' ? '台风监测' : 'Typhoon',
+            satellite: lang === 'zh' ? '卫星云图' : 'Satellite',
+            model: lang === 'zh' ? '数值预报' : 'Forecast',
+            env: lang === 'zh' ? '环境场' : 'Environment',
+            history: lang === 'zh' ? '历史档案' : 'History',
+            community: lang === 'zh' ? '社区' : 'Community',
+            publish: lang === 'zh' ? '发布文章' : 'Publish',
+            about: lang === 'zh' ? '关于' : 'About',
+            about_ziy: lang === 'zh' ? '关于 ZIY' : 'About ZIY',
+            learn_more: lang === 'zh' ? '进一步了解' : 'Learn More',
+            view_now: lang === 'zh' ? '立即查看' : 'View Now',
+            browse_all: lang === 'zh' ? '浏览全部 →' : 'Browse all →',
+            search: lang === 'zh' ? '搜索' : 'Search',
+            welcome_back: lang === 'zh' ? '欢迎回来' : 'Welcome Back',
+            login_prompt: lang === 'zh' ? '登录 ZIY 气象社区' : 'Login to ZIY Weather Community',
+            account_login: lang === 'zh' ? '账号登录' : 'Account Login',
+            qr_login: lang === 'zh' ? '扫码登录' : 'QR Code',
+            slide_verify: lang === 'zh' ? '按住滑块验证' : 'Slide to verify',
+            remember_me: lang === 'zh' ? '记住我' : 'Remember me',
+            login: lang === 'zh' ? '登录' : 'Login',
+            register: lang === 'zh' ? '注册' : 'Register',
+            forgot_password: lang === 'zh' ? '找回账号' : 'Forgot password',
+            qr_desc: lang === 'zh' ? '使用 QQ / 微信扫码' : 'Scan with QQ/WeChat',
+            demo_mode: lang === 'zh' ? '演示模式，请使用账号密码登录' : 'Demo mode, please use account login',
+            back_to_account: lang === 'zh' ? '返回账号登录' : 'Back to account login',
+            agree_terms: lang === 'zh' ? '我已阅读并同意' : 'I agree to the',
+            terms_of_use: lang === 'zh' ? '使用条款' : 'Terms of Use',
+            agree_privacy: lang === 'zh' ? '我已阅读并同意' : 'I agree to the',
+            privacy_policy: lang === 'zh' ? '隐私政策' : 'Privacy Policy',
+            agree_legal: lang === 'zh' ? '我已阅读并同意' : 'I agree to the',
+            legal_info: lang === 'zh' ? '法律信息' : 'Legal Information',
+            third_party_notice: lang === 'zh' ? '本平台会接入并访问第三方公开数据，用于气象服务，详见上述协议。' : 'This platform accesses third-party public data for weather services, as detailed in the above agreements.',
+            have_account: lang === 'zh' ? '已有账号？去登录' : 'Already have an account? Login',
+            recover: lang === 'zh' ? '发送找回信息' : 'Recover',
+            back_to_login: lang === 'zh' ? '返回登录' : 'Back to login',
+            cover_photo: lang === 'zh' ? '封面照片' : 'Cover Photo',
+            avatar: lang === 'zh' ? '头像' : 'Avatar',
+            bio: lang === 'zh' ? '个人简介' : 'Bio',
+            linked_accounts: lang === 'zh' ? '绑定账号' : 'Linked Accounts',
+            bind_wechat: lang === 'zh' ? '绑定微信' : 'Bind WeChat',
+            bind_qq: lang === 'zh' ? '绑定QQ' : 'Bind QQ',
+            save_changes: lang === 'zh' ? '保存修改' : 'Save Changes',
+            new_post: lang === 'zh' ? '新文章' : 'New Post',
+            share_analysis: lang === 'zh' ? '分享你的气象分析' : 'Share your weather analysis',
+            insert_media: lang === 'zh' ? '插入图片 / 视频' : 'Insert images / videos',
+            admin_panel: lang === 'zh' ? '后台管理' : 'Admin Panel',
+            close: lang === 'zh' ? '关闭' : 'Close',
+            comments: lang === 'zh' ? '评论' : 'Comments',
+            post_comment: lang === 'zh' ? '发表评论' : 'Post Comment',
+            data: lang === 'zh' ? '数据' : 'Data',
+            cancel: lang === 'zh' ? '取消' : 'Cancel',
+            select_agency: lang === 'zh' ? '选择数据源机构' : 'Select Data Source',
+            copyright: lang === 'zh' ? 'Copyright © ZIY Inc.' : 'Copyright © ZIY Inc.',
+            // 模块标题
+            typhoon_title: lang === 'zh' ? '全球台风监测' : 'Global Typhoon Monitor',
+            typhoon_sub: lang === 'zh' ? '实时追踪每个气旋的轨迹、强度与风场' : 'Real-time tracking of every tropical cyclone',
+            satellite_title: lang === 'zh' ? '卫星云图中心' : 'Satellite Imagery Center',
+            satellite_sub: lang === 'zh' ? '多通道云图，实时覆盖全球' : 'Multi-channel global cloud imagery',
+            model_title: lang === 'zh' ? '专业数值预报' : 'Numerical Weather Prediction',
+            model_sub: lang === 'zh' ? '全球模式、集合预报、极端天气预警' : 'Global models, ensemble forecasts, extreme weather alerts',
+            env_title: lang === 'zh' ? '环境场分析' : 'Environmental Field Analysis',
+            env_sub: lang === 'zh' ? '风切变、海温、湿度，读懂台风关键' : 'Wind shear, sea temperature, humidity',
+            history_title: lang === 'zh' ? '历史强台风档案' : 'Historic Typhoon Archive',
+            history_sub: lang === 'zh' ? '还原每一场风暴的生命周期' : 'Complete life cycle of every storm',
+            community_title: lang === 'zh' ? '气象社区' : 'Meteo Community',
+            community_sub: lang === 'zh' ? '登录后发布文章，支持图片/视频' : 'Login to publish articles, support images/videos'
+        };
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if(i18nMap[key]) el.innerText = i18nMap[key];
+        });
+    }
+    langZhElem.addEventListener('click', () => setLanguage('zh'));
+    langEnElem.addEventListener('click', () => setLanguage('en'));
+    setLanguage('zh'); // 默认中文
+    
+    // 其他事件绑定
+    document.getElementById('moreCommunityBtn')?.addEventListener('click',()=>showToast('更多动态加载中'));
+    document.querySelectorAll('.close-modal').forEach(btn=>btn.addEventListener('click',closeAllModals));
+    window.onclick=(e)=>{ if(e.target.classList.contains('modal')) closeAllModals(); };
+    const userBtn=document.getElementById('userIconBtn'), userMenuDiv=document.getElementById('userMenu');
+    userBtn?.addEventListener('click',(e)=>{ e.stopPropagation(); if(currentUser) userMenuDiv.classList.toggle('active'); else showAuthModal(); });
+    document.addEventListener('click',(e)=>{ if(!userMenuDiv.contains(e.target) && e.target!==userBtn && !userBtn.contains(e.target)) userMenuDiv.classList.remove('active'); });
+    document.getElementById('logoutBtn')?.addEventListener('click',(e)=>{ e.preventDefault(); logout(); });
+    document.getElementById('deleteAccountBtn')?.addEventListener('click',(e)=>{ e.preventDefault(); deleteAccount(); });
+    document.getElementById('profileBtn')?.addEventListener('click',(e)=>{ e.preventDefault(); showProfileModal(); });
+    document.getElementById('footerProfile')?.addEventListener('click',()=>showProfileModal());
+    document.getElementById('mobileProfileLink')?.addEventListener('click',(e)=>{ e.preventDefault(); showProfileModal(); });
+    document.getElementById('adminBtn')?.addEventListener('click',(e)=>{ e.preventDefault(); showAdminPanel(); });
+    document.getElementById('mobileAdminBtn')?.addEventListener('click',(e)=>{ e.preventDefault(); showAdminPanel(); });
+    document.getElementById('adminCloseBtn')?.addEventListener('click',()=>document.getElementById('adminModal').classList.remove('show'));
+    document.getElementById('createPostBtn')?.addEventListener('click',(e)=>{ e.preventDefault(); if(!currentUser){ showToast('请先登录'); showAuthModal(); } else document.getElementById('publishModal').classList.add('show'); });
+    document.getElementById('mobilePublishBtn')?.addEventListener('click',(e)=>{ e.preventDefault(); if(!currentUser){ showToast('请先登录'); showAuthModal(); } else document.getElementById('publishModal').classList.add('show'); });
+    document.getElementById('footerPublish')?.addEventListener('click',()=>{ if(!currentUser){ showToast('请先登录'); showAuthModal(); } else document.getElementById('publishModal').classList.add('show'); });
+    const menuBtn=document.getElementById('menuBtn'), mobileMenuDiv=document.getElementById('mobileMenu'), menuOverlayDiv=document.getElementById('menuOverlay');
+    function openMobileMenu(){ mobileMenuDiv.classList.add('active'); menuOverlayDiv.classList.add('active'); }
+    function closeMobileMenu(){ mobileMenuDiv.classList.remove('active'); menuOverlayDiv.classList.remove('active'); }
+    menuBtn.addEventListener('click',openMobileMenu);
+    document.getElementById('closeMenuBtn')?.addEventListener('click',closeMobileMenu);
+    menuOverlayDiv?.addEventListener('click',closeMobileMenu);
+    document.querySelectorAll('.mobile-menu a[data-target]').forEach(link=>{
+        link.addEventListener('click',(e)=>{
+            e.preventDefault();
+            const targetId=link.getAttribute('data-target');
+            const targetEl=document.getElementById(`module-${targetId}`);
+            if(targetEl){ targetEl.scrollIntoView({ behavior:'smooth', block:'start' }); }
+            else if(targetId==='community'){ document.getElementById('module-community').scrollIntoView({ behavior:'smooth', block:'start' }); }
+            closeMobileMenu();
+        });
+    });
+    const savedLocal=localStorage.getItem('ziy_currentUser');
+    const savedSession=sessionStorage.getItem('ziy_currentUser');
+    if(savedLocal) currentUser=JSON.parse(savedLocal);
+    else if(savedSession) currentUser=JSON.parse(savedSession);
+    if(currentUser) updateUI();
+    renderPosts();
+    const tabs=document.querySelectorAll('.login-tab');
+    const panels=document.querySelectorAll('.login-panel');
+    tabs.forEach(t=>{
+        t.addEventListener('click',()=>{
+            const target=t.getAttribute('data-tab');
+            tabs.forEach(tab=>tab.classList.remove('active'));
+            t.classList.add('active');
+            panels.forEach(p=>p.classList.remove('active'));
+            if(target==='account') document.getElementById('accountPanel').classList.add('active');
+            else document.getElementById('qrcodePanel').classList.add('active');
+        });
+    });
+</script>
+</body>
+</html>
