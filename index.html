@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
+<head>
     <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-        <title>ZIY Studio — 影视创作 · 特效 · 制片</title>
-        <!-- 安全增强 meta 标签（苹果级安全） -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https:; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
-          <meta http-equiv="X-Frame-Options" content="DENY">
-            <meta name="referrer" content="strict-origin-when-cross-origin">
-              <meta http-equiv="X-Content-Type-Options" content="nosniff">
-                <meta name="format-detection" content="telephone=no,email=no,address=no">
-                  <link rel="preconnect" href="https://fonts.googleapis.com">
-                    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-                      <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
-                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-                          <style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>ZIY Studio — 影视创作 · 特效 · 制片</title>
+
+    <!-- 安全增强 meta 标签（苹果级安全） -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https:; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="format-detection" content="telephone=no,email=no,address=no">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
         /* 完全保留所有样式，仅新增主题切换按钮样式，去掉图片相关背景 */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Inter', sans-serif;
             background: #f5f5f7; color: #1d1d1f; line-height: 1.42857;
             scroll-behavior: smooth; -webkit-tap-highlight-color: transparent;
-            transition: background 0.3s, color 0.3s;
+            transition: background 0.3s cubic-bezier(0.3, 0, 0.2, 1), color 0.3s cubic-bezier(0.3, 0, 0.2, 1);
         }
         /* 移除所有图片背景 */
         .map-placeholder { background: none !important; background-color: #2a1f33; }
@@ -30,22 +32,116 @@
         .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
         .navbar {
             position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-            background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(40px) saturate(200%);
-            border-bottom: 0.5px solid rgba(255, 255, 255, 0.3); overflow: hidden;
-            transition: background 0.3s;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(30px) saturate(180%) brightness(1.1);
+            -webkit-backdrop-filter: blur(30px) saturate(180%) brightness(1.1);
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            transition: background 0.3s cubic-bezier(0.3, 0, 0.2, 1);
+            box-shadow: 
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 0.5px solid rgba(255, 255, 255, 0.15);
+            border-top: none;
         }
         .navbar::before {
-            content: ''; position: absolute; top: -50%; left: -20%; width: 140%; height: 200%;
-            background: radial-gradient(ellipse at center, rgba(255,255,255,0.3) 0%, rgba(200,220,255,0.12) 25%, rgba(200,200,255,0.12) 50%, rgba(200,255,200,0.08) 75%, transparent 100%);
-            filter: blur(20px); mix-blend-mode: overlay; pointer-events: none;
-            animation: prismShift 12s infinite alternate ease-in-out;
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 140%;
+            height: 200%;
+            background: 
+                radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(200,220,255,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.05) 0%, transparent 70%);
+            filter: blur(40px);
+            mix-blend-mode: overlay;
+            pointer-events: none;
+            animation: liquidShimmer 8s ease-in-out infinite alternate;
         }
-        @keyframes prismShift { 0% { transform: translateX(-10%) rotate(0deg); opacity: 0.5; } 100% { transform: translateX(10%) rotate(2deg); opacity: 0.9; } }
+        @keyframes liquidShimmer {
+            0% { transform: translateX(-5%) translateY(-5%) rotate(-2deg) scale(1); opacity: 0.6; }
+            50% { transform: translateX(5%) translateY(3%) rotate(1deg) scale(1.05); opacity: 0.9; }
+            100% { transform: translateX(-3%) translateY(-2%) rotate(-1deg) scale(0.98); opacity: 0.7; }
+        }
         .navbar::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px;
-            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 20%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.7) 80%, rgba(255,255,255,0) 100%);
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0) 0%, 
+                rgba(255,255,255,0.5) 20%, 
+                rgba(255,255,255,0.8) 50%, 
+                rgba(255,255,255,0.5) 80%, 
+                rgba(255,255,255,0) 100%);
             pointer-events: none;
         }
+        .navbar .nav-inner {
+            position: relative;
+            z-index: 2;
+        }
+        .navbar .nav-inner::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 10%;
+            width: 80%;
+            height: 60px;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.12) 0%, transparent 70%);
+            filter: blur(20px);
+            pointer-events: none;
+            animation: glowFloat 6s ease-in-out infinite alternate;
+        }
+        @keyframes glowFloat {
+            0% { transform: translateY(0) scale(1); opacity: 0.5; }
+            100% { transform: translateY(-5px) scale(1.1); opacity: 0.8; }
+        }
+
+        body:not(.light-mode) .navbar {
+            background: rgba(20, 20, 22, 0.35);
+            backdrop-filter: blur(30px) saturate(180%) brightness(0.9);
+            -webkit-backdrop-filter: blur(30px) saturate(180%) brightness(0.9);
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 8px 32px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+        body:not(.light-mode) .navbar::before {
+            background: 
+                radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(100,150,255,0.08) 0%, transparent 50%);
+        }
+        body:not(.light-mode) .navbar::after {
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0) 0%, 
+                rgba(255,255,255,0.2) 20%, 
+                rgba(255,255,255,0.4) 50%, 
+                rgba(255,255,255,0.2) 80%, 
+                rgba(255,255,255,0) 100%);
+        }
+
+        body.light-mode .navbar {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(30px) saturate(180%) brightness(1.1);
+            -webkit-backdrop-filter: blur(30px) saturate(180%) brightness(1.1);
+            border-bottom-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                0 8px 32px rgba(0, 0, 0, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        body.light-mode .navbar::before {
+            background: 
+                radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(200,220,255,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.05) 0%, transparent 70%);
+        }
+
         .nav-inner {
             max-width: 1280px; margin: 0 auto; padding: 12px 24px;
             display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2;
@@ -58,7 +154,7 @@
         .nav-icons { display: flex; gap: 24px; align-items: center; position: relative; }
         .nav-icons i {
             font-size: 1.3rem; cursor: pointer; color: #1d1d1f;
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease, opacity 0.2s ease;
+            transition: transform 0.3s cubic-bezier(0.3, 0, 0.2, 1), color 0.3s cubic-bezier(0.3, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.3, 0, 0.2, 1);
             will-change: transform;
             display: inline-block !important;
             visibility: visible !important;
@@ -78,14 +174,14 @@
         .menu-icon {
             display: flex; flex-direction: column; justify-content: space-between;
             width: 24px; height: 18px; cursor: pointer; position: relative; z-index: 10;
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.3s cubic-bezier(0.3, 0, 0.2, 1);
             will-change: transform;
         }
         .menu-icon:hover { transform: scale(1.04); }
         .menu-icon:active { transform: scale(0.92); transition: transform 0.1s cubic-bezier(0.2, 0.9, 0.4, 1); }
         .menu-icon span {
             display: block; width: 100%; height: 2px; background-color: #1d1d1f; border-radius: 2px;
-            transition: transform 0.3s cubic-bezier(0.28, 0, 0.36, 1), opacity 0.2s cubic-bezier(0.28, 0, 0.36, 1), background-color 0.2s;
+            transition: transform 0.3s cubic-bezier(0.3, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.3, 0, 0.2, 1), background-color 0.2s;
             transform-origin: center;
         }
         .menu-icon:hover span { background-color: #333; }
@@ -97,7 +193,7 @@
         .search-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.3); backdrop-filter: blur(8px); z-index: 998;
-            opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s;
+            opacity: 0; visibility: hidden; transition: opacity 0.35s cubic-bezier(0.3, 0, 0.2, 1), visibility 0.35s;
         }
         .search-overlay.active { opacity: 1; visibility: visible; }
         .search-dropdown {
@@ -105,18 +201,19 @@
             background: rgba(245, 245, 247, 0.95); backdrop-filter: blur(40px);
             z-index: 999; padding: 80px 28px 40px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.1); border-bottom: 1px solid rgba(255,255,255,0.3);
-            transform: translateY(-100%); opacity: 0;
-            transition: transform 0.4s cubic-bezier(0.28, 0, 0.36, 1), opacity 0.3s ease;
+            transform: translateY(-100%) scale(0.96);
+            opacity: 0;
+            transition: transform 0.35s cubic-bezier(0.3, 0, 0.2, 1), opacity 0.35s cubic-bezier(0.3, 0, 0.2, 1);
             pointer-events: none;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
         }
-        .search-dropdown.active { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .search-dropdown.active { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
         .search-dropdown .close-search-full {
             position: absolute; top: 24px; right: 24px; font-size: 2rem;
             color: #1d1d1f; cursor: pointer; z-index: 1000;
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.3s cubic-bezier(0.3, 0, 0.2, 1);
         }
         .search-dropdown .close-search-full:hover { transform: scale(1.1) rotate(90deg); }
         .search-dropdown .close-search-full:active { transform: scale(0.9); }
@@ -154,11 +251,11 @@
         }
         .search-result-item {
             padding: 16px 0; cursor: pointer;
-            transition: background 0.15s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+            transition: background 0.15s, transform 0.3s cubic-bezier(0.3, 0, 0.2, 1);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
         .search-result-item:hover { background: rgba(0,0,0,0.02); transform: translateX(4px); }
-        .search-result-item:active { transform: scale(0.98); background: rgba(0,0,0,0.04); }
+        .search-result-item:active { transform: scale(0.98); background: rgba(0,0,0,0.04); transition: transform 0.1s; }
         .result-title {
             font-weight: 600; margin-bottom: 4px; color: #1d1d1f;
             font-size: 1.2rem; font-family: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
@@ -168,90 +265,130 @@
         .hot-tag {
             display: inline-block; padding: 8px 18px; background: rgba(0,0,0,0.05);
             border-radius: 30px; font-size: 0.95rem; margin: 4px 8px 4px 0;
-            cursor: pointer; transition: background 0.2s, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer; transition: background 0.2s, transform 0.3s cubic-bezier(0.3, 0, 0.2, 1);
             color: #1d1d1f; font-weight: 500;
         }
         .hot-tag:hover { background: rgba(0,0,0,0.1); transform: scale(1.05); }
-        .hot-tag:active { transform: scale(0.95); background: rgba(0,0,0,0.15); }
+        .hot-tag:active { transform: scale(0.95); background: rgba(0,0,0,0.15); transition: transform 0.1s; }
         .user-menu {
             position: absolute; top: 48px; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(40px);
             border-radius: 28px; box-shadow: 0 12px 30px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.3);
             padding: 12px 0; min-width: 180px; z-index: 150; opacity: 0; visibility: hidden;
-            transform: scale(0.96) translateY(-8px); transition: opacity 0.3s cubic-bezier(0.28, 0, 0.36, 1), transform 0.3s cubic-bezier(0.28, 0, 0.36, 1), visibility 0.3s;
+            transform: scale(0.96) translateY(-8px);
+            transition: opacity 0.35s cubic-bezier(0.3, 0, 0.2, 1), transform 0.35s cubic-bezier(0.3, 0, 0.2, 1), visibility 0.35s;
         }
         .user-menu.active { opacity: 1; visibility: visible; transform: scale(1) translateY(0); }
         .user-menu a {
             display: block; padding: 12px 20px; color: #1d1d1f; text-decoration: none; font-size: 0.95rem; font-weight: 500;
-            transition: background 0.2s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+            transition: background 0.2s, transform 0.3s cubic-bezier(0.3, 0, 0.2, 1);
         }
         .user-menu a:hover { background: rgba(0,0,0,0.04); transform: translateX(4px); }
-        .user-menu a:active { transform: scale(0.97); background: rgba(0,0,0,0.06); }
+        .user-menu a:active { transform: scale(0.97); background: rgba(0,0,0,0.06); transition: transform 0.1s; }
         .mobile-menu {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(245, 245, 247, 0.95); backdrop-filter: blur(40px);
             z-index: 200; padding: 80px 28px 40px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.1); border-bottom: 1px solid rgba(255,255,255,0.3);
-            transform: translateY(-100%); opacity: 0;
-            transition: transform 0.4s cubic-bezier(0.28, 0, 0.36, 1), opacity 0.3s ease;
+            transform: translateY(-100%) scale(0.96);
+            opacity: 0;
+            transition: transform 0.35s cubic-bezier(0.3, 0, 0.2, 1), opacity 0.35s cubic-bezier(0.3, 0, 0.2, 1);
             pointer-events: none;
             overflow-y: auto;
         }
-        .mobile-menu.active { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .mobile-menu.active { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
         .mobile-menu a {
             display: block; font-size: 1.5rem; font-weight: 500; padding: 16px 0;
             color: #1d1d1f; text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.05);
             font-family: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
             text-align: left; width: 100%;
-            transition: color 0.2s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1), padding-left 0.2s;
+            transition: color 0.2s, transform 0.3s cubic-bezier(0.3, 0, 0.2, 1), padding-left 0.3s cubic-bezier(0.3, 0, 0.2, 1);
         }
         .mobile-menu a:hover { color: #0071e3; padding-left: 8px; }
-        .mobile-menu a:active { transform: scale(0.98); }
+        .mobile-menu a:active { transform: scale(0.98); transition: transform 0.1s; }
         .mobile-menu a:last-child { border-bottom: none; }
         .close-menu {
             position: absolute; top: 24px; right: 24px; font-size: 2rem;
             cursor: pointer; color: #1d1d1f; z-index: 210;
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.3s cubic-bezier(0.3, 0, 0.2, 1);
         }
         .close-menu:hover { transform: rotate(90deg); }
-        .close-menu:active { transform: scale(0.9); }
+        .close-menu:active { transform: scale(0.9); transition: transform 0.1s; }
         .menu-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); backdrop-filter: blur(4px);
-            z-index: 199; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
+            z-index: 199; opacity: 0; visibility: hidden; transition: opacity 0.35s cubic-bezier(0.3, 0, 0.2, 1), visibility 0.35s;
         }
         .menu-overlay.active { opacity: 1; visibility: visible; }
-        /* 顶部横幅 */
+        /* 顶部横幅 - 深色渐变循环动画，超长周期，颜色更鲜艳 */
         .top-banner {
             padding-top: 70px;
             text-align: center;
-            background: linear-gradient(145deg, #1a0a1f, #0d0d1a);
+            background: linear-gradient(90deg, #6a0e0e, #8B1A2B, #6A2E6A, #1a2a5a, #0d2b4a, #0a3a2a);
+            background-size: 300% 300%;
             color: #fff;
-            padding: 90px 24px 40px;
+            padding: 140px 24px 70px;
             border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: relative;
+            overflow: hidden;
+            animation: bannerGradient 60s ease-in-out infinite alternate;
+        }
+        @keyframes bannerGradient {
+            0% { background-position: 0% 0%; }
+            10% { background-position: 80% 20%; }
+            20% { background-position: 20% 90%; }
+            30% { background-position: 100% 30%; }
+            40% { background-position: 10% 70%; }
+            50% { background-position: 60% 100%; }
+            60% { background-position: 90% 10%; }
+            70% { background-position: 30% 50%; }
+            80% { background-position: 70% 80%; }
+            90% { background-position: 40% 30%; }
+            100% { background-position: 0% 0%; }
+        }
+        .top-banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 20% 30%, rgba(139,26,43,0.5) 0%, transparent 50%),
+                        radial-gradient(ellipse at 60% 40%, rgba(106,46,106,0.4) 0%, transparent 45%),
+                        radial-gradient(ellipse at 80% 60%, rgba(26,42,90,0.5) 0%, transparent 50%),
+                        radial-gradient(ellipse at 90% 80%, rgba(13,43,74,0.3) 0%, transparent 40%),
+                        radial-gradient(ellipse at 70% 90%, rgba(10,58,42,0.2) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        .top-banner .banner-content {
+            position: relative;
+            z-index: 1;
         }
         .top-banner .banner-title {
-            font-size: 3.2rem;
+            font-size: 5.5rem;
             font-weight: 700;
             letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #f5f5f7, #a1a1a6);
+            background: linear-gradient(135deg, #f5f5f7, #d0d0d5);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            margin-bottom: 8px;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 30px rgba(0,0,0,0.3);
         }
         .top-banner .banner-sub {
-            font-size: 1.4rem;
+            font-size: 2.8rem;
             font-weight: 400;
-            color: #e0e0e6;
-            margin-bottom: 12px;
+            color: #f0f0f2;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.4);
         }
         .top-banner .banner-meta {
-            font-size: 0.9rem;
-            color: #98989e;
+            font-size: 1.2rem;
+            color: #c0c0c5;
             font-weight: 300;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
         .top-banner .banner-meta i {
-            margin-right: 6px;
+            margin-right: 8px;
         }
         main { padding-top: 0; }
         .module {
@@ -260,7 +397,7 @@
         }
         .module-dark { background: rgba(0,0,0,0.85); color: #fff; }
         .module-light { background: rgba(255,255,255,0.9); color: #1d1d1f; }
-        .module-dark .module-title, .module-dark .module-sub, .module-dark .data-source { color: #fff; }
+        .module-dark .module-title, .module-dark .module-sub { color: #fff; }
         .module-dark .module-sub { color: #e0e0e6; }
         .animate-group { opacity: 0; }
         .animate-group.animated { opacity: 1; }
@@ -270,7 +407,7 @@
         .animate-group .module-visual,
         .animate-group .data-source {
             opacity: 0; transform: translateY(36px);
-            transition: opacity 0.8s cubic-bezier(0.28, 0, 0.36, 1), transform 0.8s cubic-bezier(0.28, 0, 0.36, 1);
+            transition: opacity 0.8s cubic-bezier(0.3, 0, 0.2, 1), transform 0.8s cubic-bezier(0.3, 0, 0.2, 1);
             transition-delay: 0s;
         }
         .animate-group.animated .module-title { opacity: 1; transform: translateY(0); transition-delay: 0s; }
@@ -282,29 +419,29 @@
         .community-preview .animate-group .community-grid,
         .community-preview .animate-group > div:last-child {
             opacity: 0; transform: translateY(36px);
-            transition: opacity 0.8s cubic-bezier(0.28, 0, 0.36, 1), transform 0.8s cubic-bezier(0.28, 0, 0.36, 1);
+            transition: opacity 0.8s cubic-bezier(0.3, 0, 0.2, 1), transform 0.8s cubic-bezier(0.3, 0, 0.2, 1);
         }
         .community-preview .animate-group.animated .community-header { opacity: 1; transform: translateY(0); transition-delay: 0s; }
         .community-preview .animate-group.animated .community-grid { opacity: 1; transform: translateY(0); transition-delay: 0.15s; }
         .community-preview .animate-group.animated > div:last-child { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
         .module-title { font-size: 2.6rem; font-weight: 600; margin-bottom: 12px; }
         .module-sub { font-size: 1.2rem; font-weight: 400; max-width: 600px; margin: 0 auto 16px; }
-        .data-source { font-size: 0.75rem; margin-bottom: 28px; opacity: 0.7; }
         .btn-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
         .btn-primary, .btn-secondary {
             padding: 10px 24px; border-radius: 980px; font-weight: 600; font-size: 0.95rem;
-            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1); cursor: pointer; border: none;
+            transition: all 0.35s cubic-bezier(0.3, 0, 0.2, 1);
+            cursor: pointer; border: none;
             will-change: transform;
         }
         .btn-primary { background-color: #0071e3; color: white; box-shadow: 0 2px 8px rgba(0,113,227,0.2); }
-        .btn-primary:hover { transform: scale(1.03); background-color: #0077ed; box-shadow: 0 4px 12px rgba(0,113,227,0.3); }
+        .btn-primary:hover { transform: scale(1.04); background-color: #0077ed; box-shadow: 0 6px 16px rgba(0,113,227,0.35); }
         .btn-primary:active { transform: scale(0.97); background-color: #0066cc; box-shadow: 0 1px 4px rgba(0,113,227,0.2); transition: transform 0.1s; }
         .btn-secondary { background-color: rgba(232,232,237,0.8); color: #1d1d1f; }
-        .btn-secondary:hover { transform: scale(1.03); background-color: rgba(214,214,220,0.9); }
+        .btn-secondary:hover { transform: scale(1.04); background-color: rgba(214,214,220,0.9); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
         .btn-secondary:active { transform: scale(0.97); background-color: rgba(200,200,206,0.95); transition: transform 0.1s; }
         .module-visual {
             border-radius: 36px; overflow: hidden; margin: 28px 0 36px;
-            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.12); transition: transform 0.4s cubic-bezier(0.28, 0, 0.36, 1);
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.12); transition: transform 0.4s cubic-bezier(0.3, 0, 0.2, 1);
             background: rgba(255,255,255,0.03);
         }
         .module-visual:hover { transform: scale(1.01); }
@@ -330,7 +467,8 @@
         .community-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin: 28px 0; text-align: left; }
         .article-card {
             background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); border-radius: 32px; padding: 20px;
-            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1); cursor: pointer; border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.35s cubic-bezier(0.3, 0, 0.2, 1);
+            cursor: pointer; border: 1px solid rgba(255,255,255,0.3);
         }
         .article-card:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15); background: white; }
         .article-card:active { transform: translateY(-2px) scale(0.99); transition: transform 0.1s; }
@@ -341,10 +479,10 @@
         .media-preview img, .media-preview video { max-width: 70px; border-radius: 14px; }
         .comment-badge {
             margin-top: 12px; font-size: 0.7rem; color: #6e6e73; cursor: pointer;
-            transition: color 0.2s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+            transition: color 0.2s, transform 0.3s cubic-bezier(0.3, 0, 0.2, 1);
         }
         .comment-badge:hover { color: #0071e3; transform: scale(1.05); }
-        .comment-badge:active { transform: scale(0.95); }
+        .comment-badge:active { transform: scale(0.95); transition: transform 0.1s; }
         .footer {
             background: rgba(245,245,247,0.8); backdrop-filter: blur(30px); margin-top: 60px;
             padding: 36px 0 28px; border-top: 1px solid rgba(0,0,0,0.05); position: relative;
@@ -355,10 +493,10 @@
         .footer-col h4 { font-weight: 600; margin-bottom: 10px; font-size: 0.75rem; }
         .footer-col a {
             display: block; color: #6e6e73; text-decoration: none; margin-bottom: 6px; font-size: 0.7rem; cursor: pointer;
-            transition: color 0.2s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+            transition: color 0.2s, transform 0.3s cubic-bezier(0.3, 0, 0.2, 1);
         }
         .footer-col a:hover { color: #0071e3; transform: translateX(4px); }
-        .footer-col a:active { transform: scale(0.97); }
+        .footer-col a:active { transform: scale(0.97); transition: transform 0.1s; }
         .copyright { border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px; font-size: 0.65rem; text-align: center; }
         .copyright-studio {
             font-size: 0.65rem;
@@ -372,62 +510,373 @@
             position: absolute; top: 20px; right: 24px; z-index: 300;
             display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
         }
-        .lang-current, .theme-current {
+        .lang-current {
             display: flex; align-items: center; gap: 4px; cursor: pointer;
             font-size: 0.7rem; font-weight: 500; color: #1d1d1f;
             padding: 4px 10px; border-radius: 30px;
             background: rgba(255,255,255,0.4); backdrop-filter: blur(10px);
             border: 0.5px solid rgba(0,0,0,0.05);
-            transition: background 0.2s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+            transition: background 0.2s, transform 0.35s cubic-bezier(0.3, 0, 0.2, 1);
         }
-        .lang-current i, .theme-current i { font-size: 0.6rem; transition: transform 0.2s; }
-        .lang-current.active i, .theme-current.active i { transform: rotate(180deg); }
-        .lang-current:hover, .theme-current:hover { background: rgba(255,255,255,0.6); }
-        .lang-current:active, .theme-current:active { transform: scale(0.96); }
-        .lang-dropdown, .theme-dropdown {
+        .lang-current i { font-size: 0.6rem; transition: transform 0.35s cubic-bezier(0.3, 0, 0.2, 1); }
+        .lang-current.active i { transform: rotate(180deg); }
+        .lang-current:hover { background: rgba(255,255,255,0.6); }
+        .lang-current:active { transform: scale(0.96); transition: transform 0.1s; }
+        .lang-dropdown {
             position: absolute; bottom: 100%; right: 0; background: rgba(255,255,255,0.95);
             backdrop-filter: blur(40px); border-radius: 24px; padding: 6px 0;
             min-width: 130px; box-shadow: 0 8px 20px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02);
-            opacity: 0; visibility: hidden; transform: translateY(8px);
-            transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+            opacity: 0; visibility: hidden; transform: translateY(8px) scale(0.96);
+            transition: opacity 0.35s cubic-bezier(0.3, 0, 0.2, 1), transform 0.35s cubic-bezier(0.3, 0, 0.2, 1), visibility 0.35s;
             margin-bottom: 6px;
             max-height: 400px; overflow-y: auto;
         }
-        .lang-dropdown.active, .theme-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
-        .lang-dropdown span, .theme-dropdown span {
+        .lang-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+        .lang-dropdown span {
             display: block; padding: 8px 16px; cursor: pointer; color: #1d1d1f;
-            font-size: 0.75rem; transition: background 0.15s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+            font-size: 0.75rem; transition: background 0.15s, transform 0.3s cubic-bezier(0.3, 0, 0.2, 1);
         }
-        .lang-dropdown span:hover, .theme-dropdown span:hover { background: rgba(0,0,0,0.04); transform: translateX(4px); }
-        .lang-dropdown span:active, .theme-dropdown span:active { transform: scale(0.97); background: rgba(0,0,0,0.06); }
-        .lang-dropdown span.active, .theme-dropdown span.active { color: #0071e3; font-weight: 600; }
+        .lang-dropdown span:hover { background: rgba(0,0,0,0.04); transform: translateX(4px); }
+        .lang-dropdown span:active { transform: scale(0.97); background: rgba(0,0,0,0.06); transition: transform 0.1s; }
+        .lang-dropdown span.active { color: #0071e3; font-weight: 600; }
 
-        /* 旧的theme-switch样式已废弃，保留以防万一 */
-        .theme-switch-old { display: none; }
+        /* 主题切换按钮 - 与语言切换交互逻辑一致 */
+        .theme-switch-trigger {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #1d1d1f;
+            padding: 4px 10px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.4);
+            backdrop-filter: blur(10px);
+            border: 0.5px solid rgba(0,0,0,0.05);
+            transition: background 0.2s, transform 0.35s cubic-bezier(0.3, 0, 0.2, 1);
+        }
+        .theme-switch-trigger i { font-size: 0.6rem; transition: transform 0.35s cubic-bezier(0.3, 0, 0.2, 1); }
+        .theme-switch-trigger.active i { transform: rotate(180deg); }
+        .theme-switch-trigger:hover { background: rgba(255,255,255,0.6); }
+        .theme-switch-trigger:active { transform: scale(0.96); transition: transform 0.1s; }
+
+        .theme-dropdown {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(40px);
+            border-radius: 24px;
+            padding: 6px 0;
+            min-width: 130px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px) scale(0.96);
+            transition: opacity 0.35s cubic-bezier(0.3, 0, 0.2, 1), transform 0.35s cubic-bezier(0.3, 0, 0.2, 1), visibility 0.35s;
+            margin-bottom: 6px;
+        }
+        .theme-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+        .theme-dropdown span {
+            display: block;
+            padding: 8px 16px;
+            cursor: pointer;
+            color: #1d1d1f;
+            font-size: 0.75rem;
+            transition: background 0.15s, transform 0.3s cubic-bezier(0.3, 0, 0.2, 1);
+        }
+        .theme-dropdown span:hover { background: rgba(0,0,0,0.04); transform: translateX(4px); }
+        .theme-dropdown span:active { transform: scale(0.97); background: rgba(0,0,0,0.06); transition: transform 0.1s; }
+        .theme-dropdown span.active { color: #0071e3; font-weight: 600; }
 
         @media (max-width: 768px) {
             .lang-switch { top: 12px; right: 16px; }
-            .lang-current, .theme-current { font-size: 0.6rem; padding: 3px 8px; }
-            .lang-dropdown span, .theme-dropdown span { font-size: 0.7rem; padding: 6px 12px; }
-            .top-banner .banner-title { font-size: 2.2rem; }
-            .top-banner .banner-sub { font-size: 1rem; }
-            .top-banner { padding: 80px 16px 30px; }
+            .theme-switch-trigger { font-size: 0.6rem; padding: 3px 8px; }
+            .lang-current { font-size: 0.6rem; padding: 3px 8px; }
+            .top-banner .banner-title { font-size: 2.8rem; }
+            .top-banner .banner-sub { font-size: 1.4rem; }
+            .top-banner { padding: 100px 16px 40px; }
+            .container { padding: 0 16px; }
         }
 
+        /* 桌面导航链接显示 */
+        .nav-links-desktop {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .nav-links-desktop a {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1d1d1f;
+            text-decoration: none;
+            transition: color 0.35s cubic-bezier(0.3, 0, 0.2, 1);
+        }
+        .nav-links-desktop a:hover {
+            color: #0071e3;
+        }
+        /* 移动端隐藏桌面链接 */
+        @media (max-width: 768px) {
+            .nav-links-desktop {
+                display: none !important;
+            }
+        }
+
+        /* 模块网格布局 - 苹果风格四宫格 */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 40px 0;
+        }
+        .modules-grid .module {
+            margin-bottom: 0;
+            padding: 70px 50px;
+            border-radius: 32px;
+            min-height: 380px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.4s cubic-bezier(0.3, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.3, 0, 0.2, 1);
+        }
+        .modules-grid .module:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .modules-grid .module-title {
+            font-size: 2.6rem;
+        }
+        .modules-grid .module-sub {
+            font-size: 1.2rem;
+        }
+        .modules-grid .btn-primary,
+        .modules-grid .btn-secondary {
+            padding: 12px 28px;
+            font-size: 1rem;
+        }
+        /* 社区和 Program 特殊处理：全宽 */
+        .module-fullwidth {
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 768px) {
+            .modules-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding: 20px 0;
+            }
+            .modules-grid .module {
+                padding: 40px 24px;
+                min-height: 240px;
+            }
+            .modules-grid .module-title {
+                font-size: 1.8rem;
+            }
+            .modules-grid .module-sub {
+                font-size: 0.9rem;
+            }
+            .modules-grid .btn-primary,
+            .modules-grid .btn-secondary {
+                padding: 8px 18px;
+                font-size: 0.85rem;
+            }
+            .lang-switch { top: 12px; right: 16px; }
+            .theme-switch-trigger { font-size: 0.5rem; padding: 2px 6px; }
+            .lang-current { font-size: 0.6rem; padding: 3px 8px; }
+            .top-banner .banner-title { font-size: 2.8rem; }
+            .top-banner .banner-sub { font-size: 1.4rem; }
+            .top-banner { padding: 100px 16px 40px; }
+            .container { padding: 0 16px; }
+        }
+
+        /* 平板适配 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .modules-grid {
+                gap: 28px;
+            }
+            .modules-grid .module {
+                padding: 55px 35px;
+                min-height: 320px;
+            }
+            .modules-grid .module-title {
+                font-size: 2.2rem;
+            }
+            .modules-grid .module-sub {
+                font-size: 1rem;
+            }
+            .nav-links-desktop {
+                display: flex !important;
+            }
+            .nav-links-desktop a {
+                font-size: 0.8rem;
+            }
+            .top-banner .banner-title { font-size: 4.5rem; }
+            .top-banner .banner-sub { font-size: 2.2rem; }
+        }
+
+        /* 电脑上显示桌面导航链接 */
+        @media (min-width: 1025px) {
+            .nav-links-desktop {
+                display: flex !important;
+            }
+        }
+
+        /* 深色模式下的文字颜色自适应 */
+        body:not(.light-mode) .nav-links-desktop a {
+            color: #f5f5f7;
+        }
+        body:not(.light-mode) .nav-links-desktop a:hover {
+            color: #0077ed;
+        }
+        body:not(.light-mode) .top-banner .banner-sub {
+            color: #f0f0f2;
+        }
+        body:not(.light-mode) .top-banner .banner-meta {
+            color: #c0c0c5;
+        }
+        /* 浅色模式下的文字颜色 */
+        body.light-mode .nav-links-desktop a {
+            color: #1d1d1f;
+        }
+        body.light-mode .nav-links-desktop a:hover {
+            color: #0071e3;
+        }
+
+        /* 图标颜色自适应 - 深色背景变白，浅色背景变黑 */
+        body:not(.light-mode) .nav-icons i,
+        body:not(.light-mode) .menu-icon span {
+            color: #f5f5f7;
+        }
+        body:not(.light-mode) .menu-icon span {
+            background-color: #f5f5f7;
+        }
+        body:not(.light-mode) .mobile-menu a {
+            color: #f5f5f7;
+        }
+        body:not(.light-mode) .close-menu {
+            color: #f5f5f7;
+        }
+        body:not(.light-mode) .user-menu a {
+            color: #f5f5f7;
+        }
+        body:not(.light-mode) .logo {
+            background: linear-gradient(135deg, #f5f5f7 0%, #a1a1a6 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+        body:not(.light-mode) .theme-switch-trigger {
+            color: #f5f5f7;
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.1);
+        }
+        body:not(.light-mode) .theme-switch-trigger:hover {
+            background: rgba(255,255,255,0.25);
+        }
+        body:not(.light-mode) .theme-dropdown {
+            background: rgba(30,30,32,0.95);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        body:not(.light-mode) .theme-dropdown span {
+            color: #f5f5f7;
+        }
+        body:not(.light-mode) .theme-dropdown span:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        body:not(.light-mode) .theme-dropdown span.active {
+            color: #0077ed;
+        }
+
+        body.light-mode .nav-icons i,
+        body.light-mode .menu-icon span {
+            color: #1d1d1f;
+        }
+        body.light-mode .menu-icon span {
+            background-color: #1d1d1f;
+        }
+        body.light-mode .mobile-menu a {
+            color: #1d1d1f;
+        }
+        body.light-mode .close-menu {
+            color: #1d1d1f;
+        }
+        body.light-mode .user-menu a {
+            color: #1d1d1f;
+        }
+        body.light-mode .logo {
+            background: linear-gradient(135deg, #1d1d1f 0%, #434349 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+        body.light-mode .theme-switch-trigger {
+            color: #1d1d1f;
+            background: rgba(255,255,255,0.4);
+            border-color: rgba(0,0,0,0.05);
+        }
+        body.light-mode .theme-switch-trigger:hover {
+            background: rgba(255,255,255,0.6);
+        }
+        body.light-mode .theme-dropdown {
+            background: rgba(255,255,255,0.95);
+        }
+        body.light-mode .theme-dropdown span {
+            color: #1d1d1f;
+        }
+        body.light-mode .theme-dropdown span:hover {
+            background: rgba(0,0,0,0.04);
+        }
+        body.light-mode .theme-dropdown span.active {
+            color: #0071e3;
+        }
+
+        /* 所有按钮和可交互元素的系统级动画 - 统一苹果标准缓动 */
+        .btn-primary, .btn-secondary,
+        .lang-current, .theme-switch-trigger,
+        .menu-icon, .nav-icons i,
+        .search-result-item, .hot-tag,
+        .article-card, .comment-badge,
+        .footer-col a, .mobile-menu a,
+        .user-menu a, .link-button,
+        .action-button, .modal .close-modal,
+        .option, .cancel {
+            transition: all 0.35s cubic-bezier(0.3, 0, 0.2, 1) !important;
+        }
+        .btn-primary:active, .btn-secondary:active,
+        .lang-current:active, .theme-switch-trigger:active,
+        .menu-icon:active, .nav-icons i:active,
+        .search-result-item:active, .hot-tag:active,
+        .article-card:active, .comment-badge:active,
+        .footer-col a:active, .mobile-menu a:active,
+        .user-menu a:active, .link-button:active,
+        .action-button:active, .modal .close-modal:active,
+        .option:active, .cancel:active {
+            transition: transform 0.1s cubic-bezier(0.2, 0.9, 0.4, 1) !important;
+        }
+
+        /* 模态框 - 苹果风格弹出动效 */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.3); backdrop-filter: blur(12px); z-index: 1000;
             justify-content: center; align-items: center; opacity: 0;
-            transition: opacity 0.3s cubic-bezier(0.28, 0, 0.36, 1);
+            transition: opacity 0.4s cubic-bezier(0.3, 0, 0.2, 1);
         }
         .modal.show { display: flex; opacity: 1; }
         .modal-card {
             background: #ffffff; border-radius: 28px; padding: 0; max-width: 460px; width: 90%; max-height: 85vh; overflow-y: auto;
             box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05);
-            transform: translateY(10px); transition: transform 0.4s cubic-bezier(0.28, 0, 0.36, 1), opacity 0.3s ease;
+            transform: translateY(20px) scale(0.96);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.3, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.3, 0, 0.2, 1);
             text-align: left;
         }
-        .modal.show .modal-card { transform: translateY(0); }
+        .modal.show .modal-card { transform: translateY(0) scale(1); opacity: 1; }
+        /* 退场时反向动画 */
+        .modal:not(.show) .modal-card {
+            transform: translateY(20px) scale(0.96);
+            opacity: 0;
+        }
+
         #globalModal .modal-card {
             background: rgba(255,255,255,0.95); backdrop-filter: blur(40px);
             border-radius: 36px; padding: 32px 28px; max-width: 480px;
@@ -441,17 +890,17 @@
         }
         #globalModal .modal-card .close-modal {
             position: absolute; top: 24px; right: 24px; font-size: 1.4rem; cursor: pointer; color: #8e8e93;
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s;
+            transition: transform 0.35s cubic-bezier(0.3, 0, 0.2, 1), color 0.2s;
         }
         #globalModal .modal-card .close-modal:hover { transform: scale(1.1); color: #1d1d1f; }
-        #globalModal .modal-card .close-modal:active { transform: scale(0.9); }
+        #globalModal .modal-card .close-modal:active { transform: scale(0.9); transition: transform 0.1s; }
         #globalModal .action-button {
             width: 100%; padding: 14px; border-radius: 14px; font-weight: 600; font-size: 1rem;
             background: #0071e3; color: white; border: none; cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1);
+            transition: all 0.35s cubic-bezier(0.3, 0, 0.2, 1);
         }
         #globalModal .action-button:hover { background: #0077ed; transform: scale(1.02); box-shadow: 0 4px 12px rgba(0,113,227,0.3); }
-        #globalModal .action-button:active { transform: scale(0.98); background: #0066cc; box-shadow: 0 1px 4px rgba(0,113,227,0.2); }
+        #globalModal .action-button:active { transform: scale(0.98); background: #0066cc; box-shadow: 0 1px 4px rgba(0,113,227,0.2); transition: transform 0.1s; }
         .account-header { display: flex; align-items: center; padding: 24px 24px 16px; border-bottom: 1px solid rgba(0,0,0,0.05); }
         .account-avatar { width: 60px; height: 60px; border-radius: 50%; background: #e8e8ed; margin-right: 16px; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .account-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -467,51 +916,55 @@
         .input-field {
             width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.08);
             background: #f9f9fb; font-size: 0.95rem; margin-bottom: 16px;
-            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1); color: #1d1d1f;
+            transition: all 0.35s cubic-bezier(0.3, 0, 0.2, 1);
+            color: #1d1d1f;
         }
         .input-field:focus { outline: none; border-color: #0071e3; box-shadow: 0 0 0 3px rgba(0,113,227,0.1); background: #fff; transform: scale(1.01); }
         .action-button {
             width: 100%; padding: 14px; border-radius: 14px; font-weight: 600; font-size: 1rem;
             background: #0071e3; color: white; border: none; cursor: pointer; margin-top: 8px;
-            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1);
+            transition: all 0.35s cubic-bezier(0.3, 0, 0.2, 1);
         }
         .action-button:hover { background: #0077ed; transform: scale(1.02); box-shadow: 0 4px 12px rgba(0,113,227,0.3); }
-        .action-button:active { transform: scale(0.98); background: #0066cc; box-shadow: 0 1px 4px rgba(0,113,227,0.2); }
+        .action-button:active { transform: scale(0.98); background: #0066cc; box-shadow: 0 1px 4px rgba(0,113,227,0.2); transition: transform 0.1s; }
         .link-button {
             color: #0071e3; font-weight: 500; text-decoration: none; cursor: pointer;
-            transition: opacity 0.2s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+            transition: opacity 0.3s, transform 0.35s cubic-bezier(0.3, 0, 0.2, 1);
         }
         .link-button:hover { opacity: 0.8; transform: scale(1.05); }
-        .link-button:active { transform: scale(0.95); }
+        .link-button:active { transform: scale(0.95); transition: transform 0.1s; }
         .close-modal {
             position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 1.2rem; color: #8e8e93;
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s;
+            transition: transform 0.35s cubic-bezier(0.3, 0, 0.2, 1), color 0.2s;
         }
         .close-modal:hover { transform: scale(1.2); color: #1d1d1f; }
-        .close-modal:active { transform: scale(0.9); }
+        .close-modal:active { transform: scale(0.9); transition: transform 0.1s; }
         .action-sheet {
             position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.96); backdrop-filter: blur(40px);
-            border-radius: 28px 28px 0 0; padding: 20px; z-index: 1100; transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.28, 0, 0.36, 1);
+            border-radius: 28px 28px 0 0; padding: 20px; z-index: 1100;
+            transform: translateY(100%) scale(0.96);
+            transition: transform 0.5s cubic-bezier(0.3, 0, 0.2, 1);
         }
-        .action-sheet.show { transform: translateY(0); }
+        .action-sheet.show { transform: translateY(0) scale(1); }
         .action-sheet .title { font-size: 1.1rem; font-weight: 600; text-align: center; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.1); margin-bottom: 12px; }
         .action-sheet .option {
             padding: 14px; text-align: center; cursor: pointer; border-radius: 14px;
-            transition: background 0.2s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+            transition: background 0.2s, transform 0.35s cubic-bezier(0.3, 0, 0.2, 1);
         }
         .action-sheet .option:hover { background: rgba(0,0,0,0.05); transform: scale(1.02); }
-        .action-sheet .option:active { transform: scale(0.98); background: rgba(0,0,0,0.08); }
+        .action-sheet .option:active { transform: scale(0.98); background: rgba(0,0,0,0.08); transition: transform 0.1s; }
         .action-sheet .cancel { margin-top: 8px; color: #0071e3; font-weight: 600; }
         .action-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(8px); z-index: 1050; opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s;
+            backdrop-filter: blur(8px); z-index: 1050; opacity: 0; visibility: hidden;
+            transition: opacity 0.35s cubic-bezier(0.3, 0, 0.2, 1), visibility 0.35s;
         }
         .action-overlay.show { opacity: 1; visibility: visible; }
         .toast-message {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) scale(0.9);
             background: rgba(29,29,31,0.85); backdrop-filter: blur(20px); color: white; padding: 10px 22px;
-            border-radius: 40px; font-size: 0.8rem; z-index: 1200; opacity: 0; transition: opacity 0.2s, transform 0.2s;
+            border-radius: 40px; font-size: 0.8rem; z-index: 1200; opacity: 0;
+            transition: opacity 0.35s cubic-bezier(0.3, 0, 0.2, 1), transform 0.35s cubic-bezier(0.3, 0, 0.2, 1);
             pointer-events: none; white-space: nowrap;
         }
         .toast-message.show { opacity: 1; transform: translateX(-50%) scale(1); }
@@ -551,10 +1004,10 @@
             background: rgba(255,255,255,0.5); backdrop-filter: blur(10px);
             border-radius: 28px; padding: 24px;
             border: 1px solid rgba(0,0,0,0.04);
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+            transition: transform 0.35s cubic-bezier(0.3, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.3, 0, 0.2, 1);
         }
         #aboutModal .about-card:hover { transform: scale(1.02); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        #aboutModal .about-card:active { transform: scale(0.98); }
+        #aboutModal .about-card:active { transform: scale(0.98); transition: transform 0.1s; }
         #aboutModal .about-card .card-icon { font-size: 2rem; color: #0071e3; margin-bottom: 16px; }
         #aboutModal .about-card h3 { font-size: 1.4rem; font-weight: 600; margin-bottom: 12px; }
         #aboutModal .about-card p { font-size: 0.95rem; line-height: 1.5; color: #3a3a3e; }
@@ -579,83 +1032,175 @@
         #legalModal .legal-content p { margin-bottom: 16px; }
         #legalModal .action-button { margin-top: 32px; }
 
-        /* 深色模式 */
-        @media (prefers-color-scheme: dark) {
-            body:not(.light-mode) { background: #000000; color: #f5f5f7; }
-            body:not(.light-mode) .navbar { background: rgba(20, 20, 20, 0.5); border-bottom-color: rgba(255, 255, 255, 0.1); }
-            body:not(.light-mode) .logo { background: linear-gradient(135deg, #f5f5f7 0%, #a1a1a6 100%); background-clip: text; -webkit-background-clip: text; color: transparent; }
-            body:not(.light-mode) .nav-icons i, body:not(.light-mode) .menu-icon span, body:not(.light-mode) .close-menu { color: #f5f5f7; }
-            body:not(.light-mode) .nav-icons i:hover { color: #fff; }
-            body:not(.light-mode) .nav-icons i:active { color: #0077ed; }
-            body:not(.light-mode) .menu-icon:hover span { background-color: #fff; }
-            body:not(.light-mode) .menu-icon:active span { background-color: #0077ed; }
-            body:not(.light-mode) .search-dropdown { background: rgba(20, 20, 22, 0.95); border-bottom-color: rgba(255,255,255,0.1); }
-            body:not(.light-mode) .search-dropdown .close-search-full { color: #f5f5f7; }
-            body:not(.light-mode) .search-header { border-bottom-color: rgba(255,255,255,0.15); }
-            body:not(.light-mode) .search-input-wrapper { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
-            body:not(.light-mode) .search-input, body:not(.light-mode) .result-title, body:not(.light-mode) .hot-tag { color: #f5f5f7; }
-            body:not(.light-mode) .search-input::placeholder, body:not(.light-mode) .search-section-title, body:not(.light-mode) .result-meta { color: #98989e; }
-            body:not(.light-mode) .search-result-item { border-bottom-color: rgba(255,255,255,0.1); }
-            body:not(.light-mode) .search-result-item:hover { background: rgba(255,255,255,0.05); }
-            body:not(.light-mode) .hot-tag { background: rgba(255,255,255,0.1); }
-            body:not(.light-mode) .hot-tag:hover { background: rgba(255,255,255,0.2); }
-            body:not(.light-mode) .mobile-menu { background: rgba(20, 20, 22, 0.95); border-bottom-color: rgba(255,255,255,0.1); }
-            body:not(.light-mode) .mobile-menu a { color: #f5f5f7; border-bottom-color: rgba(255,255,255,0.1); }
-            body:not(.light-mode) .close-menu { color: #f5f5f7; }
-            body:not(.light-mode) .user-menu { background: rgba(30, 30, 32, 0.95); box-shadow: 0 12px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1); }
-            body:not(.light-mode) .user-menu a { color: #f5f5f7; }
-            body:not(.light-mode) .user-menu a:hover { background: rgba(255,255,255,0.08); }
-            body:not(.light-mode) .module-light { background: rgba(30, 30, 32, 0.9); color: #f5f5f7; }
-            body:not(.light-mode) .module-dark { background: rgba(0,0,0,0.95); }
-            body:not(.light-mode) .module-dark .module-sub { color: #e0e0e6; }
-            body:not(.light-mode) .btn-secondary { background-color: rgba(60, 60, 67, 0.8); color: #f5f5f7; }
-            body:not(.light-mode) .btn-secondary:hover { background-color: rgba(80, 80, 87, 0.9); }
-            body:not(.light-mode) .community-preview, body:not(.light-mode) .article-card { background: rgba(30, 30, 32, 0.9); }
-            body:not(.light-mode) .article-card:hover { background: #1c1c1e; }
-            body:not(.light-mode) .article-meta, body:not(.light-mode) .comment-badge { color: #98989e; }
-            body:not(.light-mode) .article-title, body:not(.light-mode) .article-content { color: #f5f5f7; }
-            body:not(.light-mode) .footer { background: rgba(20, 20, 22, 0.8); border-top-color: rgba(255,255,255,0.1); }
-            body:not(.light-mode) .footer-col a, body:not(.light-mode) .copyright { color: #98989e; }
-            body:not(.light-mode) .modal-card { background: #1c1c1e; box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1); }
-            body:not(.light-mode) .account-header, body:not(.light-mode) .account-section { border-bottom-color: rgba(255,255,255,0.1); }
-            body:not(.light-mode) .account-info h3, body:not(.light-mode) .list-item .label { color: #f5f5f7; }
-            body:not(.light-mode) .account-info p, body:not(.light-mode) .section-title, body:not(.light-mode) .list-item .value { color: #98989e; }
-            body:not(.light-mode) .input-field { background: #2c2c2e; border-color: rgba(255,255,255,0.1); color: #f5f5f7; }
-            body:not(.light-mode) .input-field:focus { background: #1c1c1e; }
-            body:not(.light-mode) .account-avatar { background: #2c2c2e; }
-            body:not(.light-mode) .action-sheet { background: rgba(30, 30, 32, 0.96); }
-            body:not(.light-mode) .action-sheet .title, body:not(.light-mode) .action-sheet .option { color: #f5f5f7; border-bottom-color: rgba(255,255,255,0.1); }
-            body:not(.light-mode) .action-sheet .option:hover { background: rgba(255,255,255,0.08); }
-            body:not(.light-mode) .toast-message { background: rgba(60, 60, 67, 0.9); }
-            body:not(.light-mode) .chart-container { background: rgba(30, 30, 32, 0.9); }
-            body:not(.light-mode) .history-grid-canvas { background: #1c1c1e; }
-            body:not(.light-mode) .menu-overlay { background: rgba(0,0,0,0.5); }
-            body:not(.light-mode) .search-overlay { background: rgba(0,0,0,0.5); }
-            body:not(.light-mode) #aboutModal .modal-card { background: rgba(30, 30, 32, 0.9); box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1); }
-            body:not(.light-mode) #aboutModal .about-header h2 { background: linear-gradient(135deg, #f5f5f7 0%, #a1a1a6 100%); background-clip: text; -webkit-background-clip: text; }
-            body:not(.light-mode) #aboutModal .about-subhead { color: #98989e; }
-            body:not(.light-mode) #aboutModal .about-card { background: rgba(50, 50, 55, 0.5); border-color: rgba(255,255,255,0.08); }
-            body:not(.light-mode) #aboutModal .about-card h3 { color: #f5f5f7; }
-            body:not(.light-mode) #aboutModal .about-card p { color: #b0b0b5; }
-            body:not(.light-mode) #aboutModal .about-footer { color: #98989e; border-top-color: rgba(255,255,255,0.1); }
-            body:not(.light-mode) #legalModal .modal-card { background: rgba(30, 30, 32, 0.95); box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1); }
-            body:not(.light-mode) #legalModal h2 { background: linear-gradient(135deg, #f5f5f7 0%, #a1a1a6 100%); background-clip: text; -webkit-background-clip: text; }
-            body:not(.light-mode) #legalModal .legal-updated { color: #98989e; }
-            body:not(.light-mode) #legalModal .legal-content { color: #f5f5f7; }
-            body:not(.light-mode) #legalModal .action-button { background: #0077ed; }
-            body:not(.light-mode) #globalModal .modal-card { background: rgba(30,30,32,0.95); box-shadow: 0 30px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1); }
-            body:not(.light-mode) #globalModal .modal-card p { color: #f5f5f7; }
-            body:not(.light-mode) #globalModal .close-modal { color: #98989e; }
+        /* 深色模式 - 强制整个界面变黑 */
+        body:not(.light-mode) {
+            background: #000000 !important;
+            color: #f5f5f7 !important;
         }
+        body:not(.light-mode) .navbar {
+            background: rgba(20, 20, 22, 0.35) !important;
+            border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+            border-color: rgba(255, 255, 255, 0.06) !important;
+        }
+        body:not(.light-mode) .search-dropdown {
+            background: rgba(20, 20, 22, 0.95) !important;
+            border-bottom-color: rgba(255,255,255,0.1) !important;
+        }
+        body:not(.light-mode) .search-dropdown .close-search-full { color: #f5f5f7 !important; }
+        body:not(.light-mode) .search-header { border-bottom-color: rgba(255,255,255,0.15) !important; }
+        body:not(.light-mode) .search-input-wrapper {
+            background: rgba(255,255,255,0.08) !important;
+            border-color: rgba(255,255,255,0.15) !important;
+        }
+        body:not(.light-mode) .search-input,
+        body:not(.light-mode) .result-title,
+        body:not(.light-mode) .hot-tag { color: #f5f5f7 !important; }
+        body:not(.light-mode) .search-input::placeholder,
+        body:not(.light-mode) .search-section-title,
+        body:not(.light-mode) .result-meta { color: #98989e !important; }
+        body:not(.light-mode) .search-result-item { border-bottom-color: rgba(255,255,255,0.1) !important; }
+        body:not(.light-mode) .search-result-item:hover { background: rgba(255,255,255,0.05) !important; }
+        body:not(.light-mode) .hot-tag { background: rgba(255,255,255,0.1) !important; }
+        body:not(.light-mode) .hot-tag:hover { background: rgba(255,255,255,0.2) !important; }
+        body:not(.light-mode) .mobile-menu {
+            background: rgba(20, 20, 22, 0.95) !important;
+            border-bottom-color: rgba(255,255,255,0.1) !important;
+        }
+        body:not(.light-mode) .mobile-menu a {
+            color: #f5f5f7 !important;
+            border-bottom-color: rgba(255,255,255,0.1) !important;
+        }
+        body:not(.light-mode) .close-menu { color: #f5f5f7 !important; }
+        body:not(.light-mode) .user-menu {
+            background: rgba(30, 30, 32, 0.95) !important;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1) !important;
+        }
+        body:not(.light-mode) .user-menu a { color: #f5f5f7 !important; }
+        body:not(.light-mode) .user-menu a:hover { background: rgba(255,255,255,0.08) !important; }
+        body:not(.light-mode) .module-light {
+            background: rgba(30, 30, 32, 0.9) !important;
+            color: #f5f5f7 !important;
+        }
+        body:not(.light-mode) .module-dark { background: rgba(0,0,0,0.95) !important; }
+        body:not(.light-mode) .module-dark .module-sub { color: #e0e0e6 !important; }
+        body:not(.light-mode) .btn-secondary {
+            background-color: rgba(60, 60, 67, 0.8) !important;
+            color: #f5f5f7 !important;
+        }
+        body:not(.light-mode) .btn-secondary:hover { background-color: rgba(80, 80, 87, 0.9) !important; }
+        body:not(.light-mode) .community-preview,
+        body:not(.light-mode) .article-card {
+            background: rgba(30, 30, 32, 0.9) !important;
+        }
+        body:not(.light-mode) .article-card:hover { background: #1c1c1e !important; }
+        body:not(.light-mode) .article-meta,
+        body:not(.light-mode) .comment-badge { color: #98989e !important; }
+        body:not(.light-mode) .article-title,
+        body:not(.light-mode) .article-content { color: #f5f5f7 !important; }
+        body:not(.light-mode) .footer {
+            background: rgba(20, 20, 22, 0.8) !important;
+            border-top-color: rgba(255,255,255,0.1) !important;
+        }
+        body:not(.light-mode) .footer-col a,
+        body:not(.light-mode) .copyright { color: #98989e !important; }
+        body:not(.light-mode) .modal-card {
+            background: #1c1c1e !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1) !important;
+        }
+        body:not(.light-mode) .account-header,
+        body:not(.light-mode) .account-section {
+            border-bottom-color: rgba(255,255,255,0.1) !important;
+        }
+        body:not(.light-mode) .account-info h3,
+        body:not(.light-mode) .list-item .label { color: #f5f5f7 !important; }
+        body:not(.light-mode) .account-info p,
+        body:not(.light-mode) .section-title,
+        body:not(.light-mode) .list-item .value { color: #98989e !important; }
+        body:not(.light-mode) .input-field {
+            background: #2c2c2e !important;
+            border-color: rgba(255,255,255,0.1) !important;
+            color: #f5f5f7 !important;
+        }
+        body:not(.light-mode) .input-field:focus { background: #1c1c1e !important; }
+        body:not(.light-mode) .account-avatar { background: #2c2c2e !important; }
+        body:not(.light-mode) .action-sheet {
+            background: rgba(30, 30, 32, 0.96) !important;
+        }
+        body:not(.light-mode) .action-sheet .title,
+        body:not(.light-mode) .action-sheet .option {
+            color: #f5f5f7 !important;
+            border-bottom-color: rgba(255,255,255,0.1) !important;
+        }
+        body:not(.light-mode) .action-sheet .option:hover { background: rgba(255,255,255,0.08) !important; }
+        body:not(.light-mode) .toast-message { background: rgba(60, 60, 67, 0.9) !important; }
+        body:not(.light-mode) .chart-container { background: rgba(30, 30, 32, 0.9) !important; }
+        body:not(.light-mode) .history-grid-canvas { background: #1c1c1e !important; }
+        body:not(.light-mode) .menu-overlay { background: rgba(0,0,0,0.5) !important; }
+        body:not(.light-mode) .search-overlay { background: rgba(0,0,0,0.5) !important; }
+        body:not(.light-mode) #aboutModal .modal-card {
+            background: rgba(30, 30, 32, 0.9) !important;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1) !important;
+        }
+        body:not(.light-mode) #aboutModal .about-header h2 {
+            background: linear-gradient(135deg, #f5f5f7 0%, #a1a1a6 100%) !important;
+            background-clip: text !important;
+            -webkit-background-clip: text !important;
+        }
+        body:not(.light-mode) #aboutModal .about-subhead { color: #98989e !important; }
+        body:not(.light-mode) #aboutModal .about-card {
+            background: rgba(50, 50, 55, 0.5) !important;
+            border-color: rgba(255,255,255,0.08) !important;
+        }
+        body:not(.light-mode) #aboutModal .about-card h3 { color: #f5f5f7 !important; }
+        body:not(.light-mode) #aboutModal .about-card p { color: #b0b0b5 !important; }
+        body:not(.light-mode) #aboutModal .about-footer {
+            color: #98989e !important;
+            border-top-color: rgba(255,255,255,0.1) !important;
+        }
+        body:not(.light-mode) #legalModal .modal-card {
+            background: rgba(30, 30, 32, 0.95) !important;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1) !important;
+        }
+        body:not(.light-mode) #legalModal h2 {
+            background: linear-gradient(135deg, #f5f5f7 0%, #a1a1a6 100%) !important;
+            background-clip: text !important;
+            -webkit-background-clip: text !important;
+        }
+        body:not(.light-mode) #legalModal .legal-updated { color: #98989e !important; }
+        body:not(.light-mode) #legalModal .legal-content { color: #f5f5f7 !important; }
+        body:not(.light-mode) #legalModal .action-button { background: #0077ed !important; }
+        body:not(.light-mode) #globalModal .modal-card {
+            background: rgba(30,30,32,0.95) !important;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1) !important;
+        }
+        body:not(.light-mode) #globalModal .modal-card p { color: #f5f5f7 !important; }
+        body:not(.light-mode) #globalModal .close-modal { color: #98989e !important; }
+        body:not(.light-mode) .theme-switch-trigger {
+            color: #f5f5f7 !important;
+            background: rgba(255,255,255,0.15) !important;
+            border-color: rgba(255,255,255,0.1) !important;
+        }
+        body:not(.light-mode) .theme-switch-trigger:hover {
+            background: rgba(255,255,255,0.25) !important;
+        }
+        body:not(.light-mode) .theme-dropdown {
+            background: rgba(30,30,32,0.95) !important;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3) !important;
+        }
+        body:not(.light-mode) .theme-dropdown span {
+            color: #f5f5f7 !important;
+        }
+        body:not(.light-mode) .theme-dropdown span:hover {
+            background: rgba(255,255,255,0.08) !important;
+        }
+        body:not(.light-mode) .theme-dropdown span.active {
+            color: #0077ed !important;
+        }
+
         /* 浅色模式覆盖 */
         body.light-mode { background: #f5f5f7; color: #1d1d1f; }
-        body.light-mode .navbar { background: rgba(255, 255, 255, 0.5); border-bottom-color: rgba(255, 255, 255, 0.3); }
-        body.light-mode .logo { background: linear-gradient(135deg, #1d1d1f 0%, #434349 100%); background-clip: text; -webkit-background-clip: text; color: transparent; }
-        body.light-mode .nav-icons i, body.light-mode .menu-icon span, body.light-mode .close-menu { color: #1d1d1f; }
-        body.light-mode .nav-icons i:hover { color: #333; }
-        body.light-mode .nav-icons i:active { color: #0071e3; }
-        body.light-mode .menu-icon:hover span { background-color: #333; }
-        body.light-mode .menu-icon:active span { background-color: #0071e3; }
+        body.light-mode .navbar { background: rgba(255, 255, 255, 0.3); border-bottom-color: rgba(255, 255, 255, 0.2); }
         body.light-mode .search-dropdown { background: rgba(245, 245, 247, 0.95); border-bottom-color: rgba(255,255,255,0.3); }
         body.light-mode .search-dropdown .close-search-full { color: #1d1d1f; }
         body.light-mode .search-header { border-bottom-color: rgba(0,0,0,0.1); }
@@ -667,14 +1212,10 @@
         body.light-mode .hot-tag { background: rgba(0,0,0,0.05); }
         body.light-mode .hot-tag:hover { background: rgba(0,0,0,0.1); }
         body.light-mode .mobile-menu { background: rgba(245, 245, 247, 0.95); border-bottom-color: rgba(255,255,255,0.3); }
-        body.light-mode .mobile-menu a { color: #1d1d1f; border-bottom-color: rgba(0,0,0,0.05); }
-        body.light-mode .close-menu { color: #1d1d1f; }
         body.light-mode .user-menu { background: rgba(255,255,255,0.95); box-shadow: 0 12px 30px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.3); }
-        body.light-mode .user-menu a { color: #1d1d1f; }
         body.light-mode .user-menu a:hover { background: rgba(0,0,0,0.04); }
         body.light-mode .module-light { background: rgba(255,255,255,0.9); color: #1d1d1f; }
         body.light-mode .module-dark { background: rgba(0,0,0,0.85); color: #fff; }
-        body.light-mode .module-dark .module-sub { color: #e0e0e6; }
         body.light-mode .btn-secondary { background-color: rgba(232,232,237,0.8); color: #1d1d1f; }
         body.light-mode .btn-secondary:hover { background-color: rgba(214,214,220,0.9); }
         body.light-mode .community-preview, body.light-mode .article-card { background: rgba(251,251,253,0.9); }
@@ -713,6 +1254,26 @@
         body.light-mode #globalModal .modal-card { background: rgba(255,255,255,0.95); box-shadow: 0 30px 50px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.3); }
         body.light-mode #globalModal .modal-card p { color: #1d1d1f; }
         body.light-mode #globalModal .close-modal { color: #8e8e93; }
+        body.light-mode .theme-switch-trigger {
+            color: #1d1d1f;
+            background: rgba(255,255,255,0.4);
+            border-color: rgba(0,0,0,0.05);
+        }
+        body.light-mode .theme-switch-trigger:hover {
+            background: rgba(255,255,255,0.6);
+        }
+        body.light-mode .theme-dropdown {
+            background: rgba(255,255,255,0.95);
+        }
+        body.light-mode .theme-dropdown span {
+            color: #1d1d1f;
+        }
+        body.light-mode .theme-dropdown span:hover {
+            background: rgba(0,0,0,0.04);
+        }
+        body.light-mode .theme-dropdown span.active {
+            color: #0071e3;
+        }
 
         @media (max-width: 768px) {
             .container { padding: 0 20px; }
@@ -734,487 +1295,248 @@
             #legalModal h2 { font-size: 2rem; }
         }
     </style>
-                        </head>
-                        <body>
-                          <div class="navbar">
-                            <div class="nav-inner">
-                              <div class="logo">ZIY<span> Studio</span>
-                            </div>
-                            <div class="nav-icons">
-                              <i class="fas fa-search" id="searchIcon" style="display:inline-block !important;">
-                              </i>
-                              <i class="fas fa-user-circle" id="userIconBtn" style="display:inline-block !important; pointer-events: auto !important; z-index: 20;">
-                              </i>
-                              <div class="menu-icon" id="menuBtn">
-                                <span>
-                                </span>
-                                <span>
-                                </span>
-                                <span>
-                                </span>
-                              </div>
-                              <div id="userMenu" class="user-menu">
-                                <a href="#" id="profileBtn" data-i18n="profile">个人主页</a>
-                                <a href="#" id="adminBtn" data-i18n="admin">后台管理</a>
-                                <a href="#" id="logoutBtn" data-i18n="logout">退出登录</a>
-                                <hr>
-                                  <a href="#" id="deleteAccountBtn" style="color: #e34c4c;" data-i18n="delete">注销账号</a>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="search-overlay" id="searchOverlay">
-                          </div>
-                          <div class="search-dropdown" id="searchDropdown">
-                            <i class="fas fa-times close-search-full" id="closeSearchFullBtn">
-                            </i>
-                            <div class="search-header">
-                              <div class="search-input-wrapper">
-                                <i class="fas fa-search">
-                                </i>
-                                <input type="text" id="searchInput" class="search-input" placeholder="搜索影视项目" data-i18n-placeholder="search_placeholder">
-                                </div>
-                              </div>
-                              <div class="search-content" id="searchResults">
-                              </div>
-                            </div>
-                            <div class="mobile-menu" id="mobileMenu">
-                              <i class="fas fa-times close-menu" id="closeMenuBtn">
-                              </i>
-                              <a href="#" data-target="typhoon" data-i18n="typhoon">影视创作</a>
-                              <a href="#" data-target="satellite" data-i18n="satellite">特效工坊</a>
-                              <a href="#" data-target="model" data-i18n="model">制片管理</a>
-                              <a href="#" data-target="env" data-i18n="env">后期调色</a>
-                              <a href="#" data-target="history" data-i18n="history">作品档案</a>
-                              <a href="#" data-target="program" data-i18n="program">ZIY Studio Program</a>
-                              <a href="#" data-target="community" data-i18n="community">社区</a>
-                              <a href="#" id="mobileProfileLink" data-i18n="profile">个人主页</a>
-                              <a href="#" id="mobilePublishBtn" data-i18n="publish">发布作品</a>
-                              <a href="#" id="mobileAdminBtn" data-i18n="admin">后台</a>
-                              <a href="#" id="mobileAboutBtn" data-i18n="about">关于 ZIY Studio</a>
-                            </div>
-                            <div class="menu-overlay" id="menuOverlay">
-                            </div>
-                            <!-- 顶部横幅 -->
-                            <div class="top-banner">
-                              <div class="banner-title">ZIY Studio 26</div>
-                              <div class="banner-sub">渲出新视界</div>
-                              <div class="banner-meta">
-                                <i class="far fa-calendar-alt">
-                                </i> 北京时间 8月13日 至 8月20日</div>
-                              </div>
-                              <main>
-                                <div class="container">
-                                  <div class="module module-dark" id="module-typhoon">
-                                    <div class="animate-group">
-                                      <h2 class="module-title" data-i18n="typhoon_title">影视创作</h2>
-                                      <p class="module-sub" data-i18n="typhoon_sub">剧本 · 分镜 · 概念设计</p>
-                                      <div class="btn-group">
-                                        <a class="btn-primary js-open-agency" data-module="typhoon" data-i18n="learn_more">进一步了解</a>
-                                        <a class="btn-secondary js-view-now" data-module="typhoon" data-i18n="view_now">立即查看</a>
-                                      </div>
-                                      <!-- 移除图片：module-visual 删除 -->
-                                      <!-- data-source 已移除 -->
-                                    </div>
-                                  </div>
-                                  <div class="module module-dark" id="module-satellite">
-                                    <div class="animate-group">
-                                      <h2 class="module-title" data-i18n="satellite_title">特效工坊</h2>
-                                      <p class="module-sub" data-i18n="satellite_sub">粒子 · 动力学 · 渲染</p>
-                                      <div class="btn-group">
-                                        <a class="btn-primary js-open-agency" data-module="satellite" data-i18n="learn_more">进一步了解</a>
-                                        <a class="btn-secondary js-view-now" data-module="satellite" data-i18n="view_now">立即查看</a>
-                                      </div>
-                                      <!-- 移除图片：module-visual 删除 -->
-                                      <!-- data-source 已移除 -->
-                                    </div>
-                                  </div>
-                                  <div class="module module-light" id="module-model">
-                                    <div class="animate-group">
-                                      <h2 class="module-title" data-i18n="model_title">制片管理</h2>
-                                      <p class="module-sub" data-i18n="model_sub">进度 · 资源 · 协作</p>
-                                      <div class="btn-group">
-                                        <a class="btn-primary js-open-agency" data-module="model" data-i18n="learn_more">进一步了解</a>
-                                        <a class="btn-secondary js-view-now" data-module="model" data-i18n="view_now">立即查看</a>
-                                      </div>
-                                      <!-- 移除图片：module-visual 删除 -->
-                                      <!-- data-source 已移除 -->
-                                    </div>
-                                  </div>
-                                  <div class="module module-dark" id="module-env">
-                                    <div class="animate-group">
-                                      <h2 class="module-title" data-i18n="env_title">后期调色</h2>
-                                      <p class="module-sub" data-i18n="env_sub">LUT · 色彩科学 · HDR</p>
-                                      <div class="btn-group">
-                                        <a class="btn-primary js-open-agency" data-module="env" data-i18n="learn_more">进一步了解</a>
-                                        <a class="btn-secondary js-view-now" data-module="env" data-i18n="view_now">立即查看</a>
-                                      </div>
-                                      <!-- 移除图片：module-visual 删除 -->
-                                      <!-- data-source 已移除 -->
-                                    </div>
-                                  </div>
-                                  <div class="module module-light" id="module-history">
-                                    <div class="animate-group">
-                                      <h2 class="module-title" data-i18n="history_title">作品档案</h2>
-                                      <p class="module-sub" data-i18n="history_sub">完整作品生命周期</p>
-                                      <div class="btn-group">
-                                        <a class="btn-primary js-open-agency" data-module="history" data-i18n="learn_more">进一步了解</a>
-                                        <a class="btn-secondary js-view-now" data-module="history" data-i18n="view_now">立即查看</a>
-                                      </div>
-                                      <!-- 移除图片：module-visual 删除 -->
-                                      <!-- data-source 已移除 -->
-                                    </div>
-                                  </div>
-                                  <!-- 新增 ZIY Studio Program 板块 -->
-                                  <div class="module module-dark" id="module-program">
-                                    <div class="animate-group">
-                                      <h2 class="module-title" data-i18n="program_title">ZIY Studio Program</h2>
-                                      <p class="module-sub" data-i18n="program_sub">专属创作工具 · 渲染加速 · 协作空间</p>
-                                      <div class="btn-group">
-                                        <a class="btn-primary js-open-agency" data-module="program" data-i18n="learn_more">进一步了解</a>
-                                        <a class="btn-secondary js-view-now" data-module="program" data-i18n="view_now">立即查看</a>
-                                      </div>
-                                      <!-- data-source 已移除 -->
-                                    </div>
-                                  </div>
-                                  <div class="community-preview" id="module-community">
-                                    <div class="animate-group">
-                                      <div class="community-header">
-                                        <div>
-                                          <h3 class="community-title" data-i18n="community_title">影视社区</h3>
-                                          <p class="data-source" style="margin-bottom:0;" data-i18n="community_sub">分享创作 · 交流技术</p>
-                                        </div>
-                                        <a href="#" class="btn-secondary" id="createPostBtn" style="padding:6px 18px;" data-i18n="publish">发布作品</a>
-                                      </div>
-                                      <div id="postsContainer" class="community-grid">加载中...</div>
-                                      <div style="text-align:center; margin-top:16px;">
-                                        <a href="#" class="btn-primary" style="background:#e8e8ed; color:#1d1d1f;" id="moreCommunityBtn" data-i18n="browse_all">浏览全部 →</a>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </main>
-                              <footer class="footer">
-                                <div class="footer-inner">
-                                  <div class="lang-switch">
-                                    <!-- 语言切换 -->
-                                    <div class="lang-current" id="langToggleBtn">
-                                      <span id="langCurrentText">中文</span>
-                                      <i class="fas fa-chevron-down">
-                                      </i>
-                                    </div>
-                                    <div class="lang-dropdown" id="langDropdown">
-                                      <span data-lang="zh">简体中文</span>
-                                      <span data-lang="zh-TW">繁體中文</span>
-                                      <span data-lang="en">English</span>
-                                      <span data-lang="ja">日本語</span>
-                                      <span data-lang="ko">한국어</span>
-                                      <span data-lang="es">Español</span>
-                                      <span data-lang="fr">Français</span>
-                                      <span data-lang="pt">Português</span>
-                                      <span data-lang="ar">العربية</span>
-                                      <span data-lang="de">Deutsch</span>
-                                      <span data-lang="ru">Русский</span>
-                                      <span data-lang="it">Italiano</span>
-                                      <span data-lang="tr">Türkçe</span>
-                                      <span data-lang="vi">Tiếng Việt</span>
-                                      <span data-lang="th">ภาษาไทย</span>
-                                      <span data-lang="id">Bahasa Indonesia</span>
-                                    </div>
-                                    <!-- 主题切换（下拉菜单） -->
-                                    <div class="theme-current" id="themeToggleBtn">
-                                      <span id="themeCurrentText">☀️ 浅色</span>
-                                      <i class="fas fa-chevron-down">
-                                      </i>
-                                    </div>
-                                    <div class="theme-dropdown" id="themeDropdown">
-                                      <span data-theme="light">☀️ 浅色</span>
-                                      <span data-theme="dark">🌙 深色</span>
-                                      <span data-theme="auto">⚙️ 自动</span>
-                                    </div>
-                                  </div>
-                                  <div class="footer-links animate-group">
-                                    <div class="footer-col">
-                                      <h4 data-i18n="data">工具</h4>
-                                      <a data-i18n="typhoon">创作</a>
-                                      <a data-i18n="satellite">特效</a>
-                                    </div>
-                                    <div class="footer-col">
-                                      <h4 data-i18n="community">社区</h4>
-                                      <a id="footerPublish" data-i18n="publish">发布</a>
-                                      <a id="footerProfile" data-i18n="profile">个人主页</a>
-                                    </div>
-                                    <div class="footer-col">
-                                      <h4 data-i18n="about">关于</h4>
-                                      <a id="aboutLink" data-i18n="about_ziy">关于 ZIY Studio</a>
-                                    </div>
-                                  </div>
-                                  <div class="copyright-studio">Copyright © 2026 ZIY Studio Co., Ltd. 保留所有权利。</div>
-                                  <div class="copyright" data-i18n="copyright">Copyright © 2026 ZIY Original Films Co., Ltd. 保留所有权利.</div>
-                                </div>
-                              </footer>
-                              <!-- 所有Modal结构与之前完全一致 -->
-                              <div id="authModal" class="modal">
-                                <div class="modal-card">
-                                  <span class="close-modal" onclick="closeAllModals()">&times;</span>
-                                  <div class="account-header">
-                                    <div class="account-avatar" id="authAvatarPreview">
-                                      <i class="fas fa-user-circle" style="font-size: 40px; color: #8e8e93;">
-                                      </i>
-                                    </div>
-                                    <div class="account-info">
-                                      <h3 id="authGreeting" data-i18n="login_greeting">登录 ZIY Studio</h3>
-                                      <p id="authSubGreeting" data-i18n="login_sub">使用您的账户</p>
-                                    </div>
-                                  </div>
-                                  <div id="accountLoginPanel">
-                                    <div class="account-section">
-                                      <div class="section-title" data-i18n="account_label">账号</div>
-                                      <input type="text" id="loginUsername" class="input-field" placeholder="用户名 / 邮箱" data-i18n-placeholder="username_placeholder">
-                                        <input type="password" id="loginPassword" class="input-field" placeholder="密码" data-i18n-placeholder="password_placeholder">
-                                          <div class="captcha-wrapper" id="captchaSlider" style="margin:16px 0;">
-                                            <div class="captcha-slider" style="display:flex; align-items:center; justify-content:center; padding:10px; background:#f9f9fb; border-radius:12px;">
-                                              <span>
-                                                <i class="fas fa-shield-alt">
-                                                </i> <span data-i18n="slide_verify">按住滑块验证</span>
-                                              </span>
-                                              <i class="fas fa-chevron-right" style="margin-left:8px;">
-                                              </i>
-                                            </div>
-                                          </div>
-                                          <label style="display:flex; align-items:center; margin:16px 0;">
-                                            <input type="checkbox" id="rememberMeCheckbox" checked> <span data-i18n="remember_me" style="margin-left:8px;">记住我</span>
-                                          </label>
-                                          <button id="doLoginBtn" class="action-button" data-i18n="login">登录</button>
-                                          <div style="text-align:center; margin-top:16px;">
-                                            <a href="#" id="switchToRegister" class="link-button" data-i18n="register">注册新账户</a> &nbsp;|&nbsp; <a href="#" id="forgotPasswordLink" class="link-button" data-i18n="forgot_password">找回账号</a>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div id="registerFormPanel" style="display:none;">
-                                        <div class="account-section">
-                                          <div class="section-title" data-i18n="register_title">注册</div>
-                                          <input type="text" id="regUsername" class="input-field" placeholder="用户名" data-i18n-placeholder="username_placeholder">
-                                            <input type="email" id="regEmail" class="input-field" placeholder="邮箱" data-i18n-placeholder="email_placeholder">
-                                              <input type="password" id="regPassword" class="input-field" placeholder="密码 (8位以上含大小写数字特殊符号)" data-i18n-placeholder="password_placeholder">
-                                                <input type="password" id="regConfirmPwd" class="input-field" placeholder="确认密码" data-i18n-placeholder="confirm_password_placeholder">
-                                                  <div id="regError" style="color:#e34c4c; font-size:0.8rem; margin-bottom:12px;">
-                                                  </div>
-                                                  <div style="margin-bottom:16px;">
-                                                    <label>
-                                                      <input type="checkbox" id="agreeTerms1"> <span data-i18n="agree_terms">我已阅读并同意</span> <a href="#" class="term-link" data-term="terms" data-i18n="terms_link">使用条款</a>
-                                                    </label>
-                                                    <br>
-                                                      <label>
-                                                        <input type="checkbox" id="agreeTerms2"> <span data-i18n="agree_privacy">我已阅读并同意</span> <a href="#" class="term-link" data-term="privacy" data-i18n="privacy_link">隐私政策</a>
-                                                      </label>
-                                                      <br>
-                                                        <label>
-                                                          <input type="checkbox" id="agreeTerms3"> <span data-i18n="agree_legal">我已阅读并同意</span> <a href="#" class="term-link" data-term="legal" data-i18n="legal_link">法律信息</a>
-                                                        </label>
-                                                      </div>
-                                                      <button id="doRegisterBtn" class="action-button" disabled data-i18n="register_btn">注册</button>
-                                                      <div style="text-align:center; margin-top:16px;">
-                                                        <a href="#" id="switchToLoginFromReg" class="link-button" data-i18n="have_account">已有账号？去登录</a>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                  <div id="forgotFormPanel" style="display:none;">
-                                                    <div class="account-section">
-                                                      <div class="section-title" data-i18n="forgot_title">找回账号</div>
-                                                      <input type="text" id="forgotUsername" class="input-field" placeholder="用户名" data-i18n-placeholder="username_placeholder">
-                                                        <input type="email" id="forgotEmail" class="input-field" placeholder="注册邮箱" data-i18n-placeholder="email_placeholder">
-                                                          <button id="doForgotBtn" class="action-button" data-i18n="recover">发送找回信息</button>
-                                                          <div id="forgotResult" style="margin-top:12px;">
-                                                          </div>
-                                                          <div style="text-align:center; margin-top:16px;">
-                                                            <a href="#" id="backToLoginFromForgot" class="link-button" data-i18n="back_to_login">返回登录</a>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                  <div id="profileModal" class="modal">
-                                                    <div class="modal-card">
-                                                      <span class="close-modal" onclick="closeAllModals()">&times;</span>
-                                                      <div class="account-header">
-                                                        <div class="account-avatar">
-                                                          <img id="avatarImg" src="" alt="头像" style="width:100%; height:100%; object-fit:cover;">
-                                                          </div>
-                                                          <div class="account-info">
-                                                            <h3 id="profileName">用户名</h3>
-                                                            <p id="profileEmail">email@example.com</p>
-                                                          </div>
-                                                        </div>
-                                                        <div class="account-section">
-                                                          <div class="section-title" data-i18n="profile_title">个人资料</div>
-                                                          <div class="list-item">
-                                                            <span class="label" data-i18n="avatar_label">头像</span>
-                                                            <input type="file" id="avatarUpload" accept="image/*" style="max-width:180px;">
-                                                            </div>
-                                                            <div class="list-item">
-                                                              <span class="label" data-i18n="cover_photo">封面照片</span>
-                                                              <input type="file" id="bgUpload" accept="image/*" style="max-width:180px;">
-                                                              </div>
-                                                              <div class="profile-bg-preview" id="profileBgPreview" style="height:80px; border-radius:12px; background-size:cover; margin:12px 0;">
-                                                              </div>
-                                                              <div class="list-item">
-                                                                <span class="label" data-i18n="bio">个人简介</span>
-                                                              </div>
-                                                              <textarea id="profileBio" placeholder="写一点关于自己的介绍..." rows="3" class="input-field" data-i18n-placeholder="bio_placeholder">
-                                                              </textarea>
-                                                            </div>
-                                                            <div class="account-section">
-                                                              <div class="section-title" data-i18n="linked_accounts">绑定账号</div>
-                                                              <div class="list-item">
-                                                                <span class="label" data-i18n="wechat">微信</span>
-                                                                <button id="bindWechat" class="link-button" data-i18n="bind">绑定</button>
-                                                              </div>
-                                                              <div class="list-item">
-                                                                <span class="label" data-i18n="qq">QQ</span>
-                                                                <button id="bindQQ" class="link-button" data-i18n="bind">绑定</button>
-                                                              </div>
-                                                            </div>
-                                                            <div class="account-section">
-                                                              <button id="saveProfileBtn" class="action-button" data-i18n="save_changes">保存修改</button>
-                                                            </div>
-                                                          </div>
-                                                        </div>
-                                                        <div id="publishModal" class="modal">
-                                                          <div class="modal-card" style="max-width:520px;">
-                                                            <span class="close-modal" onclick="closeAllModals()">&times;</span>
-                                                            <div class="account-header">
-                                                              <div class="account-avatar">
-                                                                <i class="fas fa-feather-alt" style="font-size:30px; color:#0071e3;">
-                                                                </i>
-                                                              </div>
-                                                              <div class="account-info">
-                                                                <h3 data-i18n="new_post">发布作品</h3>
-                                                                <p data-i18n="share_analysis">分享你的影视创作</p>
-                                                              </div>
-                                                            </div>
-                                                            <div class="account-section">
-                                                              <input type="text" id="postTitle" class="input-field" placeholder="作品标题" data-i18n-placeholder="post_title_placeholder">
-                                                                <textarea id="postContent" placeholder="作品描述" rows="6" class="input-field" data-i18n-placeholder="post_content_placeholder">
-                                                                </textarea>
-                                                                <div class="media-upload-area" style="background:#f9f9fb; border-radius:12px; padding:16px; margin:16px 0;">
-                                                                  <label>
-                                                                    <i class="fas fa-image">
-                                                                    </i> <span data-i18n="insert_media">插入图片 / 视频</span>
-                                                                  </label>
-                                                                  <input type="file" id="mediaUpload" accept="image/*,video/*" multiple style="margin-top:8px;">
-                                                                    <div id="mediaPreview" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;">
-                                                                    </div>
-                                                                  </div>
-                                                                  <button id="submitPostBtn" class="action-button" data-i18n="publish">发布</button>
-                                                                </div>
-                                                              </div>
-                                                            </div>
-                                                            <div id="adminModal" class="modal">
-                                                              <div class="modal-card">
-                                                                <span class="close-modal">&times;</span>
-                                                                <h3 data-i18n="admin_panel">后台管理</h3>
-                                                                <div id="adminUserList" style="max-height:200px; overflow-y:auto;">
-                                                                </div>
-                                                                <div id="adminPostList" style="max-height:250px; overflow-y:auto;">
-                                                                </div>
-                                                                <button id="adminCloseBtn" class="btn-secondary" data-i18n="close">关闭</button>
-                                                              </div>
-                                                            </div>
-                                                            <div id="commentModal" class="modal">
-                                                              <div class="modal-card">
-                                                                <span class="close-modal">&times;</span>
-                                                                <h3 data-i18n="comments">评论</h3>
-                                                                <div id="commentList" style="max-height:250px; overflow-y:auto;">
-                                                                </div>
-                                                                <textarea id="newComment" placeholder="写下你的评论..." rows="2" style="width:100%; padding:12px; border-radius:20px;" data-i18n-placeholder="comment_placeholder">
-                                                                </textarea>
-                                                                <button id="addCommentBtn" class="btn-primary" data-i18n="post_comment">发表评论</button>
-                                                              </div>
-                                                            </div>
-                                                            <div id="globalModal" class="modal">
-                                                              <div class="modal-card">
-                                                                <span class="close-modal" onclick="closeAllModals()">&times;</span>
-                                                                <h3 id="modalTitle">
-                                                                </h3>
-                                                                <div id="modalContent">
-                                                                </div>
-                                                                <button id="modalConfirmBtn" class="action-button" data-i18n="close">关闭</button>
-                                                              </div>
-                                                            </div>
-                                                            <div id="toastMessage" class="toast-message">
-                                                            </div>
-                                                            <div class="action-overlay" id="actionOverlay">
-                                                            </div>
-                                                            <div class="action-sheet" id="actionSheet">
-                                                              <div class="title" data-i18n="select_agency">选择工具/资源</div>
-                                                              <div class="option" data-url="https://www.apple.com/final-cut-pro/">Final Cut Pro</div>
-                                                              <div class="option" data-url="https://www.blackmagicdesign.com/products/davinciresolve">DaVinci Resolve</div>
-                                                              <div class="option" data-url="https://www.adobe.com/products/aftereffects.html">After Effects</div>
-                                                              <div class="option" data-url="https://www.sidefx.com/">Houdini</div>
-                                                              <div class="option" data-url="https://www.unrealengine.com/">Unreal Engine</div>
-                                                              <div class="option" data-url="https://www.foundry.com/products/nuke">Nuke</div>
-                                                              <div class="option" data-url="https://www.autodesk.com/products/3ds-max/overview">3DS Max</div>
-                                                              <div class="option" data-url="https://www.blender.org/">Blender</div>
-                                                              <div class="option cancel" id="cancelActionSheet" data-i18n="cancel">取消</div>
-                                                            </div>
-                                                            <div id="aboutModal" class="modal">
-                                                              <div class="modal-card">
-                                                                <span class="close-modal" onclick="closeAllModals()">&times;</span>
-                                                                <div class="about-header">
-                                                                  <h2 id="aboutTitle">关于 ZIY Studio</h2>
-                                                                  <div class="about-subhead" id="aboutSubhead">影视创作 · 特效 · 制片智慧平台</div>
-                                                                </div>
-                                                                <div class="about-grid">
-                                                                  <div class="about-card">
-                                                                    <div class="card-icon">
-                                                                      <i class="fas fa-video">
-                                                                      </i>
-                                                                    </div>
-                                                                    <h3 id="aboutCard1Title">创作 · 无界</h3>
-                                                                    <p id="aboutCard1Text">汇聚全球顶尖影视工具与资源，激发无限创意，让每一帧都成为艺术。</p>
-                                                                  </div>
-                                                                  <div class="about-card">
-                                                                    <div class="card-icon">
-                                                                      <i class="fas fa-shield-heart">
-                                                                      </i>
-                                                                    </div>
-                                                                    <h3 id="aboutCard2Title">安全 · 可靠</h3>
-                                                                    <p id="aboutCard2Text">端到端加密，项目数据私有化，符合国际安全标准，守护您的创作心血。</p>
-                                                                  </div>
-                                                                  <div class="about-card">
-                                                                    <div class="card-icon">
-                                                                      <i class="fas fa-users">
-                                                                      </i>
-                                                                    </div>
-                                                                    <h3 id="aboutCard3Title">协作 · 社区</h3>
-                                                                    <p id="aboutCard3Text">连接导演、特效师、制片人，分享经验，共建影视生态。</p>
-                                                                  </div>
-                                                                  <div class="about-card">
-                                                                    <div class="card-icon">
-                                                                      <i class="fas fa-microchip">
-                                                                      </i>
-                                                                    </div>
-                                                                    <h3 id="aboutCard4Title">智能 · 进化</h3>
-                                                                    <p id="aboutCard4Text">AI 辅助剪辑、智能调色、实时渲染，让后期制作效率倍增。</p>
-                                                                  </div>
-                                                                </div>
-                                                                <div class="about-footer" id="aboutFooter">ZIY Studio Inc.  © 2026  ·  版本 2.0  ·  保留所有权利</div>
-                                                              </div>
-                                                            </div>
-                                                            <div id="legalModal" class="modal">
-                                                              <div class="modal-card">
-                                                                <span class="close-modal" onclick="document.getElementById('legalModal').classList.remove('show')">&times;</span>
-                                                                <h2 id="legalTitle">使用条款</h2>
-                                                                <div class="legal-updated" id="legalUpdated">最后更新：2026年4月21日</div>
-                                                                <div class="legal-content" id="legalContent">
-                                                                </div>
-                                                                <button class="action-button" onclick="document.getElementById('legalModal').classList.remove('show')">同意并继续</button>
-                                                              </div>
-                                                            </div>
-                                                            <script>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="nav-inner">
+        <div class="logo">ZIY<span> Studio</span></div>
+        <div class="nav-icons">
+            <!-- 桌面导航链接 -->
+            <div class="nav-links-desktop">
+                <a href="#" data-target="typhoon" data-i18n="typhoon">创作</a>
+                <a href="#" data-target="satellite" data-i18n="satellite">特效</a>
+                <a href="#" data-target="model" data-i18n="model">制片</a>
+                <a href="#" data-target="env" data-i18n="env">调色</a>
+                <a href="#" data-target="history" data-i18n="history">档案</a>
+                <a href="#" data-target="program" data-i18n="program">Program</a>
+                <a href="#" data-target="community" data-i18n="community">社区</a>
+            </div>
+            <i class="fas fa-search" id="searchIcon" style="display:inline-block !important;"></i>
+            <i class="fas fa-user-circle" id="userIconBtn" style="display:inline-block !important; pointer-events: auto !important; z-index: 20;"></i>
+            <div class="menu-icon" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div id="userMenu" class="user-menu">
+                <a href="#" id="profileBtn" data-i18n="profile">个人主页</a>
+                <a href="#" id="adminBtn" data-i18n="admin">后台管理</a>
+                <a href="#" id="logoutBtn" data-i18n="logout">退出登录</a>
+                <hr>
+                <a href="#" id="deleteAccountBtn" style="color: #e34c4c;" data-i18n="delete">注销账号</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="search-overlay" id="searchOverlay"></div>
+<div class="search-dropdown" id="searchDropdown">
+    <i class="fas fa-times close-search-full" id="closeSearchFullBtn"></i>
+    <div class="search-header">
+        <div class="search-input-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="搜索影视项目" data-i18n-placeholder="search_placeholder">
+        </div>
+    </div>
+    <div class="search-content" id="searchResults"></div>
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+    <i class="fas fa-times close-menu" id="closeMenuBtn"></i>
+    <a href="#" data-target="typhoon" data-i18n="typhoon">影视创作</a>
+    <a href="#" data-target="satellite" data-i18n="satellite">特效工坊</a>
+    <a href="#" data-target="model" data-i18n="model">制片管理</a>
+    <a href="#" data-target="env" data-i18n="env">后期调色</a>
+    <a href="#" data-target="history" data-i18n="history">作品档案</a>
+    <a href="#" data-target="program" data-i18n="program">ZIY Studio Program</a>
+    <a href="#" data-target="community" data-i18n="community">社区</a>
+    <a href="#" id="mobileProfileLink" data-i18n="profile">个人主页</a>
+    <a href="#" id="mobilePublishBtn" data-i18n="publish">发布作品</a>
+    <a href="#" id="mobileAdminBtn" data-i18n="admin">后台</a>
+    <a href="#" id="mobileAboutBtn" data-i18n="about">关于 ZIY Studio</a>
+</div>
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- 顶部横幅 -->
+<div class="top-banner">
+    <div class="banner-content">
+        <div class="banner-title" data-i18n="banner_title">ZIY Studio 26</div>
+        <div class="banner-sub" data-i18n="banner_sub">渲出新视界</div>
+        <div class="banner-meta" data-i18n="banner_meta"><i class="far fa-calendar-alt"></i> 北京时间 8月13日 至 8月20日</div>
+    </div>
+</div>
+
+<main>
+    <div class="container">
+        <div class="modules-grid">
+            <div class="module module-dark" id="module-typhoon">
+                <div class="animate-group">
+                    <h2 class="module-title" data-i18n="typhoon_title">影视创作</h2>
+                    <p class="module-sub" data-i18n="typhoon_sub">剧本 · 分镜 · 概念设计</p>
+                    <div class="btn-group">
+                        <a class="btn-primary js-open-agency" data-module="typhoon" data-i18n="learn_more">进一步了解</a>
+                        <a class="btn-secondary js-view-now" data-module="typhoon" data-i18n="view_now">立即查看</a>
+                    </div>
+                </div>
+            </div>
+            <div class="module module-dark" id="module-satellite">
+                <div class="animate-group">
+                    <h2 class="module-title" data-i18n="satellite_title">特效工坊</h2>
+                    <p class="module-sub" data-i18n="satellite_sub">粒子 · 动力学 · 渲染</p>
+                    <div class="btn-group">
+                        <a class="btn-primary js-open-agency" data-module="satellite" data-i18n="learn_more">进一步了解</a>
+                        <a class="btn-secondary js-view-now" data-module="satellite" data-i18n="view_now">立即查看</a>
+                    </div>
+                </div>
+            </div>
+            <div class="module module-light" id="module-model">
+                <div class="animate-group">
+                    <h2 class="module-title" data-i18n="model_title">制片管理</h2>
+                    <p class="module-sub" data-i18n="model_sub">进度 · 资源 · 协作</p>
+                    <div class="btn-group">
+                        <a class="btn-primary js-open-agency" data-module="model" data-i18n="learn_more">进一步了解</a>
+                        <a class="btn-secondary js-view-now" data-module="model" data-i18n="view_now">立即查看</a>
+                    </div>
+                </div>
+            </div>
+            <div class="module module-dark" id="module-env">
+                <div class="animate-group">
+                    <h2 class="module-title" data-i18n="env_title">后期调色</h2>
+                    <p class="module-sub" data-i18n="env_sub">LUT · 色彩科学 · HDR</p>
+                    <div class="btn-group">
+                        <a class="btn-primary js-open-agency" data-module="env" data-i18n="learn_more">进一步了解</a>
+                        <a class="btn-secondary js-view-now" data-module="env" data-i18n="view_now">立即查看</a>
+                    </div>
+                </div>
+            </div>
+            <div class="module module-light" id="module-history">
+                <div class="animate-group">
+                    <h2 class="module-title" data-i18n="history_title">作品档案</h2>
+                    <p class="module-sub" data-i18n="history_sub">完整作品生命周期</p>
+                    <div class="btn-group">
+                        <a class="btn-primary js-open-agency" data-module="history" data-i18n="learn_more">进一步了解</a>
+                        <a class="btn-secondary js-view-now" data-module="history" data-i18n="view_now">立即查看</a>
+                    </div>
+                </div>
+            </div>
+            <!-- ZIY Studio Program 板块 -->
+            <div class="module module-dark" id="module-program">
+                <div class="animate-group">
+                    <h2 class="module-title" data-i18n="program_title">ZIY Studio Program</h2>
+                    <p class="module-sub" data-i18n="program_sub">专属创作工具 · 渲染加速 · 协作空间</p>
+                    <div class="btn-group">
+                        <a class="btn-primary js-open-agency" data-module="program" data-i18n="learn_more">进一步了解</a>
+                        <a class="btn-secondary js-view-now" data-module="program" data-i18n="view_now">立即查看</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="community-preview" id="module-community">
+            <div class="animate-group">
+                <div class="community-header">
+                    <div>
+                        <h3 class="community-title" data-i18n="community_title">影视社区</h3>
+                        <p class="module-sub" style="font-size:0.95rem; color:#6e6e73; margin-top:4px;" data-i18n="community_sub">分享创作 · 交流技术</p>
+                    </div>
+                    <a href="#" class="btn-secondary" id="createPostBtn" style="padding:6px 18px;" data-i18n="publish">发布作品</a>
+                </div>
+                <div id="postsContainer" class="community-grid">加载中...</div>
+                <div style="text-align:center; margin-top:16px;">
+                    <a href="#" class="btn-primary" style="background:#e8e8ed; color:#1d1d1f;" id="moreCommunityBtn" data-i18n="browse_all">浏览全部 →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="lang-switch">
+            <div class="lang-current" id="langToggleBtn">
+                <span id="langCurrentText">中文</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="lang-dropdown" id="langDropdown">
+                <span data-lang="zh">简体中文</span>
+                <span data-lang="zh-TW">繁體中文</span>
+                <span data-lang="en">English</span>
+                <span data-lang="ja">日本語</span>
+                <span data-lang="ko">한국어</span>
+                <span data-lang="es">Español</span>
+                <span data-lang="fr">Français</span>
+                <span data-lang="pt">Português</span>
+                <span data-lang="ar">العربية</span>
+                <span data-lang="de">Deutsch</span>
+                <span data-lang="ru">Русский</span>
+                <span data-lang="it">Italiano</span>
+                <span data-lang="tr">Türkçe</span>
+                <span data-lang="vi">Tiếng Việt</span>
+                <span data-lang="th">ภาษาไทย</span>
+                <span data-lang="id">Bahasa Indonesia</span>
+            </div>
+            <!-- 主题切换按钮 - 与语言切换逻辑一致 -->
+            <div class="theme-switch-trigger" id="themeToggleBtn">
+                <span id="themeCurrentText">浅色</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="theme-dropdown" id="themeDropdown">
+                <span data-theme="light">☀️ 浅色</span>
+                <span data-theme="dark">🌙 深色</span>
+                <span data-theme="auto">⚙️ 自动</span>
+            </div>
+        </div>
+        <div class="footer-links animate-group">
+            <div class="footer-col"><h4 data-i18n="data">工具</h4><a data-i18n="typhoon">创作</a><a data-i18n="satellite">特效</a></div>
+            <div class="footer-col"><h4 data-i18n="community">社区</h4><a id="footerPublish" data-i18n="publish">发布</a><a id="footerProfile" data-i18n="profile">个人主页</a></div>
+            <div class="footer-col"><h4 data-i18n="about">关于</h4><a id="aboutLink" data-i18n="about_ziy">关于 ZIY Studio</a></div>
+        </div>
+        <div class="copyright-studio">Copyright © 2026 ZIY Studio Co., Ltd. 保留所有权利。</div>
+        <div class="copyright" data-i18n="copyright">Copyright © 2026 ZIY Original Films Co., Ltd. 保留所有权利.</div>
+    </div>
+</footer>
+
+<!-- 所有Modal结构与之前完全一致 -->
+<div id="authModal" class="modal"><div class="modal-card"><span class="close-modal" onclick="closeAllModals()">&times;</span><div class="account-header"><div class="account-avatar" id="authAvatarPreview"><i class="fas fa-user-circle" style="font-size: 40px; color: #8e8e93;"></i></div><div class="account-info"><h3 id="authGreeting" data-i18n="login_greeting">登录 ZIY Studio</h3><p id="authSubGreeting" data-i18n="login_sub">使用您的账户</p></div></div><div id="accountLoginPanel"><div class="account-section"><div class="section-title" data-i18n="account_label">账号</div><input type="text" id="loginUsername" class="input-field" placeholder="用户名 / 邮箱" data-i18n-placeholder="username_placeholder"><input type="password" id="loginPassword" class="input-field" placeholder="密码" data-i18n-placeholder="password_placeholder"><div class="captcha-wrapper" id="captchaSlider" style="margin:16px 0;"><div class="captcha-slider" style="display:flex; align-items:center; justify-content:center; padding:10px; background:#f9f9fb; border-radius:12px;"><span><i class="fas fa-shield-alt"></i> <span data-i18n="slide_verify">按住滑块验证</span></span><i class="fas fa-chevron-right" style="margin-left:8px;"></i></div></div><label style="display:flex; align-items:center; margin:16px 0;"><input type="checkbox" id="rememberMeCheckbox" checked> <span data-i18n="remember_me" style="margin-left:8px;">记住我</span></label><button id="doLoginBtn" class="action-button" data-i18n="login">登录</button><div style="text-align:center; margin-top:16px;"><a href="#" id="switchToRegister" class="link-button" data-i18n="register">注册新账户</a> &nbsp;|&nbsp; <a href="#" id="forgotPasswordLink" class="link-button" data-i18n="forgot_password">找回账号</a></div></div></div><div id="registerFormPanel" style="display:none;"><div class="account-section"><div class="section-title" data-i18n="register_title">注册</div><input type="text" id="regUsername" class="input-field" placeholder="用户名" data-i18n-placeholder="username_placeholder"><input type="email" id="regEmail" class="input-field" placeholder="邮箱" data-i18n-placeholder="email_placeholder"><input type="password" id="regPassword" class="input-field" placeholder="密码 (8位以上含大小写数字特殊符号)" data-i18n-placeholder="password_placeholder"><input type="password" id="regConfirmPwd" class="input-field" placeholder="确认密码" data-i18n-placeholder="confirm_password_placeholder"><div id="regError" style="color:#e34c4c; font-size:0.8rem; margin-bottom:12px;"></div><div style="margin-bottom:16px;"><label><input type="checkbox" id="agreeTerms1"> <span data-i18n="agree_terms">我已阅读并同意</span> <a href="#" class="term-link" data-term="terms" data-i18n="terms_link">使用条款</a></label><br><label><input type="checkbox" id="agreeTerms2"> <span data-i18n="agree_privacy">我已阅读并同意</span> <a href="#" class="term-link" data-term="privacy" data-i18n="privacy_link">隐私政策</a></label><br><label><input type="checkbox" id="agreeTerms3"> <span data-i18n="agree_legal">我已阅读并同意</span> <a href="#" class="term-link" data-term="legal" data-i18n="legal_link">法律信息</a></label></div><button id="doRegisterBtn" class="action-button" disabled data-i18n="register_btn">注册</button><div style="text-align:center; margin-top:16px;"><a href="#" id="switchToLoginFromReg" class="link-button" data-i18n="have_account">已有账号？去登录</a></div></div></div><div id="forgotFormPanel" style="display:none;"><div class="account-section"><div class="section-title" data-i18n="forgot_title">找回账号</div><input type="text" id="forgotUsername" class="input-field" placeholder="用户名" data-i18n-placeholder="username_placeholder"><input type="email" id="forgotEmail" class="input-field" placeholder="注册邮箱" data-i18n-placeholder="email_placeholder"><button id="doForgotBtn" class="action-button" data-i18n="recover">发送找回信息</button><div id="forgotResult" style="margin-top:12px;"></div><div style="text-align:center; margin-top:16px;"><a href="#" id="backToLoginFromForgot" class="link-button" data-i18n="back_to_login">返回登录</a></div></div></div></div></div>
+<div id="profileModal" class="modal"><div class="modal-card"><span class="close-modal" onclick="closeAllModals()">&times;</span><div class="account-header"><div class="account-avatar"><img id="avatarImg" src="" alt="头像" style="width:100%; height:100%; object-fit:cover;"></div><div class="account-info"><h3 id="profileName">用户名</h3><p id="profileEmail">email@example.com</p></div></div><div class="account-section"><div class="section-title" data-i18n="profile_title">个人资料</div><div class="list-item"><span class="label" data-i18n="avatar_label">头像</span><input type="file" id="avatarUpload" accept="image/*" style="max-width:180px;"></div><div class="list-item"><span class="label" data-i18n="cover_photo">封面照片</span><input type="file" id="bgUpload" accept="image/*" style="max-width:180px;"></div><div class="profile-bg-preview" id="profileBgPreview" style="height:80px; border-radius:12px; background-size:cover; margin:12px 0;"></div><div class="list-item"><span class="label" data-i18n="bio">个人简介</span></div><textarea id="profileBio" placeholder="写一点关于自己的介绍..." rows="3" class="input-field" data-i18n-placeholder="bio_placeholder"></textarea></div><div class="account-section"><div class="section-title" data-i18n="linked_accounts">绑定账号</div><div class="list-item"><span class="label" data-i18n="wechat">微信</span><button id="bindWechat" class="link-button" data-i18n="bind">绑定</button></div><div class="list-item"><span class="label" data-i18n="qq">QQ</span><button id="bindQQ" class="link-button" data-i18n="bind">绑定</button></div></div><div class="account-section"><button id="saveProfileBtn" class="action-button" data-i18n="save_changes">保存修改</button></div></div></div>
+<div id="publishModal" class="modal"><div class="modal-card" style="max-width:520px;"><span class="close-modal" onclick="closeAllModals()">&times;</span><div class="account-header"><div class="account-avatar"><i class="fas fa-feather-alt" style="font-size:30px; color:#0071e3;"></i></div><div class="account-info"><h3 data-i18n="new_post">发布作品</h3><p data-i18n="share_analysis">分享你的影视创作</p></div></div><div class="account-section"><input type="text" id="postTitle" class="input-field" placeholder="作品标题" data-i18n-placeholder="post_title_placeholder"><textarea id="postContent" placeholder="作品描述" rows="6" class="input-field" data-i18n-placeholder="post_content_placeholder"></textarea><div class="media-upload-area" style="background:#f9f9fb; border-radius:12px; padding:16px; margin:16px 0;"><label><i class="fas fa-image"></i> <span data-i18n="insert_media">插入图片 / 视频</span></label><input type="file" id="mediaUpload" accept="image/*,video/*" multiple style="margin-top:8px;"><div id="mediaPreview" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;"></div></div><button id="submitPostBtn" class="action-button" data-i18n="publish">发布</button></div></div></div>
+<div id="adminModal" class="modal"><div class="modal-card"><span class="close-modal">&times;</span><h3 data-i18n="admin_panel">后台管理</h3><div id="adminUserList" style="max-height:200px; overflow-y:auto;"></div><div id="adminPostList" style="max-height:250px; overflow-y:auto;"></div><button id="adminCloseBtn" class="btn-secondary" data-i18n="close">关闭</button></div></div>
+<div id="commentModal" class="modal"><div class="modal-card"><span class="close-modal">&times;</span><h3 data-i18n="comments">评论</h3><div id="commentList" style="max-height:250px; overflow-y:auto;"></div><textarea id="newComment" placeholder="写下你的评论..." rows="2" style="width:100%; padding:12px; border-radius:20px;" data-i18n-placeholder="comment_placeholder"></textarea><button id="addCommentBtn" class="btn-primary" data-i18n="post_comment">发表评论</button></div></div>
+<div id="globalModal" class="modal"><div class="modal-card"><span class="close-modal" onclick="closeAllModals()">&times;</span><h3 id="modalTitle"></h3><div id="modalContent"></div><button id="modalConfirmBtn" class="action-button" data-i18n="close">关闭</button></div></div>
+<div id="toastMessage" class="toast-message"></div>
+<div class="action-overlay" id="actionOverlay"></div>
+<div class="action-sheet" id="actionSheet"><div class="title" data-i18n="select_agency">选择工具/资源</div><div class="option" data-url="https://www.apple.com/final-cut-pro/">Final Cut Pro</div><div class="option" data-url="https://www.blackmagicdesign.com/products/davinciresolve">DaVinci Resolve</div><div class="option" data-url="https://www.adobe.com/products/aftereffects.html">After Effects</div><div class="option" data-url="https://www.sidefx.com/">Houdini</div><div class="option" data-url="https://www.unrealengine.com/">Unreal Engine</div><div class="option" data-url="https://www.foundry.com/products/nuke">Nuke</div><div class="option" data-url="https://www.autodesk.com/products/3ds-max/overview">3DS Max</div><div class="option" data-url="https://www.blender.org/">Blender</div><div class="option cancel" id="cancelActionSheet" data-i18n="cancel">取消</div></div>
+
+<div id="aboutModal" class="modal">
+    <div class="modal-card">
+        <span class="close-modal" onclick="closeAllModals()">&times;</span>
+        <div class="about-header">
+            <h2 id="aboutTitle">关于 ZIY Studio</h2>
+            <div class="about-subhead" id="aboutSubhead">影视创作 · 特效 · 制片智慧平台</div>
+        </div>
+        <div class="about-grid">
+            <div class="about-card"><div class="card-icon"><i class="fas fa-video"></i></div><h3 id="aboutCard1Title">创作 · 无界</h3><p id="aboutCard1Text">汇聚全球顶尖影视工具与资源，激发无限创意，让每一帧都成为艺术。</p></div>
+            <div class="about-card"><div class="card-icon"><i class="fas fa-shield-heart"></i></div><h3 id="aboutCard2Title">安全 · 可靠</h3><p id="aboutCard2Text">端到端加密，项目数据私有化，符合国际安全标准，守护您的创作心血。</p></div>
+            <div class="about-card"><div class="card-icon"><i class="fas fa-users"></i></div><h3 id="aboutCard3Title">协作 · 社区</h3><p id="aboutCard3Text">连接导演、特效师、制片人，分享经验，共建影视生态。</p></div>
+            <div class="about-card"><div class="card-icon"><i class="fas fa-microchip"></i></div><h3 id="aboutCard4Title">智能 · 进化</h3><p id="aboutCard4Text">AI 辅助剪辑、智能调色、实时渲染，让后期制作效率倍增。</p></div>
+        </div>
+        <div class="about-footer" id="aboutFooter">ZIY Studio Inc.  © 2026  ·  版本 2.0  ·  保留所有权利</div>
+    </div>
+</div>
+
+<div id="legalModal" class="modal">
+    <div class="modal-card">
+        <span class="close-modal" onclick="document.getElementById('legalModal').classList.remove('show')">&times;</span>
+        <h2 id="legalTitle">使用条款</h2>
+        <div class="legal-updated" id="legalUpdated">最后更新：2026年4月21日</div>
+        <div class="legal-content" id="legalContent"></div>
+        <button class="action-button" onclick="document.getElementById('legalModal').classList.remove('show')">同意并继续</button>
+    </div>
+</div>
+
+<script>
     (function(){
-        // 多语言字典
+        // 多语言字典 - 完整覆盖所有文本
         const translations = {
             zh: {
                 typhoon_title: '影视创作',
@@ -1245,6 +1567,10 @@
                 search_placeholder: '搜索影视项目',
                 typhoon: '创作',
                 satellite: '特效',
+                model: '制片',
+                env: '调色',
+                history: '档案',
+                program: 'Program',
                 community: '社区',
                 login_greeting: '登录 ZIY Studio',
                 login_sub: '使用您的账户',
@@ -1293,7 +1619,6 @@
                 select_agency: '选择工具/资源',
                 cancel: '取消',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. 保留所有权利.',
-                program: 'ZIY Studio Program',
                 about_modal_title: '关于 ZIY Studio',
                 about_subhead: '影视创作 · 特效 · 制片智慧平台',
                 about_card1_title: '创作 · 无界',
@@ -1309,102 +1634,10 @@
                 legal_updated: '最后更新：2026年4月21日',
                 legal_content: '服务仅供创作参考，不保证数据的绝对准确。用户应自行承担使用风险。',
                 modal_close: '关闭',
-                drag_hint: '拖动预览效果'
-            },
-            'zh-TW': {
-                typhoon_title: '影視創作',
-                typhoon_sub: '劇本 · 分鏡 · 概念設計',
-                learn_more: '進一步了解',
-                view_now: '立即查看',
-                satellite_title: '特效工坊',
-                satellite_sub: '粒子 · 動力學 · 渲染',
-                model_title: '製片管理',
-                model_sub: '進度 · 資源 · 協作',
-                env_title: '後期調色',
-                env_sub: 'LUT · 色彩科學 · HDR',
-                history_title: '作品檔案',
-                history_sub: '完整作品生命週期',
-                program_title: 'ZIY Studio Program',
-                program_sub: '專屬創作工具 · 渲染加速 · 協作空間',
-                community_title: '影視社區',
-                community_sub: '分享創作 · 交流技術',
-                publish: '發佈作品',
-                browse_all: '瀏覽全部 →',
-                data: '工具',
-                about: '關於',
-                about_ziy: '關於 ZIY Studio',
-                profile: '個人主頁',
-                admin: '後台管理',
-                logout: '退出登錄',
-                delete: '註銷賬號',
-                search_placeholder: '搜索影視項目',
-                typhoon: '創作',
-                satellite: '特效',
-                community: '社區',
-                login_greeting: '登錄 ZIY Studio',
-                login_sub: '使用您的賬戶',
-                account_label: '賬號',
-                username_placeholder: '用戶名 / 郵箱',
-                password_placeholder: '密碼',
-                slide_verify: '按住滑塊驗證',
-                remember_me: '記住我',
-                login: '登錄',
-                register: '註冊新賬戶',
-                forgot_password: '找回賬號',
-                register_title: '註冊',
-                email_placeholder: '郵箱',
-                confirm_password_placeholder: '確認密碼',
-                agree_terms: '我已閱讀並同意',
-                terms_link: '使用條款',
-                agree_privacy: '我已閱讀並同意',
-                privacy_link: '隱私政策',
-                agree_legal: '我已閱讀並同意',
-                legal_link: '法律信息',
-                register_btn: '註冊',
-                have_account: '已有賬號？去登錄',
-                forgot_title: '找回賬號',
-                recover: '發送找回信息',
-                back_to_login: '返回登錄',
-                profile_title: '個人資料',
-                avatar_label: '頭像',
-                cover_photo: '封面照片',
-                bio: '個人簡介',
-                bio_placeholder: '寫一點關於自己的介紹...',
-                linked_accounts: '綁定賬號',
-                wechat: '微信',
-                qq: 'QQ',
-                bind: '綁定',
-                save_changes: '保存修改',
-                new_post: '發佈作品',
-                share_analysis: '分享你的影視創作',
-                post_title_placeholder: '作品標題',
-                post_content_placeholder: '作品描述',
-                insert_media: '插入圖片 / 視頻',
-                admin_panel: '後台管理',
-                close: '關閉',
-                comments: '評論',
-                comment_placeholder: '寫下你的評論...',
-                post_comment: '發表評論',
-                select_agency: '選擇工具/資源',
-                cancel: '取消',
-                copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. 保留所有權利.',
-                program: 'ZIY Studio Program',
-                about_modal_title: '關於 ZIY Studio',
-                about_subhead: '影視創作 · 特效 · 製片智慧平台',
-                about_card1_title: '創作 · 無界',
-                about_card1_text: '匯聚全球頂尖影視工具與資源，激發無限創意，讓每一幀都成為藝術。',
-                about_card2_title: '安全 · 可靠',
-                about_card2_text: '端到端加密，項目數據私有化，符合國際安全標準，守護您的創作心血。',
-                about_card3_title: '協作 · 社區',
-                about_card3_text: '連接導演、特效師、製片人，分享經驗，共建影視生態。',
-                about_card4_title: '智能 · 進化',
-                about_card4_text: 'AI 輔助剪輯、智能調色、實時渲染，讓後期製作效率倍增。',
-                about_footer: 'ZIY Studio Inc.  © 2026  ·  版本 2.0  ·  保留所有權利',
-                legal_title: '使用條款',
-                legal_updated: '最後更新：2026年4月21日',
-                legal_content: '服務僅供創作參考，不保證數據的絕對準確。用戶應自行承擔使用風險。',
-                modal_close: '關閉',
-                drag_hint: '拖動預覽效果'
+                drag_hint: '拖动预览效果',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: '渲出新视界',
+                banner_meta: '北京时间 8月13日 至 8月20日'
             },
             en: {
                 typhoon_title: 'Film Creation',
@@ -1435,6 +1668,10 @@
                 search_placeholder: 'Search film projects',
                 typhoon: 'Creation',
                 satellite: 'VFX',
+                model: 'Production',
+                env: 'Grading',
+                history: 'Archive',
+                program: 'Program',
                 community: 'Community',
                 login_greeting: 'Login to ZIY Studio',
                 login_sub: 'Use your account',
@@ -1483,7 +1720,6 @@
                 select_agency: 'Select Tool / Resource',
                 cancel: 'Cancel',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. All rights reserved.',
-                program: 'ZIY Studio Program',
                 about_modal_title: 'About ZIY Studio',
                 about_subhead: 'Film Creation · VFX · Production Intelligence',
                 about_card1_title: 'Creation · Without Limits',
@@ -1499,7 +1735,111 @@
                 legal_updated: 'Last Updated: April 21, 2026',
                 legal_content: 'The service is for creative reference only and does not guarantee absolute accuracy of data. Users assume all risks of use.',
                 modal_close: 'Close',
-                drag_hint: 'Drag to preview'
+                drag_hint: 'Drag to preview',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: 'Render New Vistas',
+                banner_meta: 'Aug 13 — Aug 20 · Beijing Time'
+            },
+            'zh-TW': {
+                typhoon_title: '影視創作',
+                typhoon_sub: '劇本 · 分鏡 · 概念設計',
+                learn_more: '進一步了解',
+                view_now: '立即查看',
+                satellite_title: '特效工坊',
+                satellite_sub: '粒子 · 動力學 · 渲染',
+                model_title: '製片管理',
+                model_sub: '進度 · 資源 · 協作',
+                env_title: '後期調色',
+                env_sub: 'LUT · 色彩科學 · HDR',
+                history_title: '作品檔案',
+                history_sub: '完整作品生命週期',
+                program_title: 'ZIY Studio Program',
+                program_sub: '專屬創作工具 · 渲染加速 · 協作空間',
+                community_title: '影視社區',
+                community_sub: '分享創作 · 交流技術',
+                publish: '發佈作品',
+                browse_all: '瀏覽全部 →',
+                data: '工具',
+                about: '關於',
+                about_ziy: '關於 ZIY Studio',
+                profile: '個人主頁',
+                admin: '後台管理',
+                logout: '退出登錄',
+                delete: '註銷賬號',
+                search_placeholder: '搜索影視項目',
+                typhoon: '創作',
+                satellite: '特效',
+                model: '製片',
+                env: '調色',
+                history: '檔案',
+                program: 'Program',
+                community: '社區',
+                login_greeting: '登錄 ZIY Studio',
+                login_sub: '使用您的賬戶',
+                account_label: '賬號',
+                username_placeholder: '用戶名 / 郵箱',
+                password_placeholder: '密碼',
+                slide_verify: '按住滑塊驗證',
+                remember_me: '記住我',
+                login: '登錄',
+                register: '註冊新賬戶',
+                forgot_password: '找回賬號',
+                register_title: '註冊',
+                email_placeholder: '郵箱',
+                confirm_password_placeholder: '確認密碼',
+                agree_terms: '我已閱讀並同意',
+                terms_link: '使用條款',
+                agree_privacy: '我已閱讀並同意',
+                privacy_link: '隱私政策',
+                agree_legal: '我已閱讀並同意',
+                legal_link: '法律信息',
+                register_btn: '註冊',
+                have_account: '已有賬號？去登錄',
+                forgot_title: '找回賬號',
+                recover: '發送找回信息',
+                back_to_login: '返回登錄',
+                profile_title: '個人資料',
+                avatar_label: '頭像',
+                cover_photo: '封面照片',
+                bio: '個人簡介',
+                bio_placeholder: '寫一點關於自己的介紹...',
+                linked_accounts: '綁定賬號',
+                wechat: '微信',
+                qq: 'QQ',
+                bind: '綁定',
+                save_changes: '保存修改',
+                new_post: '發佈作品',
+                share_analysis: '分享你的影視創作',
+                post_title_placeholder: '作品標題',
+                post_content_placeholder: '作品描述',
+                insert_media: '插入圖片 / 視頻',
+                admin_panel: '後台管理',
+                close: '關閉',
+                comments: '評論',
+                comment_placeholder: '寫下你的評論...',
+                post_comment: '發表評論',
+                select_agency: '選擇工具/資源',
+                cancel: '取消',
+                copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. 保留所有權利.',
+                about_modal_title: '關於 ZIY Studio',
+                about_subhead: '影視創作 · 特效 · 製片智慧平台',
+                about_card1_title: '創作 · 無界',
+                about_card1_text: '匯聚全球頂尖影視工具與資源，激發無限創意，讓每一幀都成為藝術。',
+                about_card2_title: '安全 · 可靠',
+                about_card2_text: '端到端加密，項目數據私有化，符合國際安全標準，守護您的創作心血。',
+                about_card3_title: '協作 · 社區',
+                about_card3_text: '連接導演、特效師、製片人，分享經驗，共建影視生態。',
+                about_card4_title: '智能 · 進化',
+                about_card4_text: 'AI 輔助剪輯、智能調色、實時渲染，讓後期製作效率倍增。',
+                about_footer: 'ZIY Studio Inc.  © 2026  ·  版本 2.0  ·  保留所有權利',
+                legal_title: '使用條款',
+                legal_updated: '最後更新：2026年4月21日',
+                legal_content: '服務僅供創作參考，不保證數據的絕對準確。用戶應自行承擔使用風險。',
+                modal_close: '關閉',
+                drag_hint: '拖動預覽效果',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: '渲出新視界',
+                banner_meta: '北京時間 8月13日 至 8月20日'
             },
             ja: {
                 typhoon_title: '映像制作',
@@ -1530,6 +1870,10 @@
                 search_placeholder: '映像プロジェクトを検索',
                 typhoon: '制作',
                 satellite: 'VFX',
+                model: '制作管理',
+                env: 'グレーディング',
+                history: 'アーカイブ',
+                program: 'プログラム',
                 community: 'コミュニティ',
                 login_greeting: 'ZIY Studio にログイン',
                 login_sub: 'アカウントを使用',
@@ -1578,7 +1922,6 @@
                 select_agency: 'ツール/リソースを選択',
                 cancel: 'キャンセル',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. All rights reserved.',
-                program: 'ZIY Studio プログラム',
                 about_modal_title: 'ZIY Studio について',
                 about_subhead: '映像制作 · VFX · 制作インテリジェンス',
                 about_card1_title: '創作 · 無限',
@@ -1594,7 +1937,10 @@
                 legal_updated: '最終更新日：2026年4月21日',
                 legal_content: 'このサービスは創作の参考用であり、データの完全な正確性を保証するものではありません。ユーザーは自己責任で使用してください。',
                 modal_close: '閉じる',
-                drag_hint: 'ドラッグしてプレビュー'
+                drag_hint: 'ドラッグしてプレビュー',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: 'レンダリング新視界',
+                banner_meta: '8月13日 〜 8月20日 · 北京時間'
             },
             ko: {
                 typhoon_title: '영상 제작',
@@ -1625,6 +1971,10 @@
                 search_placeholder: '영화 프로젝트 검색',
                 typhoon: '제작',
                 satellite: 'VFX',
+                model: '제작관리',
+                env: '그레이딩',
+                history: '아카이브',
+                program: '프로그램',
                 community: '커뮤니티',
                 login_greeting: 'ZIY Studio 로그인',
                 login_sub: '계정 사용',
@@ -1673,7 +2023,6 @@
                 select_agency: '도구/리소스 선택',
                 cancel: '취소',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. All rights reserved.',
-                program: 'ZIY Studio 프로그램',
                 about_modal_title: 'ZIY Studio 소개',
                 about_subhead: '영화 제작 · VFX · 제작 인텔리전스',
                 about_card1_title: '창작 · 무한',
@@ -1689,7 +2038,10 @@
                 legal_updated: '최종 업데이트: 2026년 4월 21일',
                 legal_content: '이 서비스는 창작 참고용이며 데이터의 완전한 정확성을 보장하지 않습니다. 사용자는 모든 위험을 감수해야 합니다.',
                 modal_close: '닫기',
-                drag_hint: '드래그하여 미리보기'
+                drag_hint: '드래그하여 미리보기',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: '렌더링 뉴 비스타',
+                banner_meta: '8월 13일 – 8월 20일 · 베이징 시간'
             },
             es: {
                 typhoon_title: 'Creación Cinematográfica',
@@ -1720,6 +2072,10 @@
                 search_placeholder: 'Buscar proyectos de cine',
                 typhoon: 'Creación',
                 satellite: 'VFX',
+                model: 'Producción',
+                env: 'Gradación',
+                history: 'Archivo',
+                program: 'Programa',
                 community: 'Comunidad',
                 login_greeting: 'Iniciar sesión en ZIY Studio',
                 login_sub: 'Usa tu cuenta',
@@ -1768,7 +2124,6 @@
                 select_agency: 'Seleccionar herramienta/recurso',
                 cancel: 'Cancelar',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. All rights reserved.',
-                program: 'ZIY Studio Program',
                 about_modal_title: 'Acerca de ZIY Studio',
                 about_subhead: 'Creación Cinematográfica · VFX · Inteligencia de Producción',
                 about_card1_title: 'Creación · Sin Límites',
@@ -1784,7 +2139,10 @@
                 legal_updated: 'Última actualización: 21 de abril de 2026',
                 legal_content: 'El servicio es solo para referencia creativa y no garantiza la precisión absoluta de los datos. Los usuarios asumen todos los riesgos de uso.',
                 modal_close: 'Cerrar',
-                drag_hint: 'Arrastrar para previsualizar'
+                drag_hint: 'Arrastrar para previsualizar',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: 'Render New Vistas',
+                banner_meta: '13 ago — 20 ago · Hora de Pekín'
             },
             fr: {
                 typhoon_title: 'Création Cinématographique',
@@ -1815,6 +2173,10 @@
                 search_placeholder: 'Rechercher des projets de film',
                 typhoon: 'Création',
                 satellite: 'VFX',
+                model: 'Production',
+                env: 'Étalonnage',
+                history: 'Archives',
+                program: 'Programme',
                 community: 'Communauté',
                 login_greeting: 'Connexion à ZIY Studio',
                 login_sub: 'Utiliser votre compte',
@@ -1863,7 +2225,6 @@
                 select_agency: 'Sélectionner un outil/ressource',
                 cancel: 'Annuler',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. All rights reserved.',
-                program: 'ZIY Studio Program',
                 about_modal_title: 'À propos de ZIY Studio',
                 about_subhead: 'Création Cinématographique · VFX · Intelligence de Production',
                 about_card1_title: 'Création · Sans Limites',
@@ -1879,7 +2240,10 @@
                 legal_updated: 'Dernière mise à jour : 21 avril 2026',
                 legal_content: 'Le service est à titre de référence créative uniquement et ne garantit pas l\'exactitude absolue des données. Les utilisateurs assument tous les risques d\'utilisation.',
                 modal_close: 'Fermer',
-                drag_hint: 'Faire glisser pour prévisualiser'
+                drag_hint: 'Faire glisser pour prévisualiser',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: 'Render New Vistas',
+                banner_meta: '13 août — 20 août · Heure de Pékin'
             },
             pt: {
                 typhoon_title: 'Criação Cinematográfica',
@@ -1910,6 +2274,10 @@
                 search_placeholder: 'Pesquisar projetos de cinema',
                 typhoon: 'Criação',
                 satellite: 'VFX',
+                model: 'Produção',
+                env: 'Gradação',
+                history: 'Arquivo',
+                program: 'Programa',
                 community: 'Comunidade',
                 login_greeting: 'Entrar no ZIY Studio',
                 login_sub: 'Use sua conta',
@@ -1958,7 +2326,6 @@
                 select_agency: 'Selecionar ferramenta/recurso',
                 cancel: 'Cancelar',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. All rights reserved.',
-                program: 'ZIY Studio Program',
                 about_modal_title: 'Sobre o ZIY Studio',
                 about_subhead: 'Criação Cinematográfica · VFX · Inteligência de Produção',
                 about_card1_title: 'Criação · Sem Limites',
@@ -1974,7 +2341,10 @@
                 legal_updated: 'Última atualização: 21 de abril de 2026',
                 legal_content: 'O serviço é apenas para referência criativa e não garante a precisão absoluta dos dados. Os usuários assumem todos os riscos de uso.',
                 modal_close: 'Fechar',
-                drag_hint: 'Arraste para pré-visualizar'
+                drag_hint: 'Arraste para pré-visualizar',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: 'Render New Vistas',
+                banner_meta: '13 ago — 20 ago · Horário de Pequim'
             },
             ar: {
                 typhoon_title: 'الإبداع السينمائي',
@@ -2005,6 +2375,10 @@
                 search_placeholder: 'البحث عن مشاريع سينمائية',
                 typhoon: 'الإبداع',
                 satellite: 'المؤثرات',
+                model: 'الإنتاج',
+                env: 'التلوين',
+                history: 'الأرشيف',
+                program: 'البرنامج',
                 community: 'المجتمع',
                 login_greeting: 'تسجيل الدخول إلى ZIY Studio',
                 login_sub: 'استخدم حسابك',
@@ -2053,7 +2427,6 @@
                 select_agency: 'اختر أداة / مورد',
                 cancel: 'إلغاء',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. All rights reserved.',
-                program: 'برنامج ZIY Studio',
                 about_modal_title: 'حول ZIY Studio',
                 about_subhead: 'الإبداع السينمائي · المؤثرات البصرية · ذكاء الإنتاج',
                 about_card1_title: 'الإبداع · بلا حدود',
@@ -2069,7 +2442,10 @@
                 legal_updated: 'آخر تحديث: 21 أبريل 2026',
                 legal_content: 'الخدمة مخصصة للمرجعية الإبداعية فقط ولا تضمن الدقة المطلقة للبيانات. يتحمل المستخدمون جميع مخاطر الاستخدام.',
                 modal_close: 'إغلاق',
-                drag_hint: 'اسحب للمعاينة'
+                drag_hint: 'اسحب للمعاينة',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: 'تقديم آفاق جديدة',
+                banner_meta: '13 أغسطس — 20 أغسطس · توقيت بكين'
             },
             de: {
                 typhoon_title: 'Filmproduktion',
@@ -2100,6 +2476,10 @@
                 search_placeholder: 'Filmprojekte durchsuchen',
                 typhoon: 'Kreation',
                 satellite: 'VFX',
+                model: 'Produktion',
+                env: 'Farbkorrektur',
+                history: 'Archiv',
+                program: 'Programm',
                 community: 'Community',
                 login_greeting: 'Bei ZIY Studio anmelden',
                 login_sub: 'Verwenden Sie Ihr Konto',
@@ -2148,7 +2528,6 @@
                 select_agency: 'Tool/Ressource auswählen',
                 cancel: 'Abbrechen',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. All rights reserved.',
-                program: 'ZIY Studio Programm',
                 about_modal_title: 'Über ZIY Studio',
                 about_subhead: 'Filmproduktion · VFX · Produktionsintelligenz',
                 about_card1_title: 'Kreation · Grenzenlos',
@@ -2164,7 +2543,10 @@
                 legal_updated: 'Letzte Aktualisierung: 21. April 2026',
                 legal_content: 'Der Dienst dient nur als kreative Referenz und garantiert nicht die absolute Genauigkeit der Daten. Die Nutzer tragen alle Risiken der Nutzung.',
                 modal_close: 'Schließen',
-                drag_hint: 'Zum Vorschauen ziehen'
+                drag_hint: 'Zum Vorschauen ziehen',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: 'Render New Vistas',
+                banner_meta: '13. Aug — 20. Aug · Peking-Zeit'
             },
             ru: {
                 typhoon_title: 'Кинопроизводство',
@@ -2195,6 +2577,10 @@
                 search_placeholder: 'Поиск кинопроектов',
                 typhoon: 'Создание',
                 satellite: 'VFX',
+                model: 'Производство',
+                env: 'Цветокоррекция',
+                history: 'Архив',
+                program: 'Программа',
                 community: 'Сообщество',
                 login_greeting: 'Вход в ZIY Studio',
                 login_sub: 'Используйте свою учетную запись',
@@ -2243,7 +2629,6 @@
                 select_agency: 'Выберите инструмент/ресурс',
                 cancel: 'Отмена',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. All rights reserved.',
-                program: 'ZIY Studio Program',
                 about_modal_title: 'О ZIY Studio',
                 about_subhead: 'Кинопроизводство · VFX · Производственный интеллект',
                 about_card1_title: 'Творчество · Без границ',
@@ -2259,7 +2644,10 @@
                 legal_updated: 'Последнее обновление: 21 апреля 2026 г.',
                 legal_content: 'Сервис предназначен только для творческой справки и не гарантирует абсолютную точность данных. Пользователи принимают на себя все риски использования.',
                 modal_close: 'Закрыть',
-                drag_hint: 'Перетащите для предварительного просмотра'
+                drag_hint: 'Перетащите для предварительного просмотра',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: 'Новые горизонты рендеринга',
+                banner_meta: '13 авг — 20 авг · Пекинское время'
             },
             it: {
                 typhoon_title: 'Creazione Cinematografica',
@@ -2290,6 +2678,10 @@
                 search_placeholder: 'Cerca progetti cinematografici',
                 typhoon: 'Creazione',
                 satellite: 'VFX',
+                model: 'Produzione',
+                env: 'Color Grading',
+                history: 'Archivio',
+                program: 'Programma',
                 community: 'Community',
                 login_greeting: 'Accedi a ZIY Studio',
                 login_sub: 'Usa il tuo account',
@@ -2338,7 +2730,6 @@
                 select_agency: 'Seleziona strumento/risorsa',
                 cancel: 'Annulla',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. All rights reserved.',
-                program: 'ZIY Studio Program',
                 about_modal_title: 'Informazioni su ZIY Studio',
                 about_subhead: 'Creazione Cinematografica · VFX · Intelligenza di Produzione',
                 about_card1_title: 'Creazione · Senza Limiti',
@@ -2354,7 +2745,10 @@
                 legal_updated: 'Ultimo aggiornamento: 21 aprile 2026',
                 legal_content: 'Il servizio è solo per riferimento creativo e non garantisce l\'accuratezza assoluta dei dati. Gli utenti assumono tutti i rischi di utilizzo.',
                 modal_close: 'Chiudi',
-                drag_hint: 'Trascina per visualizzare in anteprima'
+                drag_hint: 'Trascina per visualizzare in anteprima',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: 'Render New Vistas',
+                banner_meta: '13 ago — 20 ago · Ora di Pechino'
             },
             tr: {
                 typhoon_title: 'Film Yaratımı',
@@ -2385,6 +2779,10 @@
                 search_placeholder: 'Film projelerini ara',
                 typhoon: 'Yaratım',
                 satellite: 'VFX',
+                model: 'Prodüksiyon',
+                env: 'Renk Düzenleme',
+                history: 'Arşiv',
+                program: 'Program',
                 community: 'Topluluk',
                 login_greeting: 'ZIY Studio\'ya Giriş Yap',
                 login_sub: 'Hesabınızı kullanın',
@@ -2433,7 +2831,6 @@
                 select_agency: 'Araç/Kaynak Seçin',
                 cancel: 'İptal',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. All rights reserved.',
-                program: 'ZIY Studio Programı',
                 about_modal_title: 'ZIY Studio Hakkında',
                 about_subhead: 'Film Yaratımı · VFX · Prodüksiyon Zekası',
                 about_card1_title: 'Yaratım · Sınırsız',
@@ -2449,7 +2846,10 @@
                 legal_updated: 'Son Güncelleme: 21 Nisan 2026',
                 legal_content: 'Hizmet yalnızca yaratıcı referans içindir ve verilerin mutlak doğruluğunu garanti etmez. Kullanıcılar tüm kullanım risklerini üstlenir.',
                 modal_close: 'Kapat',
-                drag_hint: 'Önizlemek için sürükleyin'
+                drag_hint: 'Önizlemek için sürükleyin',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: 'Render New Vistas',
+                banner_meta: '13 Ağu — 20 Ağu · Pekin Saati'
             },
             vi: {
                 typhoon_title: 'Sáng Tạo Điện Ảnh',
@@ -2480,6 +2880,10 @@
                 search_placeholder: 'Tìm kiếm dự án điện ảnh',
                 typhoon: 'Sáng tạo',
                 satellite: 'VFX',
+                model: 'Sản xuất',
+                env: 'Chỉnh màu',
+                history: 'Lưu trữ',
+                program: 'Chương trình',
                 community: 'Cộng đồng',
                 login_greeting: 'Đăng nhập ZIY Studio',
                 login_sub: 'Sử dụng tài khoản của bạn',
@@ -2528,7 +2932,6 @@
                 select_agency: 'Chọn công cụ/tài nguyên',
                 cancel: 'Hủy',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. All rights reserved.',
-                program: 'Chương Trình ZIY Studio',
                 about_modal_title: 'Giới thiệu về ZIY Studio',
                 about_subhead: 'Sáng Tạo Điện Ảnh · VFX · Trí Tuệ Sản Xuất',
                 about_card1_title: 'Sáng Tạo · Không Giới Hạn',
@@ -2544,7 +2947,10 @@
                 legal_updated: 'Cập nhật lần cuối: 21 tháng 4 năm 2026',
                 legal_content: 'Dịch vụ chỉ dành cho tham khảo sáng tạo và không đảm bảo tính chính xác tuyệt đối của dữ liệu. Người dùng chịu mọi rủi ro khi sử dụng.',
                 modal_close: 'Đóng',
-                drag_hint: 'Kéo để xem trước'
+                drag_hint: 'Kéo để xem trước',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: 'Render New Vistas',
+                banner_meta: '13 thg 8 — 20 thg 8 · Giờ Bắc Kinh'
             },
             th: {
                 typhoon_title: 'การสร้างภาพยนตร์',
@@ -2575,6 +2981,10 @@
                 search_placeholder: 'ค้นหาโครงการภาพยนตร์',
                 typhoon: 'การสร้าง',
                 satellite: 'VFX',
+                model: 'การผลิต',
+                env: 'การปรับสี',
+                history: 'คลัง',
+                program: 'โปรแกรม',
                 community: 'ชุมชน',
                 login_greeting: 'เข้าสู่ระบบ ZIY Studio',
                 login_sub: 'ใช้บัญชีของคุณ',
@@ -2623,7 +3033,6 @@
                 select_agency: 'เลือกเครื่องมือ/ทรัพยากร',
                 cancel: 'ยกเลิก',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. All rights reserved.',
-                program: 'ZIY Studio Program',
                 about_modal_title: 'เกี่ยวกับ ZIY Studio',
                 about_subhead: 'การสร้างภาพยนตร์ · VFX · ปัญญาการผลิต',
                 about_card1_title: 'การสร้าง · ไม่มีขีดจำกัด',
@@ -2639,7 +3048,10 @@
                 legal_updated: 'อัปเดตล่าสุด: 21 เมษายน 2026',
                 legal_content: 'บริการนี้มีไว้เพื่อการอ้างอิงเชิงสร้างสรรค์เท่านั้น และไม่รับประกันความถูกต้องสมบูรณ์ของข้อมูล ผู้ใช้ต้องรับความเสี่ยงทั้งหมดจากการใช้งาน',
                 modal_close: 'ปิด',
-                drag_hint: 'ลากเพื่อดูตัวอย่าง'
+                drag_hint: 'ลากเพื่อดูตัวอย่าง',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: 'Render New Vistas',
+                banner_meta: '13 ส.ค. — 20 ส.ค. · เวลาปักกิ่ง'
             },
             id: {
                 typhoon_title: 'Pembuatan Film',
@@ -2670,6 +3082,10 @@
                 search_placeholder: 'Cari proyek film',
                 typhoon: 'Kreasi',
                 satellite: 'VFX',
+                model: 'Produksi',
+                env: 'Grading',
+                history: 'Arsip',
+                program: 'Program',
                 community: 'Komunitas',
                 login_greeting: 'Masuk ke ZIY Studio',
                 login_sub: 'Gunakan akun Anda',
@@ -2718,7 +3134,6 @@
                 select_agency: 'Pilih Alat / Sumber Daya',
                 cancel: 'Batal',
                 copyright: 'Copyright © 2026 ZIY Original Films Co., Ltd. All rights reserved.',
-                program: 'ZIY Studio Program',
                 about_modal_title: 'Tentang ZIY Studio',
                 about_subhead: 'Pembuatan Film · VFX · Intelijen Produksi',
                 about_card1_title: 'Kreasi · Tanpa Batas',
@@ -2734,32 +3149,47 @@
                 legal_updated: 'Terakhir diperbarui: 21 April 2026',
                 legal_content: 'Layanan ini hanya untuk referensi kreatif dan tidak menjamin keakuratan absolut data. Pengguna menanggung semua risiko penggunaan.',
                 modal_close: 'Tutup',
-                drag_hint: 'Seret untuk pratinjau'
+                drag_hint: 'Seret untuk pratinjau',
+                banner_title: 'ZIY Studio 26',
+                banner_sub: 'Render New Vistas',
+                banner_meta: '13 Agu — 20 Agu · Waktu Beijing'
             }
         };
 
-        // 主题切换逻辑（下拉菜单）
-        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        // 主题切换逻辑 - 与语言切换交互逻辑一致
+        const themeTrigger = document.getElementById('themeToggleBtn');
         const themeDropdown = document.getElementById('themeDropdown');
         const themeCurrentText = document.getElementById('themeCurrentText');
         const themeItems = document.querySelectorAll('#themeDropdown span');
         const body = document.body;
 
+        // 检测系统主题
         function getSystemTheme() {
             return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
 
+        // 应用主题
         function applyTheme(theme) {
             body.classList.remove('light-mode', 'dark-mode');
+            themeItems.forEach(item => item.classList.remove('active'));
+
+            const themeNames = { light: '☀️ 浅色', dark: '🌙 深色', auto: '⚙️ 自动' };
+            if (themeCurrentText) {
+                themeCurrentText.textContent = themeNames[theme] || '浅色';
+            }
+
             if (theme === 'light') {
                 body.classList.add('light-mode');
+                document.querySelector('#themeDropdown span[data-theme="light"]').classList.add('active');
                 body.style.colorScheme = 'light';
-                themeCurrentText.textContent = '☀️ 浅色';
+                localStorage.setItem('ziy-theme', 'light');
             } else if (theme === 'dark') {
                 body.classList.add('dark-mode');
+                document.querySelector('#themeDropdown span[data-theme="dark"]').classList.add('active');
                 body.style.colorScheme = 'dark';
-                themeCurrentText.textContent = '🌙 深色';
-            } else { // auto
+                localStorage.setItem('ziy-theme', 'dark');
+            } else {
+                document.querySelector('#themeDropdown span[data-theme="auto"]').classList.add('active');
                 body.style.colorScheme = 'light dark';
                 body.classList.remove('light-mode', 'dark-mode');
                 if (getSystemTheme() === 'dark') {
@@ -2767,18 +3197,14 @@
                 } else {
                     body.classList.add('light-mode');
                 }
-                themeCurrentText.textContent = '⚙️ 自动';
+                localStorage.setItem('ziy-theme', 'auto');
             }
-            // 更新下拉菜单选中状态
-            themeItems.forEach(item => item.classList.remove('active'));
-            const target = document.querySelector(`#themeDropdown span[data-theme="${theme}"]`);
-            if (target) target.classList.add('active');
-            localStorage.setItem('ziy-theme', theme);
+            // 关闭下拉
             themeDropdown.classList.remove('active');
-            themeToggleBtn.classList.remove('active');
+            themeTrigger.classList.remove('active');
         }
 
-        // 监听系统主题变化
+        // 监听系统主题变化（仅在自动模式下响应）
         const darkModeMedia = window.matchMedia('(prefers-color-scheme: dark)');
         darkModeMedia.addEventListener('change', () => {
             const stored = localStorage.getItem('ziy-theme') || 'auto';
@@ -2787,11 +3213,16 @@
             }
         });
 
-        // 主题切换按钮点击展开/收起
-        themeToggleBtn.addEventListener('click', (e) => {
+        // 主题切换按钮点击
+        themeTrigger.addEventListener('click', (e) => {
             e.stopPropagation();
             themeDropdown.classList.toggle('active');
-            themeToggleBtn.classList.toggle('active');
+            themeTrigger.classList.toggle('active');
+            // 关闭语言下拉
+            const langDropdown = document.getElementById('langDropdown');
+            const langToggleBtn = document.getElementById('langToggleBtn');
+            if (langDropdown) langDropdown.classList.remove('active');
+            if (langToggleBtn) langToggleBtn.classList.remove('active');
         });
 
         // 点击主题选项
@@ -2802,11 +3233,11 @@
             });
         });
 
-        // 点击其他地方关闭下拉
+        // 点击页面其他地方关闭下拉
         document.addEventListener('click', (e) => {
-            if (!themeToggleBtn.contains(e.target) && !themeDropdown.contains(e.target)) {
+            if (!themeTrigger.contains(e.target) && !themeDropdown.contains(e.target)) {
                 themeDropdown.classList.remove('active');
-                themeToggleBtn.classList.remove('active');
+                themeTrigger.classList.remove('active');
             }
         });
 
@@ -2881,7 +3312,6 @@
             } else if (currentText) {
                 currentText.textContent = '简体中文';
             }
-            // 更新关于模态框
             const aboutTitle = document.getElementById('aboutTitle');
             if (aboutTitle && dict.about_modal_title) aboutTitle.textContent = dict.about_modal_title;
             const aboutSubhead = document.getElementById('aboutSubhead');
@@ -2904,14 +3334,12 @@
             if (aboutCard4Text && dict.about_card4_text) aboutCard4Text.textContent = dict.about_card4_text;
             const aboutFooter = document.getElementById('aboutFooter');
             if (aboutFooter && dict.about_footer) aboutFooter.textContent = dict.about_footer;
-            // 法律模态框
             const legalTitle = document.getElementById('legalTitle');
             if (legalTitle && dict.legal_title) legalTitle.textContent = dict.legal_title;
             const legalUpdated = document.getElementById('legalUpdated');
             if (legalUpdated && dict.legal_updated) legalUpdated.textContent = dict.legal_updated;
             const legalContent = document.getElementById('legalContent');
             if (legalContent && dict.legal_content) legalContent.innerHTML = `<p>${dict.legal_content}</p>`;
-            // 关闭按钮
             const modalConfirmBtn = document.getElementById('modalConfirmBtn');
             if (modalConfirmBtn && dict.modal_close) modalConfirmBtn.textContent = dict.modal_close;
             const cancelActionSheet = document.getElementById('cancelActionSheet');
@@ -2950,6 +3378,16 @@
         document.getElementById('closeMenuBtn')?.addEventListener('click', closeMobileMenu);
         menuOverlayDiv?.addEventListener('click', closeMobileMenu);
         mobileMenuDiv.addEventListener('click', (e) => { if(e.target === mobileMenuDiv) closeMobileMenu(); });
+        document.querySelectorAll('.nav-links-desktop a[data-target]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = link.getAttribute('data-target');
+                const element = document.getElementById(`module-${target}`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
         document.querySelectorAll('.mobile-menu a[data-target]').forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); const target = link.getAttribute('data-target'); const element = document.getElementById(`module-${target}`); if (element) { element.scrollIntoView({ behavior: 'smooth' }); } closeMobileMenu(); }); });
         document.getElementById('profileBtn')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('userMenu').classList.remove('active'); showProfileModal(); });
         document.getElementById('mobileProfileLink')?.addEventListener('click', (e) => { e.preventDefault(); closeMobileMenu(); showProfileModal(); });
@@ -2976,7 +3414,6 @@
         function showProfileModal(){ if(!currentUser){ showToast('请先登录'); showAuthModal(); return; } const p=getUserProfile(currentUser.username); document.getElementById('avatarImg').src=p.avatar||''; document.getElementById('profileBgPreview').style.backgroundImage=p.bg?`url(${p.bg})`:''; document.getElementById('profileBio').value=p.bio||''; document.getElementById('profileModal').classList.add('show'); updateMenuIconState(); }
         document.getElementById('saveProfileBtn')?.addEventListener('click',()=>{ if(!currentUser) return; const avatar=document.getElementById('avatarImg').src; const bg=document.getElementById('profileBgPreview').style.backgroundImage.slice(4,-1).replace(/"/g,''); const bio=document.getElementById('profileBio').value; saveUserProfile(currentUser.username,{avatar,bg,bio}); updateUI(); showToast('个人主页已更新'); closeAllModals(); });
 
-        // “立即查看”按钮：弹出注册 ZIY Studio Program 界面，若无账号则引导注册 ZIY Studio
         document.querySelectorAll('.js-view-now').forEach(btn=>{
             btn.addEventListener('click',(e)=>{
                 e.preventDefault();
@@ -2999,19 +3436,16 @@
                 modal.classList.add('show');
                 updateMenuIconState();
 
-                // 登录按钮：关闭当前弹窗，打开登录Modal
                 document.getElementById('programLoginBtn').addEventListener('click', function(e) {
                     e.stopPropagation();
                     modal.classList.remove('show');
                     showAuthModal();
                 });
 
-                // 注册按钮：关闭当前弹窗，打开注册界面（在登录Modal中切换到注册面板）
                 document.getElementById('programRegisterBtn').addEventListener('click', function(e) {
                     e.stopPropagation();
                     modal.classList.remove('show');
                     showAuthModal();
-                    // 切换到注册面板
                     document.getElementById('accountLoginPanel').style.display = 'none';
                     document.getElementById('registerFormPanel').style.display = 'block';
                     document.getElementById('forgotFormPanel').style.display = 'none';
@@ -3042,7 +3476,6 @@
             langToggleBtn.classList.remove('active');
             applyTranslations(lang);
             renderPosts();
-            // 更新modal内容
             const aboutTitle = document.getElementById('aboutTitle');
             if (aboutTitle && translations[lang]?.about_modal_title) aboutTitle.textContent = translations[lang].about_modal_title;
             const aboutSubhead = document.getElementById('aboutSubhead');
@@ -3094,5 +3527,5 @@
         renderDefaultSearchContent(); window.closeAllModals = closeAllModals;
     })();
 </script>
-                                                          </body>
-                                                        </html>
+</body>
+</html>
